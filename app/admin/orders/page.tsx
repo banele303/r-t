@@ -51,7 +51,7 @@ export default function AdminOrders() {
       order.customerEmail.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === "all" || order.status === statusFilter;
     return matchesSearch && matchesStatus;
-  });
+  }) ?? [];
 
   return (
     <div className="orders-page">

@@ -1,0 +1,583 @@
+/* ══════════════════════════════════════════════════════════════════
+   Admin Shell — Dark & Light Mode
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── CSS Variables ───────────────────────────────────────────────── */
+.admin-shell.dark {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: rgba(255, 255, 255, 0.07);
+    --text: #e8eaf0;
+    --text-muted: #7b8299;
+    --accent: #3b82f6;
+    --accent-soft: rgba(59, 130, 246, 0.12);
+    --danger: #ef4444;
+    --sidebar-w: 240px;
+    --topbar-h: 64px;
+}
+
+.admin-shell.light {
+    --bg: #f4f6fb;
+    --surface: #ffffff;
+    --surface2: #f0f2f8;
+    --border: rgba(0, 0, 0, 0.07);
+    --text: #111827;
+    --text-muted: #6b7280;
+    --accent: #0056b3;
+    --accent-soft: rgba(0, 86, 179, 0.08);
+    --danger: #dc2626;
+    --sidebar-w: 240px;
+    --topbar-h: 64px;
+}
+
+/* ── Shell Layout ────────────────────────────────────────────────── */
+.admin-shell {
+    display: flex;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    /* Reset any store page styles */
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+/* ── Sidebar ─────────────────────────────────────────────────────── */
+.admin-sidebar {
+    width: var(--sidebar-w);
+    flex-shrink: 0;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 100;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.admin-sidebar.collapsed {
+    width: 64px;
+}
+
+/* Brand */
+.admin-sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 22px 18px;
+    border-bottom: 1px solid var(--border);
+    min-height: var(--topbar-h);
+}
+
+.brand-icon {
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
+.brand-text {
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+/* Nav */
+.admin-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px 10px;
+    flex: 1;
+    /* takes all remaining space above bottom */
+    overflow-y: auto;
+    /* scrolls if links overflow */
+    overflow-x: hidden;
+    /* Hide scrollbar visually */
+    scrollbar-width: none;
+}
+
+.admin-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.admin-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 18px;
+    border-radius: 12px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    width: 100%;
+    box-sizing: border-box;
+    border-left: 3px solid transparent;
+    transition: background 0.2s ease, color 0.2s ease, border-left-color 0.2s ease;
+}
+
+.admin-nav-item:hover {
+    background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+    color: #ffffff;
+    border-left-color: #93c5fd;
+}
+
+.admin-nav-item.active {
+    background: linear-gradient(135deg, #1e40af, #2563eb);
+    color: #ffffff;
+    font-weight: 700;
+    border-left-color: #93c5fd;
+}
+
+/* Light mode */
+.admin-shell.light .admin-nav-item:hover {
+    background: linear-gradient(135deg, rgba(0, 86, 179, 0.15), rgba(59, 130, 246, 0.10));
+    color: var(--accent);
+    border-left-color: var(--accent);
+}
+
+.admin-shell.light .admin-nav-item.active {
+    background: linear-gradient(135deg, rgba(0, 86, 179, 0.20), rgba(59, 130, 246, 0.13));
+    color: var(--accent);
+    border-left-color: var(--accent);
+}
+
+.admin-nav-item .nav-icon {
+    flex-shrink: 0;
+}
+
+
+/* Bottom section */
+.admin-sidebar-bottom {
+    padding: 12px 10px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sidebar-icon-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 500;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.18s, color 0.18s;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    text-align: left;
+}
+
+.sidebar-icon-btn:hover {
+    background: var(--accent-soft);
+    color: var(--text);
+}
+
+/* User card */
+.admin-sidebar-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--surface2);
+    border-radius: 14px;
+    margin-top: 4px;
+    overflow: hidden;
+}
+
+.admin-user-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3b82f6, #0073e6);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 800;
+    flex-shrink: 0;
+}
+
+.admin-user-avatar.sm {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+}
+
+.admin-user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow: hidden;
+    flex: 1;
+}
+
+.admin-user-email {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.admin-user-logout {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--danger);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-weight: 500;
+    text-align: left;
+}
+
+.admin-user-logout:hover {
+    opacity: 0.8;
+}
+
+/* Collapse button */
+.sidebar-collapse-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    border-radius: 10px;
+    transition: background 0.18s, color 0.18s;
+    margin-top: 4px;
+}
+
+.sidebar-collapse-btn:hover {
+    background: var(--accent-soft);
+    color: var(--text);
+}
+
+/* ── Main area ───────────────────────────────────────────────────── */
+.admin-main-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin-left: var(--sidebar-w);
+    transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-width: 0;
+}
+
+.admin-shell .admin-sidebar.collapsed~.admin-main-wrap,
+.admin-main-wrap:has(+ .admin-sidebar.collapsed) {
+    margin-left: 64px;
+}
+
+/* We rely on JS toggling collapsed on the sidebar, so target via CSS sibling won't fully work.
+   Instead set margin-left via a JS-driven approach. The shell flex parent handles this. */
+
+/* ── Topbar ──────────────────────────────────────────────────────── */
+.admin-topbar {
+    height: var(--topbar-h);
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 28px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    flex-shrink: 0;
+}
+
+.admin-page-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+}
+
+.topbar-theme-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.2s, background 0.2s;
+    flex-shrink: 0;
+}
+
+.topbar-theme-btn:hover {
+    color: var(--text);
+    background: var(--accent-soft);
+}
+
+.admin-mobile-menu-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.topbar-user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: var(--surface2);
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    max-width: 220px;
+    overflow: hidden;
+}
+
+.topbar-user span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ── Content area ────────────────────────────────────────────────── */
+.admin-content-area {
+    flex: 1;
+    padding: 32px;
+    overflow: auto;
+}
+
+/* ── Auth screens ────────────────────────────────────────────────── */
+.admin-auth-screen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    background: #0f1117;
+    color: #888;
+    font-size: 15px;
+}
+
+.admin-spinner {
+    color: #3b82f6;
+    animation: admin-spin 1s linear infinite;
+}
+
+@keyframes admin-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.admin-denied-screen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    background: linear-gradient(135deg, #000b1a, #001529);
+    color: #fff;
+    padding: 40px;
+    text-align: center;
+}
+
+.admin-denied-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(255, 77, 79, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 77, 79, 0.2);
+}
+
+.admin-denied-screen h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.admin-denied-screen p {
+    color: #a1a1a6;
+    font-size: 15px;
+    max-width: 340px;
+    line-height: 1.6;
+}
+
+.admin-denied-link {
+    background: #0056b3;
+    color: white;
+    padding: 12px 28px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.admin-denied-link:hover {
+    opacity: 0.85;
+}
+
+/* ── Mobile overlay ──────────────────────────────────────────────── */
+.admin-mobile-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+    backdrop-filter: blur(2px);
+}
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+    .admin-sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        width: var(--sidebar-w) !important;
+        /* never collapse on mobile */
+    }
+
+    .admin-sidebar.mobile-open {
+        transform: translateX(0);
+    }
+
+    .admin-main-wrap {
+        margin-left: 0 !important;
+    }
+
+    .admin-mobile-menu-btn {
+        display: flex;
+    }
+
+    .admin-mobile-overlay {
+        display: block;
+    }
+
+    .sidebar-collapse-btn {
+        display: none;
+    }
+
+    .admin-content-area {
+        padding: 20px;
+    }
+}
+
+/* ══ Scope inner admin page styles inside .admin-shell ══════════════
+   These override any global .admin-dashboard styles that were leaking */
+
+.admin-shell * {
+    box-sizing: border-box;
+}
+
+/* Page-level card surfaces */
+.admin-shell .stat-card,
+.admin-shell .admin-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    color: var(--text);
+}
+
+/* Tables */
+.admin-shell table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-shell th {
+    background: var(--surface2);
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    padding: 12px 16px;
+    text-align: left;
+}
+
+.admin-shell td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    font-size: 14px;
+}
+
+.admin-shell tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-shell tr:hover td {
+    background: var(--accent-soft);
+}
+
+/* Form inputs inside admin */
+.admin-shell input,
+.admin-shell select,
+.admin-shell textarea {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 14px;
+    outline: none;
+    width: 100%;
+}
+
+.admin-shell input:focus,
+.admin-shell select:focus,
+.admin-shell textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.admin-shell button.admin-btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 11px 22px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.admin-shell button.admin-btn-primary:hover {
+    opacity: 0.88;
+}

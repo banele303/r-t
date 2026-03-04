@@ -1,5 +1,5 @@
 .product-page-container {
-    padding: 120px 5% 80px;
+    padding: 80px 5% 80px;
     background-color: var(--white);
     min-height: 100vh;
     max-width: 1200px;
@@ -302,7 +302,7 @@
     gap: 8px;
     font-size: 14px;
     color: #888;
-    margin-bottom: 40px;
+    margin-bottom: 24px;
 }
 
 .product-breadcrumb a:hover {
@@ -319,21 +319,20 @@
 /* Image Section */
 .product-image-section {
     position: sticky;
-    top: 100px;
+    top: 80px;
     background: #f8f8f8;
     border-radius: 40px;
-    padding: 0;
+    padding: 24px;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     border: 1px solid rgba(0, 0, 0, 0.08);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.02);
     box-sizing: border-box;
     width: 100%;
     min-width: 0;
     overflow: hidden;
-    aspect-ratio: 1 / 1;
-    /* Match the wrapper for a perfect box */
 }
 
 .product-image-wrapper {

@@ -70,7 +70,7 @@ export default function DashboardPage() {
                 <Tooltip
                   cursor={{ fill: 'var(--accent-soft)' }}
                   contentStyle={{ borderRadius: 12, border: 'none', background: 'var(--surface)', color: 'var(--text)', boxShadow: '0 10px 30px rgba(0,0,0,0.2)' }}
-                  formatter={(v: number) => [`R${v}`, 'Revenue']}
+                  formatter={((v: number) => [`R${v}`, 'Revenue']) as any}
                 />
                 <Bar dataKey="total" fill="#3b82f6" radius={[6, 6, 0, 0]} barSize={36} />
               </BarChart>
@@ -88,7 +88,7 @@ export default function DashboardPage() {
                   tick={{ fill: 'var(--text-muted)', fontSize: 13 }} dy={10} />
                 <Tooltip
                   contentStyle={{ borderRadius: 12, border: 'none', background: 'var(--surface)', color: 'var(--text)', boxShadow: '0 10px 30px rgba(0,0,0,0.2)' }}
-                  formatter={(v: number) => [`${v}%`, 'Rate']}
+                  formatter={((v: number) => [`${v}%`, 'Rate']) as any}
                 />
                 <Line type="monotone" dataKey="rate" stroke="#f59e0b" strokeWidth={3}
                   dot={{ r: 4, fill: '#f59e0b', strokeWidth: 2, stroke: 'var(--surface)' }}

@@ -79,6 +79,7 @@
 
 .promo-card-image img {
     object-fit: contain;
+    border-radius: 20px;
 }
 
 .promo-card-content {

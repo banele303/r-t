@@ -39,8 +39,8 @@ export default function AdminSettings() {
   const [saved, setSaved] = useState(false);
 
   // Store info
-  const [storeName, setStoreName] = useState("iStore");
-  const [storeEmail, setStoreEmail] = useState("info@istore.co.za");
+  const [storeName, setStoreName] = useState("R & T Shop");
+  const [storeEmail, setStoreEmail] = useState("info@randtshop.co.za");
   const [storePhone, setStorePhone] = useState("+27 11 000 0000");
   const [storeAddress, setStoreAddress] = useState("123 Main Street, Johannesburg, 2000");
   const [storeCurrency, setStoreCurrency] = useState("ZAR");
@@ -106,7 +106,7 @@ export default function AdminSettings() {
               <div className="settings-grid">
                 <div className="form-field">
                   <label>Store Name</label>
-                  <input value={storeName} onChange={e => setStoreName(e.target.value)} placeholder="iStore" />
+                  <input value={storeName} onChange={e => setStoreName(e.target.value)} placeholder="R & T Shop" />
                 </div>
                 <div className="form-field">
                   <label>Tagline</label>

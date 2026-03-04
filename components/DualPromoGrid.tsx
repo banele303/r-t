@@ -15,7 +15,7 @@ export default function DualPromoGrid() {
               <span className="promo-label">Limited Time Offer</span>
               <h2 className="premium-promo-title">
                 Get iPhone and <br />
-                <span className="accent-blue">so much more</span> at iStore
+                <span className="accent-blue">so much more</span> at R & T Shop
               </h2>
               <p className="premium-promo-description">
                 Experience the best of Apple with exclusive benefits and support.
@@ -32,7 +32,7 @@ export default function DualPromoGrid() {
                 src="/iphone_promo_list.png" 
                 alt="iPhones" 
                 fill
-                style={{ objectFit: 'contain' }}
+                style={{ objectFit: 'contain', borderRadius: '32px' }}
                 priority
               />
             </div>
@@ -62,7 +62,7 @@ export default function DualPromoGrid() {
                 src="/trade_in_banner.png" 
                 alt="Trade in" 
                 fill
-                style={{ objectFit: 'contain' }}
+                style={{ objectFit: 'contain', borderRadius: '32px' }}
               />
             </div>
           </div>

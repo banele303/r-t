@@ -109,8 +109,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <ShoppingBag size={22} className="brand-icon" />
           ) : (
             <Image
-              src="/istore-logo.webp"
-              alt="iStore Logo"
+              src="/r&tlogo.png.webp"
+              alt="R & T Logo"
               width={180}
               height={56}
               priority

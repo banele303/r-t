@@ -109,7 +109,7 @@ export default function Navbar() {
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search iStore..."
+              placeholder="Search R & T Shop..."
               style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: 'white', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '20px', padding: '6px 16px 6px 38px', fontSize: '13px', width: '180px', outline: 'none', transition: 'all 0.3s cubic-bezier(0.25,1,0.5,1)' }}
               onFocus={(e) => { e.target.style.backgroundColor = 'rgba(255,255,255,0.2)'; e.target.style.borderColor = 'rgba(255,255,255,0.4)'; e.target.style.width = '240px'; }}
               onBlur={(e) => { e.target.style.backgroundColor = 'rgba(255,255,255,0.1)'; e.target.style.borderColor = 'rgba(255,255,255,0.2)'; e.target.style.width = '180px'; setTimeout(() => setSearchTerm(""), 200); }}
@@ -118,7 +118,7 @@ export default function Navbar() {
               <div style={{ position: 'absolute', top: 'calc(100% + 10px)', left: 0, width: '280px', backgroundColor: 'var(--dark-grey)', borderRadius: '12px', padding: '12px', boxShadow: '0 10px 30px rgba(0,0,0,0.5)', zIndex: 100, display: 'flex', flexDirection: 'column', gap: '8px', border: '1px solid rgba(255,255,255,0.1)' }}>
                 {searchResults.map((p: any) => (
                   <Link key={p._id} href={`/product/${p._id}`} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '8px', borderRadius: '8px', textDecoration: 'none', color: 'white', transition: 'background-color 0.2s' }} onMouseEnter={e => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'} onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}>
-                    <img src={p.imageUrl} alt={p.name} style={{ width: '40px', height: '40px', objectFit: 'contain', backgroundColor: 'white', borderRadius: '6px' }} />
+                    <img src={p.imageUrl} alt={p.name} style={{ width: '40px', height: '40px', objectFit: 'contain', backgroundColor: 'white', borderRadius: '12px' }} />
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                       <span style={{ fontSize: '13px', fontWeight: 600 }}>{p.name}</span>
                       <span style={{ fontSize: '12px', color: '#a1a1a6' }}>R {p.price.toLocaleString()}</span>
@@ -317,7 +317,7 @@ export default function Navbar() {
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search iStore..."
+              placeholder="Search R & T Shop..."
               style={{ width: '100%', backgroundColor: 'rgba(255,255,255,0.08)', color: 'white', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '12px', padding: '10px 14px 10px 36px', fontSize: '14px', outline: 'none' }}
             />
           </div>
@@ -325,7 +325,7 @@ export default function Navbar() {
             <div style={{ marginTop: '10px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
               {searchResults.map((p: any) => (
                 <Link key={p._id} href={`/product/${p._id}`} onClick={() => setMenuOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '8px', borderRadius: '8px', textDecoration: 'none', color: 'white', backgroundColor: 'rgba(255,255,255,0.06)' }}>
-                  <img src={p.imageUrl} alt={p.name} style={{ width: '36px', height: '36px', objectFit: 'contain', backgroundColor: 'white', borderRadius: '6px' }} />
+                  <img src={p.imageUrl} alt={p.name} style={{ width: '36px', height: '36px', objectFit: 'contain', backgroundColor: 'white', borderRadius: '10px' }} />
                   <div>
                     <div style={{ fontSize: '13px', fontWeight: 600 }}>{p.name}</div>
                     <div style={{ fontSize: '12px', color: '#a1a1a6' }}>R {p.price.toLocaleString()}</div>
@@ -352,7 +352,7 @@ export default function Navbar() {
       </div>
 
       <div className="promo-bar">
-        Get the Fastest delivery for Free. <Link href="/">Shop online at iStore!</Link>
+        Get the Fastest delivery for Free. <Link href="/">Shop online at R & T Shop!</Link>
       </div>
     </>
   );

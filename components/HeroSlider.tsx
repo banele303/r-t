@@ -13,7 +13,7 @@ const slides = [
     icon: <Laptop size={24} />,
     saveText: "Save up to R2,500",
     desc: "Supercharged by M3. Thin. Light. Multi-talented.",
-    image: "/hero-image.png",
+    image: "/Hero-image.png",
     terms: "Ends 31 March 2026"
   },
   {

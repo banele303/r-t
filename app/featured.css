@@ -150,6 +150,7 @@
 
 .featured-image {
     object-fit: contain;
+    border-radius: 24px;
 }
 
 @media (max-width: 768px) {

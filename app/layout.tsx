@@ -9,8 +9,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "iStore - Apple Authorized Reseller",
-  description: "Get the Fastest delivery for Free. Shop online at iStore!",
+  title: "R & T Shop - Premium Tech Store",
+  description: "Get the Fastest delivery for Free. Shop online at R & T Shop!",
 };
 
 export default function RootLayout({

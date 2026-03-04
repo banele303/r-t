@@ -42,7 +42,6 @@ export default function FeaturedSection() {
           <Link href={item.link} key={item.id} className={`featured-item ${item.isDark ? 'dark' : 'light'}`}>
             <div className="featured-content">
               <h3>{item.title}</h3>
-              <p>{item.subtitle}</p>
               <div className="featured-action">
                 <span>Discover</span>
                 <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

@@ -440,12 +440,12 @@ export default function AdminProducts() {
                       <input type="checkbox" checked={formData.isOnSale} onChange={e => set("isOnSale", e.target.checked)} style={{ display: "none" }} />
                       <span className={`pm-toggle-track ${formData.isOnSale ? "on" : ""}`}><span className="pm-toggle-knob" /></span>
                     </span>
-                    Mark item as On Sale
+                    <span className="pm-toggle-text">Mark item as On Sale</span>
                   </label>
                   {formData.isOnSale && (
                     <Field label="Sale Expiry Date">
                       <div className="pm-date-wrap">
-                        <Calendar size={14} className="pm-date-icon" />
+                        <Calendar size={16} className="pm-date-icon" />
                         <input type="date" value={formData.saleEndsAt} min={new Date().toISOString().split("T")[0]} onChange={e => set("saleEndsAt", e.target.value)} className="pm-date-input" />
                       </div>
                     </Field>
@@ -476,12 +476,20 @@ export default function AdminProducts() {
                 </div>
 
                 <div className="pm-section-label">Placement</div>
-                <div className="pm-toggles">
+                <div className="pm-toggles-grid">
                   <label className="pm-toggle-label">
-                    <input type="checkbox" checked={formData.isPromo} onChange={e => set("isPromo", e.target.checked)} /> Promotional Section
+                    <span className="pm-toggle-switch">
+                      <input type="checkbox" checked={formData.isPromo} onChange={e => set("isPromo", e.target.checked)} style={{ display: "none" }} />
+                      <span className={`pm-toggle-track ${formData.isPromo ? "on" : ""}`}><span className="pm-toggle-knob" /></span>
+                    </span>
+                    <span className="pm-toggle-text">Promotional Section</span>
                   </label>
                   <label className="pm-toggle-label">
-                    <input type="checkbox" checked={formData.isTrending} onChange={e => set("isTrending", e.target.checked)} /> Trending Section
+                    <span className="pm-toggle-switch">
+                      <input type="checkbox" checked={formData.isTrending} onChange={e => set("isTrending", e.target.checked)} style={{ display: "none" }} />
+                      <span className={`pm-toggle-track ${formData.isTrending ? "on" : ""}`}><span className="pm-toggle-knob" /></span>
+                    </span>
+                    <span className="pm-toggle-text">Trending Section</span>
                   </label>
                 </div>
 
@@ -586,12 +594,21 @@ export default function AdminProducts() {
         .pm-field input, .pm-field select, .pm-field textarea { background:var(--surface2); border:1.5px solid var(--border); border-radius:12px; padding:12px; color:var(--text); outline:none; font-family:inherit; }
         .pm-field input:focus { border-color:var(--accent); }
 
-        .pm-sale-box { background:var(--surface2); padding:16px; border-radius:16px; border:1px solid var(--border); margin:10px 0; }
-        .pm-toggle-label { display:flex; align-items:center; gap:12px; font-size:14px; font-weight:600; cursor:pointer; }
-        .pm-toggle-track { width:46px; height:24px; background:var(--border); border-radius:12px; position:relative; transition:0.3s; }
-        .pm-toggle-track.on { background:var(--accent); }
-        .pm-toggle-knob { position:absolute; top:3px; left:3px; width:18px; height:18px; background:white; border-radius:50%; transition:0.3s; }
+        .pm-sale-box { background:var(--surface2); padding:18px; border-radius:18px; border:1px solid var(--border); margin:12px 0; display:flex; flex-direction:column; gap:16px; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05); }
+        .pm-toggle-label { display:flex; align-items:center; gap:12px; font-size:14px; font-weight:600; cursor:pointer; color: var(--text); user-select: none; }
+        .pm-toggle-text { flex: 1; }
+        .pm-toggle-switch { display: flex; align-items: center; }
+        .pm-toggle-track { width:46px; height:24px; background:var(--border); border-radius:12px; position:relative; transition:0.3s cubic-bezier(0.4, 0, 0.2, 1); flex-shrink: 0; }
+        .pm-toggle-track.on { background:var(--accent); box-shadow: 0 0 12px var(--accent-soft); }
+        .pm-toggle-knob { position:absolute; top:3px; left:3px; width:18px; height:18px; background:white; border-radius:50%; transition:0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
         .pm-toggle-track.on .pm-toggle-knob { transform:translateX(22px); }
+
+        .pm-date-wrap { position: relative; width: 100%; display: flex; align-items: center; }
+        .pm-date-icon { position: absolute; left: 14px; color: var(--text-muted); pointer-events: none; z-index: 5; }
+        .pm-date-input { width: 100%; height: 46px; padding: 0 14px 0 44px !important; background: var(--surface) !important; border: 1.5px solid var(--border) !important; border-radius: 12px !important; color: var(--text); font-size: 14px; font-weight: 500; cursor: pointer; transition: 0.2s; }
+        .pm-date-input:focus { border-color: var(--accent) !important; box-shadow: 0 0 0 3px var(--accent-soft) !important; }
+
+        .pm-toggles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; background: var(--surface2); padding: 18px; border-radius: 18px; border: 1px solid var(--border); }
 
         .pm-presets { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
         .pm-color-chip, .pm-size-chip { display:flex; align-items:center; gap:6px; background:var(--surface2); border:1.5px solid var(--border); padding:6px 12px; border-radius:20px; font-size:12px; font-weight:600; cursor:pointer; transition:all 0.2s; color:var(--text-muted); }

@@ -17,9 +17,6 @@ export default function DualPromoGrid() {
                 Get iPhone and <br />
                 <span className="accent-blue">so much more</span> at R & T Shop
               </h2>
-              <p className="premium-promo-description">
-                Experience the best of Apple with exclusive benefits and support.
-              </p>
             </div>
             <div className="premium-promo-actions">
               <Link href="/iphone" className="promo-btn-primary">Shop iPhone</Link>
@@ -47,9 +44,6 @@ export default function DualPromoGrid() {
               <h2 className="premium-promo-title dark">
                 Get up to <span className="highlight-text">R25 000</span> cash back
               </h2>
-              <p className="premium-promo-description dark">
-                When you trade in your current iPhone for a new one. It's that simple.
-              </p>
             </div>
             <div className="premium-promo-actions">
               <Link href="#" className="promo-btn-blue">Value my Trade-in</Link>

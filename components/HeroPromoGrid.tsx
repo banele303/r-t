@@ -5,7 +5,6 @@ export default function HeroPromoGrid() {
     <section className="products-grid" style={{ paddingTop: '0px' }}>
       <div className="product-card">
         <h3>iPad Pro</h3>
-        <p>Unbelievably thin. Incredibly powerful.</p>
         <div className="product-links">
           <a href="#">Learn more &gt;</a>
           <a href="#">Buy &gt;</a>
@@ -16,7 +15,6 @@ export default function HeroPromoGrid() {
       </div>
       <div className="product-card dark-card">
         <h3>AirPods Pro</h3>
-        <p>Adaptive Audio. Now playing.</p>
         <div className="product-links">
           <a href="#">Learn more &gt;</a>
           <a href="#">Buy &gt;</a>
@@ -27,7 +25,6 @@ export default function HeroPromoGrid() {
       </div>
       <div className="product-card">
         <h3>Watch Ultra 2</h3>
-        <p>Next level adventure.</p>
         <div className="product-links">
           <a href="#">Learn more &gt;</a>
           <a href="#">Buy &gt;</a>
@@ -38,7 +35,6 @@ export default function HeroPromoGrid() {
       </div>
       <div className="product-card dark-card">
         <h3>MacBook Air</h3>
-        <p>Lean. Mean. M3 machine.</p>
         <div className="product-links">
           <a href="/mac">Learn more &gt;</a>
           <a href="/mac">Buy &gt;</a>

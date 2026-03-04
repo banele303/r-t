@@ -22,6 +22,7 @@ import {
   ChevronLeft,
   Menu,
   ClipboardList,
+  ShoppingBag,
 } from "lucide-react";
 import "./admin.css";
 

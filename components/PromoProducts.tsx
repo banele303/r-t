@@ -60,7 +60,6 @@ export default function PromoProducts() {
             </div>
             <div className="promo-card-content">
               <h3>{item.name}</h3>
-              <p className="promo-desc">{item.description || item.desc || "Incredible Offer"}</p>
               <div className="promo-pricing">
                 <span className="promo-price">R {item.price.toLocaleString()}</span>
                 {item.oldPrice && <span className="promo-old-price">R {item.oldPrice.toLocaleString()}</span>}

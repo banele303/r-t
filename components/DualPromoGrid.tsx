@@ -227,6 +227,8 @@ export default function DualPromoGrid() {
           width: 100%;
           height: 100%;
           transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+          border-radius: 32px;
+          overflow: hidden;
         }
 
         .premium-promo-card:hover .image-container-full {

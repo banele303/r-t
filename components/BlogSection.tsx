@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 
 const blogPosts = [
   {
@@ -40,61 +39,46 @@ export default function BlogSection() {
   return (
     <section className="blog-section">
       <div className="blog-header">
-        <div>
-          <span className="blog-tag">From Our Blog</span>
-          <h2 className="blog-title">Tech Insights & Guides</h2>
-          <p className="blog-subtitle">Stay ahead with the latest tech news, reviews, and buying guides.</p>
-        </div>
+        <span className="blog-tag">From Our Blog</span>
+        <h2 className="blog-title">Tech Insights & Guides</h2>
+        <p className="blog-subtitle">Stay ahead with the latest tech news, reviews, and buying guides.</p>
       </div>
 
       <div className="blog-grid">
-        {/* Featured Post (Large) */}
-        <div className="blog-card blog-card-featured">
-          <div className="blog-card-image" style={{ background: blogPosts[0].gradient }}>
-            <Image src={blogPosts[0].image} alt={blogPosts[0].title} fill style={{ objectFit: 'contain', padding: '30px' }} />
-            <span className="blog-category-badge">{blogPosts[0].category}</span>
-          </div>
-          <div className="blog-card-content">
-            <h3>{blogPosts[0].title}</h3>
-            <p>{blogPosts[0].excerpt}</p>
-            <div className="blog-card-meta">
-              <span>{blogPosts[0].date}</span>
-              <span className="blog-dot">·</span>
-              <span>{blogPosts[0].readTime}</span>
+        {blogPosts.map((post) => (
+          <article key={post.id} className="blog-card">
+            <div className="blog-card-image" style={{ background: post.gradient }}>
+              <Image src={post.image} alt={post.title} fill style={{ objectFit: 'contain', padding: '24px' }} />
+              <span className="blog-category-badge">{post.category}</span>
             </div>
-          </div>
-        </div>
-
-        {/* Smaller Posts */}
-        <div className="blog-side-posts">
-          {blogPosts.slice(1).map((post) => (
-            <div key={post.id} className="blog-card blog-card-small">
-              <div className="blog-card-image-small" style={{ background: post.gradient }}>
-                <Image src={post.image} alt={post.title} fill style={{ objectFit: 'contain', padding: '15px' }} />
-                <span className="blog-category-badge">{post.category}</span>
+            <div className="blog-card-body">
+              <div className="blog-card-meta">
+                <span>{post.date}</span>
+                <span className="blog-dot">·</span>
+                <span>{post.readTime}</span>
               </div>
-              <div className="blog-card-content">
-                <h3>{post.title}</h3>
-                <p>{post.excerpt}</p>
-                <div className="blog-card-meta">
-                  <span>{post.date}</span>
-                  <span className="blog-dot">·</span>
-                  <span>{post.readTime}</span>
-                </div>
+              <h3 className="blog-card-title">{post.title}</h3>
+              <p className="blog-card-excerpt">{post.excerpt}</p>
+              <div className="blog-read-more">
+                Read Article
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
               </div>
             </div>
-          ))}
-        </div>
+          </article>
+        ))}
       </div>
 
       <style jsx>{`
         .blog-section {
           padding: 80px 5% 60px;
-          background: #fafafa;
+          background: #fff;
         }
 
         .blog-header {
-          margin-bottom: 48px;
+          text-align: center;
+          margin-bottom: 50px;
         }
 
         .blog-tag {
@@ -104,15 +88,15 @@ export default function BlogSection() {
           text-transform: uppercase;
           letter-spacing: 2px;
           color: var(--blue);
-          background: rgba(0, 86, 179, 0.08);
-          padding: 6px 16px;
+          background: rgba(0, 86, 179, 0.06);
+          padding: 6px 18px;
           border-radius: 20px;
           margin-bottom: 16px;
         }
 
         .blog-title {
           font-family: var(--font-playfair), serif;
-          font-size: 48px;
+          font-size: 44px;
           font-weight: 500;
           color: #111;
           letter-spacing: -1px;
@@ -121,57 +105,61 @@ export default function BlogSection() {
         }
 
         .blog-subtitle {
-          font-size: 18px;
-          color: #888;
+          font-size: 17px;
+          color: #999;
           font-weight: 400;
+          max-width: 500px;
+          margin: 0 auto;
         }
 
         .blog-grid {
           display: grid;
-          grid-template-columns: 1.2fr 1fr;
-          gap: 24px;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 28px;
         }
 
         .blog-card {
           background: #fff;
           border-radius: 24px;
           overflow: hidden;
-          border: 1px solid rgba(0, 0, 0, 0.04);
+          border: 1px solid rgba(0, 0, 0, 0.06);
           transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
           cursor: pointer;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+          display: flex;
+          flex-direction: column;
         }
 
         .blog-card:hover {
-          transform: translateY(-6px);
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-          border-color: rgba(0, 86, 179, 0.1);
+          transform: translateY(-8px);
+          box-shadow: 0 24px 48px rgba(0, 0, 0, 0.1);
+          border-color: rgba(0, 86, 179, 0.12);
         }
 
-        .blog-card-featured {
-          display: flex;
-          flex-direction: column;
-          height: 100%;
+        .blog-card:hover .blog-read-more {
+          color: var(--blue);
+          gap: 10px;
+        }
+
+        .blog-card:hover .blog-card-image img {
+          transform: scale(1.05);
         }
 
         .blog-card-image {
           position: relative;
-          height: 300px;
+          height: 220px;
           overflow: hidden;
         }
 
-        .blog-card-image-small {
-          position: relative;
-          height: 180px;
-          overflow: hidden;
+        .blog-card-image img {
+          transition: transform 0.5s ease;
         }
 
         .blog-category-badge {
           position: absolute;
           top: 16px;
           left: 16px;
-          background: rgba(255, 255, 255, 0.15);
-          backdrop-filter: blur(10px);
+          background: rgba(255, 255, 255, 0.12);
+          backdrop-filter: blur(12px);
           color: #fff;
           font-size: 11px;
           font-weight: 700;
@@ -180,81 +168,80 @@ export default function BlogSection() {
           padding: 6px 14px;
           border-radius: 20px;
           z-index: 2;
+          border: 1px solid rgba(255,255,255,0.15);
         }
 
-        .blog-card-content {
-          padding: 28px;
+        .blog-card-body {
+          padding: 24px 24px 28px;
           flex: 1;
           display: flex;
           flex-direction: column;
-        }
-
-        .blog-card-content h3 {
-          font-size: 20px;
-          font-weight: 700;
-          color: #111;
-          line-height: 1.35;
-          margin-bottom: 10px;
-          letter-spacing: -0.3px;
-        }
-
-        .blog-card-featured .blog-card-content h3 {
-          font-size: 24px;
-        }
-
-        .blog-card-content p {
-          font-size: 14px;
-          color: #888;
-          line-height: 1.6;
-          margin-bottom: 16px;
-          flex: 1;
         }
 
         .blog-card-meta {
           display: flex;
           align-items: center;
           gap: 6px;
-          font-size: 13px;
-          color: #aaa;
+          font-size: 12px;
+          color: #bbb;
           font-weight: 500;
+          margin-bottom: 12px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
         }
 
         .blog-dot {
-          font-size: 8px;
+          font-size: 6px;
         }
 
-        .blog-side-posts {
-          display: flex;
-          flex-direction: column;
-          gap: 24px;
+        .blog-card-title {
+          font-size: 19px;
+          font-weight: 700;
+          color: #111;
+          line-height: 1.4;
+          margin-bottom: 10px;
+          letter-spacing: -0.3px;
         }
 
-        .blog-card-small {
-          display: flex;
-          flex-direction: column;
+        .blog-card-excerpt {
+          font-size: 14px;
+          color: #888;
+          line-height: 1.6;
+          margin-bottom: 20px;
+          flex: 1;
         }
 
-        @media (max-width: 900px) {
+        .blog-read-more {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 14px;
+          font-weight: 700;
+          color: #555;
+          transition: all 0.3s ease;
+        }
+
+        @media (max-width: 1024px) {
+          .blog-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        @media (max-width: 640px) {
           .blog-grid {
             grid-template-columns: 1fr;
           }
 
-          .blog-title {
-            font-size: 36px;
-          }
-
-          .blog-card-image {
-            height: 220px;
-          }
-        }
-
-        @media (max-width: 600px) {
           .blog-section {
             padding: 50px 5% 40px;
           }
 
           .blog-title {
-            font-size: 28px;
+            font-size: 32px;
+          }
+
+          .blog-card-image {
+            height: 190px;
           }
         }
       `}</style>

@@ -52,12 +52,14 @@ export default function CartPage() {
     }
 
     setIsCheckingOut(true);
+    const cardSurcharge = Math.round(totalPrice * 0.03 * 100) / 100;
+    const cardTotal = totalPrice + cardSurcharge;
     try {
       const orderId = await createOrder({
         userId: currentUser._id,
         customerName: currentUser.name || "Customer",
         customerEmail: currentUser.email || "",
-        total: totalPrice,
+        total: cardTotal,
         status: "pending",
         paymentMethod: "card",
         items: items.map(item => ({
@@ -70,7 +72,7 @@ export default function CartPage() {
 
       const payfastData = await getPayFastData({
         orderId,
-        amount: totalPrice,
+        amount: cardTotal,
         itemName: `R&T Order #${orderId.toString().slice(-6)}`,
         customerEmail: currentUser.email || "",
         customerName: currentUser.name || "Customer",
@@ -315,11 +317,33 @@ export default function CartPage() {
               <span>Delivery</span>
               <span className="cart-free-tag">FREE</span>
             </div>
+            {paymentMethod === 'card' && (
+              <div className="cart-summary-row" style={{ color: '#f59e0b' }}>
+                <span>Card Processing Fee (3%)</span>
+                <span>+ R {(Math.round(totalPrice * 0.03 * 100) / 100).toLocaleString()}</span>
+              </div>
+            )}
             <div className="cart-summary-row cart-summary-total">
               <span>Total</span>
-              <span>R {totalPrice.toLocaleString()}</span>
+              <span>R {paymentMethod === 'card' ? (totalPrice + Math.round(totalPrice * 0.03 * 100) / 100).toLocaleString() : totalPrice.toLocaleString()}</span>
             </div>
           </div>
+
+          {/* Card surcharge notice */}
+          {paymentMethod === 'card' && (
+            <div style={{
+              display: 'flex', alignItems: 'flex-start', gap: '10px',
+              background: '#fffbeb', border: '1px solid #fde68a', borderRadius: '14px',
+              padding: '14px 16px', marginBottom: '16px', fontSize: '13px', color: '#92400e',
+              lineHeight: 1.5,
+            }}>
+              <span style={{ fontSize: '18px', flexShrink: 0 }}>⚠️</span>
+              <span>
+                <strong>Card Payment Notice:</strong> A 3% processing fee is added for card payments. 
+                Save by choosing <strong>Bank Deposit / EFT</strong> — no extra fees!
+              </span>
+            </div>
+          )}
 
           {/* ── Payment Method Selection ── */}
           <div style={{ marginBottom: '20px' }}>

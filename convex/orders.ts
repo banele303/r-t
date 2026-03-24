@@ -35,6 +35,8 @@ export const create = mutation({
       price: v.number(),
       quantity: v.number(),
     })),
+    paymentMethod: v.optional(v.string()),
+    eftReference: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const orderId = await ctx.db.insert("orders", {

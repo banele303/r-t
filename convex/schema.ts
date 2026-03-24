@@ -61,5 +61,7 @@ export default defineSchema({
     createdAt: v.string(),
     payfast_payment_id: v.optional(v.string()),
     payment_status: v.optional(v.string()),
+    paymentMethod: v.optional(v.string()), // "card" or "eft"
+    eftReference: v.optional(v.string()),  // Customer's EFT/deposit reference
   }).index("by_userId", ["userId"]),
 });

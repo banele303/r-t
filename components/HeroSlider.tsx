@@ -6,6 +6,17 @@ import { Laptop, Smartphone, Watch, Monitor, Tablet } from "lucide-react";
 
 const slides = [
   {
+    id: 0,
+    backgroundText: "LUXURY",
+    themeClass: "luxury-slide",
+    title: "Mastery in Detail",
+    icon: <Watch size={24} />,
+    saveText: "Superior Craftsmanship",
+    desc: "Experience the pinnacle of design and engineering in every detail.",
+    image: "/iphone-hero-new.png",
+    terms: "Exclusive Limited Edition"
+  },
+  {
     id: 1,
     backgroundText: "MACBOOKS",
     themeClass: "macbook-slide",
@@ -35,7 +46,7 @@ const slides = [
     icon: <Smartphone size={24} />,
     saveText: "Titanium Powerhouse",
     desc: "Smarter performance. Pro-grade cameras. Built for Apple Intelligence.",
-    image: "/hero-2.png",
+    image: "/iphone-hero-new.png",
     terms: "Starting from R1,299pm"
   },
   {
@@ -94,7 +105,10 @@ export default function HeroSlider() {
             <div className="hero-background-text">{slide.backgroundText}</div>
             
             <div className="hero-content">
-              
+              <div className="hero-title">
+                <span className="hero-icon-box">{slide.icon}</span>
+                {slide.title}
+              </div>
               <div className="hero-save">{slide.saveText}</div>
               <div className="hero-desc">{slide.desc}</div>
               

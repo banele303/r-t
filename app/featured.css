@@ -10,11 +10,13 @@
 }
 
 .featured-header h2 {
-    font-size: 48px;
-    font-weight: 700;
+    font-family: var(--font-playfair), serif;
+    font-size: 52px;
+    font-weight: 500;
     color: #111;
     letter-spacing: -1px;
     margin-bottom: 10px;
+    font-style: italic;
 }
 
 .featured-header p {
@@ -86,11 +88,13 @@
 }
 
 .featured-content h3 {
-    font-size: 32px;
-    font-weight: 700;
+    font-family: var(--font-playfair), serif;
+    font-size: 34px;
+    font-weight: 500;
     margin-bottom: 12px;
     line-height: 1.2;
     letter-spacing: -0.5px;
+    font-style: italic;
 }
 
 .featured-content p {

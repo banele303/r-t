@@ -295,6 +295,10 @@ button {
   --hero-bg: linear-gradient(135deg, #ffffff, #f1f5f9);
 }
 
+.luxury-slide {
+  --hero-bg: radial-gradient(circle at 70% 50%, #fcfcfd 0%, #eef1f5 100%);
+}
+
 .hero-section::before {
   content: "";
   position: absolute;
@@ -302,7 +306,7 @@ button {
   left: 0;
   right: 0;
   height: 100%;
-  background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.6), transparent 60%);
+  background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.4), transparent 60%);
   pointer-events: none;
   z-index: 2;
 }
@@ -312,13 +316,16 @@ button {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 16rem;
-  font-weight: 800;
-  color: rgba(255, 255, 255, 0.4);
+  font-family: var(--font-serif-display), serif;
+  font-size: 18rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.03);
   z-index: 1;
-  letter-spacing: -2px;
+  letter-spacing: -4px;
   pointer-events: none;
   white-space: nowrap;
+  text-transform: uppercase;
+  opacity: 1;
 }
 
 .hero-content {
@@ -340,37 +347,39 @@ button {
 }
 
 .hero-title {
-  font-size: 24px;
-  font-weight: 700;
+  font-family: var(--font-playfair), serif;
+  font-size: 26px;
+  font-weight: 500;
   display: flex;
   align-items: center;
   gap: 0;
   margin-bottom: 20px;
-  color: #334155;
-  letter-spacing: -0.5px;
-  font-style: normal;
+  color: #1a1a1c;
+  letter-spacing: -0.2px;
+  font-style: italic;
 }
 
 .hero-save {
-  font-family: var(--font-inter);
-  font-size: 64px;
-  font-weight: 800;
+  font-family: var(--font-serif-display), serif;
+  font-size: 72px;
+  font-weight: 400;
   display: inline-block;
-  color: var(--blue);
-  letter-spacing: -2px;
-  line-height: 1.1;
+  color: #1a1a1c;
+  letter-spacing: -0.5px;
+  line-height: 1.0;
   margin-bottom: 24px;
-  font-style: normal !important;
 }
 
 .hero-desc {
-  font-size: 24px;
-  color: #334155;
-  font-weight: 500;
-  letter-spacing: -0.8px;
+  font-family: var(--font-playfair), serif;
+  font-size: 28px;
+  color: #4b5563;
+  font-weight: 400;
+  letter-spacing: -0.4px;
   margin-bottom: 35px;
-  line-height: 1.4;
+  line-height: 1.3;
   opacity: 0.9;
+  font-style: italic;
 }
 
 .btn-primary {
@@ -482,10 +491,12 @@ button {
 }
 
 .product-card h3 {
+  font-family: var(--font-playfair), serif;
   font-size: 32px;
-  font-weight: 600;
+  font-weight: 500;
   margin-bottom: 8px;
   letter-spacing: -0.5px;
+  font-style: italic;
 }
 
 .product-card p {

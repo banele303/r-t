@@ -32,6 +32,7 @@ const emptyForm = {
   isOnSale: false, saleEndsAt: "",
   colors: [] as string[],
   sizes:  [] as string[],
+  sizePrices: [] as { size: string, price: string, oldPrice: string }[],
 };
 
 export default function AdminProducts() {
@@ -82,6 +83,11 @@ export default function AdminProducts() {
       saleEndsAt: product.saleEndsAt ?? "",
       colors: product.colors ?? [],
       sizes: product.sizes ?? [],
+      sizePrices: product.sizePrices?.map((sp: any) => ({
+        size: sp.size,
+        price: sp.price.toString(),
+        oldPrice: sp.oldPrice?.toString() ?? "",
+      })) ?? [],
     });
     setPreviewUrl(product.imageUrl);
     setExistingExtraUrls(product.additionalImageUrls ?? []);
@@ -143,10 +149,23 @@ export default function AdminProducts() {
     const trimmed = val.trim();
     if (trimmed && !formData.sizes.includes(trimmed)) {
       set("sizes", [...formData.sizes, trimmed]);
+      // If adding a size, also add a default entry in sizePrices if not exists
+      if (!formData.sizePrices.some(sp => sp.size === trimmed)) {
+        set("sizePrices", [...formData.sizePrices, { size: trimmed, price: formData.price, oldPrice: formData.oldPrice }]);
+      }
     }
     setSizeInput("");
   };
-  const removeSize = (s: string) => set("sizes", formData.sizes.filter(x => x !== s));
+  const removeSize = (s: string) => {
+    set("sizes", formData.sizes.filter(x => x !== s));
+    set("sizePrices", formData.sizePrices.filter(sp => sp.size !== s));
+  };
+
+  const updateSizePrice = (size: string, field: "price" | "oldPrice", value: string) => {
+    set("sizePrices", formData.sizePrices.map(sp => 
+      sp.size === size ? { ...sp, [field]: value } : sp
+    ));
+  };
 
   const handleTagKeydown = (
     e: KeyboardEvent<HTMLInputElement>,
@@ -208,6 +227,11 @@ export default function AdminProducts() {
         saleEndsAt: formData.isOnSale && formData.saleEndsAt ? formData.saleEndsAt : undefined,
         colors: formData.colors.length ? formData.colors : undefined,
         sizes: formData.sizes.length  ? formData.sizes  : undefined,
+        sizePrices: formData.sizePrices.length ? formData.sizePrices.map(sp => ({
+          size: sp.size,
+          price: Number(sp.price),
+          oldPrice: sp.oldPrice ? Number(sp.oldPrice) : undefined,
+        })) : undefined,
         additionalImageIds: finalExtraImages.length ? finalExtraImages : undefined,
       };
 
@@ -465,7 +489,7 @@ export default function AdminProducts() {
                 </div>
 
                 <div className="pm-tag-input-group">
-                   <label><Ruler size={13} /> Available Sizes</label>
+                   <label><Ruler size={13} /> Available Sizes & Storage</label>
                    <div className="pm-presets">
                       {PRESET_SIZES.map(s => (
                         <button key={s} type="button" className={`pm-size-chip ${formData.sizes.includes(s) ? "selected" : ""}`} onClick={() => formData.sizes.includes(s) ? removeSize(s) : addSize(s)}>
@@ -474,6 +498,33 @@ export default function AdminProducts() {
                       ))}
                    </div>
                 </div>
+
+                {formData.sizes.length > 0 && (
+                  <div className="pm-variant-pricing">
+                    <div className="pm-section-label">Variant Pricing (Overrides)</div>
+                    <div style={{ display: 'grid', gap: '12px' }}>
+                      {formData.sizePrices.map((sp, idx) => (
+                        <div key={idx} className="variant-price-row">
+                          <span className="variant-size-label">{sp.size}</span>
+                          <div className="variant-price-inputs">
+                            <input 
+                              type="number" 
+                              placeholder="Price (R)" 
+                              value={sp.price} 
+                              onChange={e => updateSizePrice(sp.size, "price", e.target.value)} 
+                            />
+                            <input 
+                              type="number" 
+                              placeholder="Old Price (Optional)" 
+                              value={sp.oldPrice} 
+                              onChange={e => updateSizePrice(sp.size, "oldPrice", e.target.value)} 
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 <div className="pm-section-label">Placement</div>
                 <div className="pm-toggles-grid">
@@ -618,6 +669,13 @@ export default function AdminProducts() {
         .pm-modal-footer { display:flex; justify-content:flex-end; gap:12px; margin-top:24px; padding-top:20px; border-top:1px solid var(--border); }
         .pm-cancel-btn { background:var(--surface2); border:none; padding:12px 24px; border-radius:12px; font-weight:700; cursor:pointer; color:var(--text-muted); }
         .pm-submit-btn { background:linear-gradient(135deg, #1d4ed8, #3b82f6); color:white; border:none; padding:12px 30px; border-radius:12px; font-weight:700; cursor:pointer; }
+
+        .pm-variant-pricing { background:var(--surface2); padding:18px; border-radius:18px; border:1px solid var(--border); margin-top: 12px; }
+        .variant-price-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+        .variant-price-row:last-child { border-bottom: none; }
+        .variant-size-label { font-weight: 700; font-size: 13px; min-width: 60px; color: var(--text); }
+        .variant-price-inputs { display: flex; gap: 8px; flex: 1; }
+        .variant-price-inputs input { width: 100%; font-size: 13px; padding: 8px 12px !important; }
 
         @keyframes slideDown { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:translateY(0); } }
         @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }

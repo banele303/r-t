@@ -22,6 +22,11 @@ export default defineSchema({
     saleEndsAt: v.optional(v.string()),   // ISO date string
     colors: v.optional(v.array(v.string())),
     sizes: v.optional(v.array(v.string())),
+    sizePrices: v.optional(v.array(v.object({
+      size: v.string(),
+      price: v.number(),
+      oldPrice: v.optional(v.number()),
+    }))),
   }).searchIndex("search_name", { searchField: "name" }),
   categories: defineTable({
     name: v.string(),
@@ -54,5 +59,7 @@ export default defineSchema({
       quantity: v.number(),
     })),
     createdAt: v.string(),
+    payfast_payment_id: v.optional(v.string()),
+    payment_status: v.optional(v.string()),
   }).index("by_userId", ["userId"]),
 });

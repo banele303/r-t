@@ -63,6 +63,22 @@ export default function ProductPage() {
     return () => clearInterval(timer);
   }, [product]);
 
+  const currentPrice = React.useMemo(() => {
+    if (product && product.sizePrices && selectedSize) {
+      const variant = (product as any).sizePrices.find((sp: any) => sp.size === selectedSize);
+      if (variant) return variant.price;
+    }
+    return product?.price || 0;
+  }, [product, selectedSize]);
+
+  const currentOldPrice = React.useMemo(() => {
+    if (product && product.sizePrices && selectedSize) {
+      const variant = (product as any).sizePrices.find((sp: any) => sp.size === selectedSize);
+      if (variant) return variant.oldPrice || (product as any).oldPrice;
+    }
+    return product?.oldPrice;
+  }, [product, selectedSize]);
+
   const handleSubmitReview = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!currentUser || !newReview.comment) return;
@@ -298,9 +314,9 @@ export default function ProductPage() {
           })()}
 
           <div className="product-price-container">
-            <span className="product-current-price">R {product.price.toLocaleString()}</span>
-            {product.oldPrice && (
-              <span className="product-old-price">R {product.oldPrice.toLocaleString()}</span>
+            <span className="product-current-price">R {currentPrice.toLocaleString()}</span>
+            {currentOldPrice && (
+              <span className="product-old-price">R {currentOldPrice.toLocaleString()}</span>
             )}
           </div>
 
@@ -371,7 +387,9 @@ export default function ProductPage() {
 
             {product.sizes && product.sizes.length > 0 && (
               <div className="option-group">
-                <span className="option-label" style={{ display: 'block', fontSize: '14px', fontWeight: 600, color: '#111', marginBottom: '12px' }}>Select Size</span>
+                <span className="option-label" style={{ display: 'block', fontSize: '14px', fontWeight: 600, color: '#111', marginBottom: '12px' }}>
+                  {product.category.toLowerCase().includes('iphone') || product.category.toLowerCase().includes('phone') ? 'Select Storage' : 'Select Size'}
+                </span>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                   {product.sizes.map((size: string, idx: number) => (
                     <button
@@ -417,7 +435,9 @@ export default function ProductPage() {
 
           <div className="product-actions">
             <button className="btn-add-cart" onClick={() => {
-              for (let i = 0; i < quantity; i++) addToCart(product);
+              for (let i = 0; i < quantity; i++) {
+                addToCart({ ...product, price: currentPrice }, selectedColor || undefined, selectedSize || undefined);
+              }
               toast.success(`${quantity}× ${product.name} added to cart!`);
             }}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="20" height="20">

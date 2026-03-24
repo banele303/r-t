@@ -9,12 +9,14 @@ type CartItem = {
   imageUrl: string;
   quantity: number;
   brand: string;
+  color?: string;
+  size?: string;
 };
 
 type CartContextType = {
   items: CartItem[];
-  addToCart: (product: any) => void;
-  removeFromCart: (productId: string) => void;
+  addToCart: (product: any, color?: string, size?: string) => void;
+  removeFromCart: (productId: string, color?: string, size?: string) => void;
   clearCart: () => void;
   totalItems: number;
   totalPrice: number;
@@ -42,22 +44,30 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.setItem("istore-cart", JSON.stringify(items));
   }, [items]);
 
-  const addToCart = (product: any) => {
+  const addToCart = (product: any, color?: string, size?: string) => {
     setItems((prev) => {
-      const existing = prev.find((item) => item._id === product._id);
+      const existing = prev.find((item) => 
+        item._id === product._id && 
+        item.color === color && 
+        item.size === size
+      );
       if (existing) {
         return prev.map((item) =>
-          item._id === product._id
+          item._id === product._id && 
+          item.color === color && 
+          item.size === size
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
       }
-      return [...prev, { ...product, quantity: 1 }];
+      return [...prev, { ...product, color, size, quantity: 1 }];
     });
   };
 
-  const removeFromCart = (productId: string) => {
-    setItems((prev) => prev.filter((item) => item._id !== productId));
+  const removeFromCart = (productId: string, color?: string, size?: string) => {
+    setItems((prev) => prev.filter((item) => 
+      !(item._id === productId && item.color === color && item.size === size)
+    ));
   };
 
   const clearCart = () => {

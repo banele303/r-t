@@ -66,6 +66,11 @@ export const add = mutation({
     saleEndsAt: v.optional(v.string()),
     colors: v.optional(v.array(v.string())),
     sizes: v.optional(v.array(v.string())),
+    sizePrices: v.optional(v.array(v.object({
+      size: v.string(),
+      price: v.number(),
+      oldPrice: v.optional(v.number()),
+    }))),
   },
   handler: async (ctx, args) => {
     return await ctx.db.insert("products", args);
@@ -91,6 +96,11 @@ export const update = mutation({
     saleEndsAt: v.optional(v.string()),
     colors: v.optional(v.array(v.string())),
     sizes: v.optional(v.array(v.string())),
+    sizePrices: v.optional(v.array(v.object({
+      size: v.string(),
+      price: v.number(),
+      oldPrice: v.optional(v.number()),
+    }))),
   },
   handler: async (ctx, { id, ...args }) => {
     await ctx.db.patch(id, args);

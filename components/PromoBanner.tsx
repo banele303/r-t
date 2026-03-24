@@ -3,17 +3,42 @@ import Link from "next/link";
 
 export default function PromoBanner() {
   return (
-    <section className="promo-banner-section">
-      <div className="promo-banner-content">
-        <span className="promo-tag">Featured Brand</span>
-        <h2>Capture Your World.</h2>
-        <p>Explore the latest DJI drones and action cameras designed for next-level content creators.</p>
-        <Link href="/dji">
-            <button className="btn-primary" style={{ marginTop: '30px' }}>Shop DJI Now</button>
-        </Link>
+    <section className="promo-banner-grid" style={{ 
+      display: 'grid', 
+      gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
+      gap: '20px', 
+      padding: '20px 5%',
+      background: '#fff'
+    }}>
+      <div className="promo-card" style={{ 
+        borderRadius: '32px', 
+        overflow: 'hidden', 
+        position: 'relative', 
+        height: '400px', 
+        cursor: 'pointer',
+        boxShadow: '0 12px 24px rgba(0,0,0,0.08)'
+      }}>
+        <Image 
+          src="/wild-offers-banner.jpg" 
+          alt="Wild Offers" 
+          fill
+          style={{ objectFit: 'cover' }}
+        />
       </div>
-      <div className="promo-banner-image">
-        <Image src="/cat_drone.png" alt="DJI Drone Promo" fill />
+      <div className="promo-card" style={{ 
+        borderRadius: '32px', 
+        overflow: 'hidden', 
+        position: 'relative', 
+        height: '400px', 
+        cursor: 'pointer',
+        boxShadow: '0 12px 24px rgba(0,0,0,0.08)'
+      }}>
+        <Image 
+          src="/trade_in_banner.png" 
+          alt="Trade In Offers" 
+          fill
+          style={{ objectFit: 'cover' }}
+        />
       </div>
     </section>
   );

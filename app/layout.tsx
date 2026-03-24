@@ -7,6 +7,19 @@ import { Toaster } from 'sonner';
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
+import { DM_Serif_Display, Playfair_Display } from "next/font/google";
+
+const dmSerif = DM_Serif_Display({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-serif-display",
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+});
+
 
 export const metadata: Metadata = {
   title: "R & T Shop - Premium Tech Store",
@@ -20,7 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} ${dmSerif.variable} ${playfair.variable} antialiased`}>
         <ConvexClientProvider>
           <AdminSeeder />
           <NavbarWrapper />

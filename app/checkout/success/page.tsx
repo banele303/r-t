@@ -1,18 +1,17 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useCart } from "@/components/CartContext";
 import { CheckCircle } from "lucide-react";
 
-export default function CheckoutSuccessPage() {
+function SuccessContent() {
   const { clearCart } = useCart();
   const searchParams = useSearchParams();
   const orderId = searchParams.get("orderId");
 
   useEffect(() => {
-    // Clear the cart on successful order
     clearCart();
   }, [clearCart]);
 
@@ -47,5 +46,17 @@ export default function CheckoutSuccessPage() {
         </Link>
       </div>
     </div>
+  );
+}
+
+export default function CheckoutSuccessPage() {
+  return (
+    <Suspense fallback={
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '70vh' }}>
+        <p style={{ color: '#888', fontSize: '16px' }}>Loading...</p>
+      </div>
+    }>
+      <SuccessContent />
+    </Suspense>
   );
 }

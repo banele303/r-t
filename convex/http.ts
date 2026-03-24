@@ -18,7 +18,7 @@ http.route({
     });
 
     // Handle PayFast ITN notification
-    await ctx.runMutation(api.payfast.handleITN, {
+    await ctx.runMutation(api.payfastItn.handleITN, {
       m_payment_id: data.m_payment_id,
       pf_payment_id: data.pf_payment_id,
       payment_status: data.payment_status,

@@ -8,6 +8,7 @@ import DeliveryOptions from "@/components/DeliveryOptions";
 import PromoBanner from "@/components/PromoBanner";
 import TrendingProducts from "@/components/TrendingProducts";
 import FeaturedServices from "@/components/FeaturedServices";
+import GoogleReviews from "@/components/GoogleReviews";
 import BlogSection from "@/components/BlogSection";
 import FooterMenu from "@/components/FooterMenu";
 
@@ -30,6 +31,8 @@ export default function Home() {
       <TrendingProducts />
 
       <FeaturedServices />
+
+      <GoogleReviews />
 
       <BlogSection />
 

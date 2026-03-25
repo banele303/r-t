@@ -4,7 +4,7 @@ import { action } from "./_generated/server";
 import { v } from "convex/values";
 import crypto from "crypto";
 
-const PAYFAST_MODE = process.env.PAYFAST_MODE || "test"; // 'live' or 'test'
+const PAYFAST_MODE = (process.env.PAYFAST_MODE || "test").trim().toLowerCase(); 
 const IS_LIVE = PAYFAST_MODE === "live";
 
 const PAYFAST_MERCHANT_ID = process.env.PAYFAST_MERCHANT_ID?.trim() || "";
@@ -15,6 +15,7 @@ const PAYFAST_PASSPHRASE = process.env.PAYFAST_PASSPHRASE?.trim() || "";
 const PAYFAST_BASE_URL = process.env.PAYFAST_BASE_URL?.trim() || (IS_LIVE 
   ? "https://www.payfast.co.za/eng/process" 
   : "https://sandbox.payfast.co.za/eng/process");
+
 
 
 const NEXT_PUBLIC_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL?.trim() || "";
@@ -51,7 +52,12 @@ export const getPaymentData = action({
     customerName: v.string(),
   },
   handler: async (ctx, args) => {
+    console.log(`[PayFast] Request for Order: ${args.orderId}`);
+    console.log(`[PayFast] Mode: ${PAYFAST_MODE} (IS_LIVE: ${IS_LIVE})`);
+    console.log(`[PayFast] Target URL: ${PAYFAST_BASE_URL}`);
+
     // Construct data with trimmed values
+
     const data: any = {
       merchant_id: PAYFAST_MERCHANT_ID,
       merchant_key: PAYFAST_MERCHANT_KEY,

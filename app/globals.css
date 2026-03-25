@@ -364,7 +364,11 @@ button {
   font-size: 72px;
   font-weight: 400;
   display: inline-block;
-  color: #1a1a1c;
+  color: var(--blue); /* Theme Blue */
+  background: linear-gradient(to right, var(--blue) 30%, rgba(0, 86, 179, 0.1) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
   letter-spacing: -0.5px;
   line-height: 1.0;
   margin-bottom: 24px;

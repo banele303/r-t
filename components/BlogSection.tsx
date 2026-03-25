@@ -48,7 +48,7 @@ export default function BlogSection() {
         {blogPosts.map((post) => (
           <article key={post.id} className="blog-card">
             <div className="blog-card-image" style={{ background: post.gradient }}>
-              <Image src={post.image} alt={post.title} fill style={{ objectFit: 'contain', padding: '24px' }} />
+              <Image src={post.image} alt={post.title} fill style={{ objectFit: 'contain', padding: '8px' }} />
               <span className="blog-category-badge">{post.category}</span>
             </div>
             <div className="blog-card-body">

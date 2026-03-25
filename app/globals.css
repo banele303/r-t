@@ -453,8 +453,6 @@ button {
   gap: 20px;
   padding: 20px 5%;
   background-color: var(--white);
-  max-width: 1400px;
-  margin: 0 auto;
 }
 
 .product-card {
@@ -683,8 +681,6 @@ button {
   background-color: var(--white);
   border-bottom: 1px solid var(--border-color);
   overflow-x: auto;
-  max-width: 1400px;
-  margin: 0 auto;
 }
 
 .category-container {
@@ -739,8 +735,6 @@ button {
   gap: 20px;
   padding: 20px 5% 40px;
   background-color: var(--white);
-  max-width: 1400px;
-  margin: 0 auto;
 }
 
 .service-card {
@@ -803,8 +797,6 @@ button {
   padding: 50px 10% 30px;
   color: #555;
   font-size: 12px;
-  max-width: 1400px;
-  margin: 0 auto;
 }
 
 .footer-top {

@@ -22,22 +22,20 @@ const NEXT_PUBLIC_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL?.trim() || "";
 
 
 // This helper will generate the required signature for PayFast
-export function generateSignature(data: any, passphrase?: string) {
+function generateSignature(data: any, passphrase?: string) {
   let queryString = "";
-  // PayFast ITN signatures include all fields except 'signature'
-  const keys = Object.keys(data)
-    .filter(key => key !== 'signature')
-    .sort(); // PayFast recommends sorting keys for some integrations, though not strictly required for redirection, ITN sends them in order.
-
-  keys.forEach((key) => {
+  Object.keys(data).forEach((key) => {
     if (data[key] !== "" && data[key] !== undefined && data[key] !== null) {
+      // PayFast expects values to be trimmed and URL encoded (+ for spaces)
       const value = data[key].toString().trim();
       queryString += `${key}=${encodeURIComponent(value).replace(/%20/g, "+")}&`;
     }
   });
 
+  // Remove trailing &
   queryString = queryString.substring(0, queryString.length - 1);
   
+  // Append passphrase if provided and not empty
   if (passphrase) {
     queryString += `&passphrase=${encodeURIComponent(passphrase.trim()).replace(/%20/g, "+")}`;
   }

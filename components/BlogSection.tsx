@@ -38,42 +38,49 @@ const blogPosts = [
 export default function BlogSection() {
   return (
     <section className="blog-section">
-      <div className="blog-header">
-        <span className="blog-tag">From Our Blog</span>
-        <h2 className="blog-title">Tech Insights & Guides</h2>
-        <p className="blog-subtitle">Stay ahead with the latest tech news, reviews, and buying guides.</p>
-      </div>
+      <div className="blog-container">
+        <div className="blog-header">
+          <span className="blog-tag">From Our Blog</span>
+          <h2 className="blog-title">Tech Insights & Guides</h2>
+          <p className="blog-subtitle">Stay ahead with the latest tech news, reviews, and buying guides.</p>
+        </div>
 
-      <div className="blog-grid">
-        {blogPosts.map((post) => (
-          <article key={post.id} className="blog-card">
-            <div className="blog-card-image" style={{ background: post.gradient }}>
-              <Image src={post.image} alt={post.title} fill style={{ objectFit: 'contain', padding: '8px' }} />
-              <span className="blog-category-badge">{post.category}</span>
-            </div>
-            <div className="blog-card-body">
-              <div className="blog-card-meta">
-                <span>{post.date}</span>
-                <span className="blog-dot">·</span>
-                <span>{post.readTime}</span>
+        <div className="blog-grid">
+          {blogPosts.map((post) => (
+            <article key={post.id} className="blog-card">
+              <div className="blog-card-image" style={{ background: post.gradient }}>
+                <Image src={post.image} alt={post.title} fill style={{ objectFit: 'contain', padding: '8px' }} />
+                <span className="blog-category-badge">{post.category}</span>
               </div>
-              <h3 className="blog-card-title">{post.title}</h3>
-              <p className="blog-card-excerpt">{post.excerpt}</p>
-              <div className="blog-read-more">
-                Read Article
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
+              <div className="blog-card-body">
+                <div className="blog-card-meta">
+                  <span>{post.date}</span>
+                  <span className="blog-dot">·</span>
+                  <span>{post.readTime}</span>
+                </div>
+                <h3 className="blog-card-title">{post.title}</h3>
+                <p className="blog-card-excerpt">{post.excerpt}</p>
+                <div className="blog-read-more">
+                  Read Article
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </div>
               </div>
-            </div>
-          </article>
-        ))}
+            </article>
+          ))}
+        </div>
       </div>
 
       <style jsx>{`
         .blog-section {
           padding: 80px 5% 60px;
           background: #fff;
+        }
+
+        .blog-container {
+          max-width: 1400px;
+          margin: 0 auto;
         }
 
         .blog-header {

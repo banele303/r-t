@@ -4,11 +4,21 @@ import { action } from "./_generated/server";
 import { v } from "convex/values";
 import crypto from "crypto";
 
+const PAYFAST_MODE = process.env.PAYFAST_MODE || "test"; // 'live' or 'test'
+const IS_LIVE = PAYFAST_MODE === "live";
+
 const PAYFAST_MERCHANT_ID = process.env.PAYFAST_MERCHANT_ID?.trim() || "";
 const PAYFAST_MERCHANT_KEY = process.env.PAYFAST_MERCHANT_KEY?.trim() || "";
 const PAYFAST_PASSPHRASE = process.env.PAYFAST_PASSPHRASE?.trim() || "";
-const PAYFAST_BASE_URL = process.env.PAYFAST_BASE_URL?.trim() || "";
+
+// Automatically switch URL based on PAYFAST_MODE
+const PAYFAST_BASE_URL = process.env.PAYFAST_BASE_URL?.trim() || (IS_LIVE 
+  ? "https://www.payfast.co.za/eng/process" 
+  : "https://sandbox.payfast.co.za/eng/process");
+
+
 const NEXT_PUBLIC_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL?.trim() || "";
+
 
 // This helper will generate the required signature for PayFast
 function generateSignature(data: any, passphrase?: string) {
@@ -53,6 +63,12 @@ export const getPaymentData = action({
       amount: args.amount.toFixed(2),
       item_name: args.itemName.trim(),
     };
+
+    // Add test_mode for sandbox
+    if (!IS_LIVE) {
+      data.test_mode = "1";
+    }
+
 
     // Calculate signature
     data.signature = generateSignature(data, PAYFAST_PASSPHRASE);

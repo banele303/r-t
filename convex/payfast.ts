@@ -14,8 +14,8 @@ const NEXT_PUBLIC_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL!;
 function generateSignature(data: any, passphrase?: string) {
   let queryString = "";
   Object.keys(data).forEach((key) => {
-    if (data[key] !== "") {
-      queryString += `${key}=${encodeURIComponent(data[key].toString()).replace(/%20/g, "+")}&`;
+    if (data[key] !== "" && data[key] !== undefined && data[key] !== null) {
+      queryString += `${key}=${encodeURIComponent(data[key].toString().trim()).replace(/%20/g, "+")}&`;
     }
   });
 

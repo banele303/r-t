@@ -4,22 +4,27 @@ import { action } from "./_generated/server";
 import { v } from "convex/values";
 import crypto from "crypto";
 
-const PAYFAST_MERCHANT_ID = process.env.PAYFAST_MERCHANT_ID!;
-const PAYFAST_MERCHANT_KEY = process.env.PAYFAST_MERCHANT_KEY!;
-const PAYFAST_PASSPHRASE = process.env.PAYFAST_PASSPHRASE!;
-const PAYFAST_BASE_URL = process.env.PAYFAST_BASE_URL!;
-const NEXT_PUBLIC_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL!;
+const PAYFAST_MERCHANT_ID = process.env.PAYFAST_MERCHANT_ID?.trim() || "";
+const PAYFAST_MERCHANT_KEY = process.env.PAYFAST_MERCHANT_KEY?.trim() || "";
+const PAYFAST_PASSPHRASE = process.env.PAYFAST_PASSPHRASE?.trim() || "";
+const PAYFAST_BASE_URL = process.env.PAYFAST_BASE_URL?.trim() || "";
+const NEXT_PUBLIC_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL?.trim() || "";
 
 // This helper will generate the required signature for PayFast
 function generateSignature(data: any, passphrase?: string) {
   let queryString = "";
   Object.keys(data).forEach((key) => {
     if (data[key] !== "" && data[key] !== undefined && data[key] !== null) {
-      queryString += `${key}=${encodeURIComponent(data[key].toString().trim()).replace(/%20/g, "+")}&`;
+      // PayFast expects values to be trimmed and URL encoded (+ for spaces)
+      const value = data[key].toString().trim();
+      queryString += `${key}=${encodeURIComponent(value).replace(/%20/g, "+")}&`;
     }
   });
 
+  // Remove trailing &
   queryString = queryString.substring(0, queryString.length - 1);
+  
+  // Append passphrase if provided and not empty
   if (passphrase) {
     queryString += `&passphrase=${encodeURIComponent(passphrase.trim()).replace(/%20/g, "+")}`;
   }
@@ -36,18 +41,20 @@ export const getPaymentData = action({
     customerName: v.string(),
   },
   handler: async (ctx, args) => {
+    // Construct data with trimmed values
     const data: any = {
       merchant_id: PAYFAST_MERCHANT_ID,
       merchant_key: PAYFAST_MERCHANT_KEY,
       return_url: `${NEXT_PUBLIC_SITE_URL}/checkout/success?orderId=${args.orderId}`,
       cancel_url: `${NEXT_PUBLIC_SITE_URL}/checkout/cancel?orderId=${args.orderId}`,
       notify_url: `${process.env.NEXT_PUBLIC_CONVEX_SITE_URL}/payfast-itn`,
-      email_address: args.customerEmail,
+      email_address: args.customerEmail.trim(),
       m_payment_id: args.orderId,
       amount: args.amount.toFixed(2),
-      item_name: args.itemName,
+      item_name: args.itemName.trim(),
     };
 
+    // Calculate signature
     data.signature = generateSignature(data, PAYFAST_PASSPHRASE);
     
     return {

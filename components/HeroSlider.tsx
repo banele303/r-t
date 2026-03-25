@@ -68,10 +68,10 @@ export default function HeroSlider() {
         .slider-container {
           position: relative;
           width: 100%;
-          height: 80vh;
+          height: 60vh;
           min-height: 400px;
           overflow: hidden;
-          padding: 10px 5%; /* Increased padding for better separation */
+          padding: 10px 1.5%; /* Left/Right padding as requested */
           background-color: var(--white);
         }
 
@@ -89,7 +89,7 @@ export default function HeroSlider() {
           display: flex;
           justify-content: center;
           align-items: center;
-          /* Removed gap to prevent neighboring images from bleeding in */
+          padding: 0 4px; /* Tiny gap between slides overflow */
         }
 
         .hero-image-wrapper {
@@ -144,8 +144,8 @@ export default function HeroSlider() {
 
         @media (max-width: 768px) {
           .slider-container {
-            height: 60vh;
-            padding: 10px 8%;
+            height: 45vh;
+            padding: 10px 3%;
           }
           .hero-image-wrapper {
             border-radius: 20px;

@@ -56,7 +56,7 @@ export default function DualPromoGrid() {
                 src="/trade_in_banner.png" 
                 alt="Trade in" 
                 fill
-                style={{ objectFit: 'contain', borderRadius: '32px' }}
+                style={{ objectFit: 'cover', borderRadius: '32px' }}
               />
             </div>
           </div>
@@ -66,9 +66,7 @@ export default function DualPromoGrid() {
 
       <style jsx>{`
         .dual-promo-grid {
-          padding: 40px 20px;
-          max-width: 1400px;
-          margin: 0 auto;
+          padding: 40px 5%;
         }
 
         .promo-stack {

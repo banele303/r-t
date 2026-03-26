@@ -267,7 +267,7 @@ button {
   align-items: center;
   justify-content: space-between;
   overflow: hidden;
-  padding: 60px 10% 0;
+  padding: 60px 5% 0;
   transition: background 0.8s ease;
 }
 
@@ -1079,14 +1079,13 @@ button {
 
 /* Delivery Options Section */
 .delivery-section {
-  padding: 60px 0 60px;
+  padding: 60px 5% 60px;
   background-color: var(--white);
   overflow: hidden;
 }
 
 .delivery-header {
   margin-bottom: 30px;
-  padding: 0 5%;
 }
 
 .delivery-header h2 {
@@ -1699,7 +1698,7 @@ button {
   background: linear-gradient(135deg, #f0f2f5, #e0e5ec);
   display: flex;
   align-items: center;
-  padding: 80px 10%;
+  padding: 80px 5%;
   overflow: hidden;
   position: relative;
 }

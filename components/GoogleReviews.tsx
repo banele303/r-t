@@ -138,8 +138,6 @@ export default function GoogleReviews() {
         }
 
         .reviews-container {
-          max-width: 1300px;
-          margin: 0 auto;
         }
 
         .reviews-header {

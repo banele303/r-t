@@ -397,7 +397,7 @@
 .pcard-img-wrap {
     position: relative;
     aspect-ratio: 1 / 1;
-    background: #f5f5f7;
+    background: #ffffff; /* Uniform white background */
     display: flex;
     align-items: center;
     justify-content: center;

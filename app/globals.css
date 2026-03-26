@@ -1591,7 +1591,7 @@ button {
   transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   border-radius: 32px 32px 0 0;
   overflow: hidden;
-  background: #f5f5f7;
+  background: #ffffff; /* Uniform white background */
   display: flex;
   align-items: center;
   justify-content: center;

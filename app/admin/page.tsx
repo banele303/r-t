@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-const CATEGORIES = ["Mac", "iPhone", "iPad", "Watch", "Audio", "Accessories"];
+
 
 const PRESET_COLORS = [
   { label: "Black",  hex: "#1a1a1a" }, { label: "White",    hex: "#f5f5f7" },
@@ -26,7 +26,7 @@ const PRESET_SIZES = ["XS","S","M","L","XL","XXL","128GB","256GB","512GB","1TB",
 
 const emptyForm = {
   name: "", brand: "", price: "", oldPrice: "",
-  category: "Mac", tag: "", description: "",
+  category: "", tag: "", description: "",
   stock: "",
   isPromo: false, isTrending: false,
   isOnSale: false, saleEndsAt: "",
@@ -37,10 +37,14 @@ const emptyForm = {
 
 export default function AdminProducts() {
   const products      = useQuery(api.products?.get);
+  const dbCategories  = useQuery(api.categories?.get);
   const addProduct    = useMutation(api.products?.add);
   const updateProduct = useMutation(api.products?.update);
   const deleteProduct = useMutation(api.products?.remove);
   const genUploadUrl  = useMutation(api.storage?.generateUploadUrl);
+
+  // Dynamic categories from the database
+  const categoryNames = (dbCategories ?? []).map((c: any) => c.name);
 
   const imageRef = useRef<HTMLInputElement>(null);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -409,7 +413,8 @@ export default function AdminProducts() {
                 <div className="pm-row">
                   <Field label="Category">
                     <select value={formData.category} onChange={e => set("category", e.target.value)}>
-                      {CATEGORIES.map(c => <option key={c}>{c}</option>)}
+                      <option value="" disabled>Select a category</option>
+                      {categoryNames.map((c: string) => <option key={c} value={c}>{c}</option>)}
                     </select>
                   </Field>
                   <Field label="Display Tag">

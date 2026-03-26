@@ -30,18 +30,15 @@ export default function Navbar() {
     router.push("/");
   };
 
+  const categories = useQuery(api.categories.get);
+
+  // Build nav links dynamically from database categories
   const navLinks = [
-    { label: "Mac", href: "/products?category=Mac" },
-    { label: "iPhone", href: "/products?category=iPhone" },
-    { label: "iPad", href: "/products?category=iPad" },
-    { label: "Watch", href: "/products?category=Watch" },
-    { label: "AirPods", href: "/products?category=AirPods" },
-    { label: "Accessories", href: "/products?category=Accessories" },
-    { label: "Smart Tech", href: "/products?category=Smart+Tech" },
-    { label: "Cellular", href: "/products?category=Cellular" },
-    { label: "Trade In", href: "/products?category=Trade+In" },
+    ...(categories ?? []).map((cat: any) => ({
+      label: cat.name,
+      href: `/products?category=${encodeURIComponent(cat.name)}`,
+    })),
     { label: "On Promo", href: "/products?isPromo=true" },
-    { label: "Services", href: "/products?category=Services" },
   ];
 
   return (

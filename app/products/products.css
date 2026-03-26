@@ -363,14 +363,14 @@
 /* Product Card */
 .pcard {
     background: #fff;
-    border-radius: 26px; /* Slightly larger for better look */
+    border-radius: 32px;
     border: 1px solid rgba(0, 0, 0, 0.06);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
     display: flex;
     flex-direction: column;
     overflow: hidden;
     padding: 0;
-    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
     position: relative;
 }
 
@@ -396,12 +396,12 @@
 
 .pcard-img-wrap {
     position: relative;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 1 / 1;
     background: #f5f5f7;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 26px 26px 0 0;
+    border-radius: 32px 32px 0 0;
     overflow: hidden;
 }
 

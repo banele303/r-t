@@ -320,9 +320,7 @@ export default function ProductPage() {
             )}
           </div>
 
-          <div className="product-description">
-            <p>{product.description || "Designed with powerful technology and premium materials, this product delivers an exceptional experience that pushes boundaries."}</p>
-          </div>
+
 
           {/* COMPACT Countdown Timer */}
           {product.isOnSale && product.saleEndsAt && timeLeft && (
@@ -448,6 +446,18 @@ export default function ProductPage() {
               Add {quantity > 1 ? `${quantity} ` : ''}to Cart
             </button>
             <button className="btn-buy-now">Buy Now</button>
+          </div>
+
+          <div className="product-description" style={{ marginTop: '32px', paddingTop: '32px', borderTop: '1px solid #eee' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '16px', color: '#111' }}>Product Details</h3>
+            {product.description ? (
+              <div 
+                dangerouslySetInnerHTML={{ __html: product.description }} 
+                style={{ lineHeight: '1.7', color: '#555', fontSize: '15px' }}
+              />
+            ) : (
+              <p>Designed with powerful technology and premium materials, this product delivers an exceptional experience that pushes boundaries. It features the latest innovations to help you stay ahead in your daily life.</p>
+            )}
           </div>
 
           <div className="product-extra-info">

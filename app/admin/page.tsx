@@ -13,16 +13,24 @@ import Link from "next/link";
 
 
 
-const PRESET_COLORS = [
-  { label: "Black",  hex: "#1a1a1a" }, { label: "White",    hex: "#f5f5f7" },
-  { label: "Silver", hex: "#c0c0c0" }, { label: "Gold",     hex: "#d4af37" },
-  { label: "Blue",   hex: "#2563eb" }, { label: "Red",      hex: "#dc2626" },
-  { label: "Green",  hex: "#16a34a" }, { label: "Purple",   hex: "#7c3aed" },
-  { label: "Pink",   hex: "#ec4899" }, { label: "Midnight", hex: "#1c1c1e" },
-  { label: "Starlight", hex: "#f2e8db" }, { label: "Yellow", hex: "#eab308" },
-];
-
-const PRESET_SIZES = ["XS","S","M","L","XL","XXL","128GB","256GB","512GB","1TB","38mm","42mm","45mm"];
+// Auto-detect hex from common color names
+const COLOR_MAP: Record<string, string> = {
+  black: "#1a1a1a", white: "#f5f5f7", silver: "#c0c0c0", gold: "#d4af37",
+  blue: "#2563eb", red: "#dc2626", green: "#16a34a", purple: "#7c3aed",
+  pink: "#ec4899", midnight: "#1c1c1e", starlight: "#f2e8db", yellow: "#eab308",
+  orange: "#f97316", brown: "#92400e", navy: "#1e3a5f", teal: "#14b8a6",
+  cyan: "#06b6d4", rose: "#f43f5e", indigo: "#6366f1", gray: "#6b7280",
+  grey: "#6b7280", beige: "#d4c5a9", cream: "#fffdd0", maroon: "#800000",
+  coral: "#ff7f50", lavender: "#b4a7d6", magenta: "#ff00ff", lime: "#84cc16",
+  olive: "#808000", peach: "#ffcba4", turquoise: "#40e0d0", violet: "#8b5cf6",
+  charcoal: "#36454f", burgundy: "#800020", khaki: "#c3b091", mint: "#98ff98",
+  "space gray": "#535150", "space grey": "#535150", "sky blue": "#87ceeb",
+  "deep purple": "#4a148c", "dark blue": "#00008b", "light blue": "#a8d8ea",
+  "rose gold": "#b76e79", "jet black": "#0a0a0a", "desert titanium": "#a0926b",
+  "natural titanium": "#9a9590", "white titanium": "#d6d2cd", "black titanium": "#3b3b3d",
+  "blue titanium": "#394d6d",
+};
+const getColorHex = (name: string): string | null => COLOR_MAP[name.toLowerCase()] ?? null;
 
 const emptyForm = {
   name: "", brand: "", price: "", oldPrice: "",
@@ -424,8 +432,16 @@ export default function AdminProducts() {
                     <input type="number" value={formData.stock} onChange={e => set("stock", e.target.value)} placeholder="0" />
                   </Field>
                 </div>
-                <Field label="Full Description" full>
-                  <textarea rows={3} value={formData.description} onChange={e => set("description", e.target.value)} placeholder="Describe the item features..." />
+                <Field label="Full Description (Rich Text Toolbar)" full>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '8px', background: '#f5f5f7', padding: '10px', borderRadius: '12px', border: '1px solid #e0e0e0' }}>
+                    <button type="button" onClick={() => set("description", (formData.description || "") + "\n<h1>Main Title</h1>\n")} style={{ padding: '6px 12px', fontSize: '12px', borderRadius: '6px', background: '#fff', border: '1px solid #ccc', cursor: 'pointer', fontWeight: 800 }}>H1</button>
+                    <button type="button" onClick={() => set("description", (formData.description || "") + "\n<h2>Sub Heading</h2>\n")} style={{ padding: '6px 12px', fontSize: '12px', borderRadius: '6px', background: '#fff', border: '1px solid #ccc', cursor: 'pointer', fontWeight: 700 }}>H2</button>
+                    <button type="button" onClick={() => set("description", (formData.description || "") + "\n<h3>Minor Title</h3>\n")} style={{ padding: '6px 12px', fontSize: '12px', borderRadius: '6px', background: '#fff', border: '1px solid #ccc', cursor: 'pointer', fontWeight: 600 }}>H3</button>
+                    <button type="button" onClick={() => set("description", (formData.description || "") + "<b>Bold Text</b>")} style={{ padding: '6px 12px', fontSize: '12px', borderRadius: '6px', background: '#fff', border: '1px solid #ccc', cursor: 'pointer', fontWeight: 700 }}><b>B</b></button>
+                    <button type="button" onClick={() => set("description", (formData.description || "") + "\n<ul>\n  <li>Item 1</li>\n  <li>Item 2</li>\n</ul>\n")} style={{ padding: '6px 12px', fontSize: '12px', borderRadius: '6px', background: '#fff', border: '1px solid #ccc', cursor: 'pointer' }}>• List</button>
+                    <button type="button" onClick={() => set("description", (formData.description || "") + "<br/>\n")} style={{ padding: '6px 12px', fontSize: '12px', borderRadius: '6px', background: '#fff', border: '1px solid #ccc', cursor: 'pointer' }}>New Line</button>
+                  </div>
+                  <textarea rows={12} value={formData.description} onChange={e => set("description", e.target.value)} placeholder="Use the buttons above to format your description..." style={{ minHeight: '240px', lineHeight: '1.6' }} />
                 </Field>
 
                 <div className="pm-section-label">Additional Product Photos</div>
@@ -484,24 +500,51 @@ export default function AdminProducts() {
                 <div className="pm-section-label">Variant Customization</div>
                 <div className="pm-tag-input-group">
                    <label><Palette size={13} /> Available Colors</label>
-                   <div className="pm-presets">
-                      {PRESET_COLORS.map(({ label, hex }) => (
-                        <button key={label} type="button" className={`pm-color-chip ${formData.colors.includes(label) ? "selected" : ""}`} onClick={() => formData.colors.includes(label) ? removeColor(label) : addColor(label)}>
-                          <span className="pm-color-dot" style={{ background: hex }} /> {label}
-                        </button>
-                      ))}
+                   <div className="pm-typed-input-wrap">
+                     <input
+                       value={colorInput}
+                       onChange={e => setColorInput(e.target.value)}
+                       onKeyDown={e => handleTagKeydown(e, addColor, colorInput)}
+                       placeholder="Type a color name and press Enter (e.g. Red, Gold, Space Gray)"
+                       className="pm-typed-input"
+                     />
+                     <button type="button" className="pm-typed-add-btn" onClick={() => addColor(colorInput)} disabled={!colorInput.trim()}>Add</button>
                    </div>
+                   {formData.colors.length > 0 && (
+                     <div className="pm-tags-list">
+                       {formData.colors.map(c => (
+                         <span key={c} className="pm-color-tag">
+                           <span className="pm-color-dot" style={{ background: getColorHex(c) || 'linear-gradient(135deg, #ff0000, #00ff00, #0000ff)' }} />
+                           {c}
+                           <button type="button" onClick={() => removeColor(c)} className="pm-tag-x"><X size={12} /></button>
+                         </span>
+                       ))}
+                     </div>
+                   )}
                 </div>
 
                 <div className="pm-tag-input-group">
                    <label><Ruler size={13} /> Available Sizes & Storage</label>
-                   <div className="pm-presets">
-                      {PRESET_SIZES.map(s => (
-                        <button key={s} type="button" className={`pm-size-chip ${formData.sizes.includes(s) ? "selected" : ""}`} onClick={() => formData.sizes.includes(s) ? removeSize(s) : addSize(s)}>
-                          {s}
-                        </button>
-                      ))}
+                   <div className="pm-typed-input-wrap">
+                     <input
+                       value={sizeInput}
+                       onChange={e => setSizeInput(e.target.value)}
+                       onKeyDown={e => handleTagKeydown(e, addSize, sizeInput)}
+                       placeholder="Type a size and press Enter (e.g. 256GB, XL, 45mm)"
+                       className="pm-typed-input"
+                     />
+                     <button type="button" className="pm-typed-add-btn" onClick={() => addSize(sizeInput)} disabled={!sizeInput.trim()}>Add</button>
                    </div>
+                   {formData.sizes.length > 0 && (
+                     <div className="pm-tags-list">
+                       {formData.sizes.map(s => (
+                         <span key={s} className="pm-size-tag">
+                           {s}
+                           <button type="button" onClick={() => removeSize(s)} className="pm-tag-x"><X size={12} /></button>
+                         </span>
+                       ))}
+                     </div>
+                   )}
                 </div>
 
                 {formData.sizes.length > 0 && (
@@ -666,10 +709,43 @@ export default function AdminProducts() {
 
         .pm-toggles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; background: var(--surface2); padding: 18px; border-radius: 18px; border: 1px solid var(--border); }
 
-        .pm-presets { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
-        .pm-color-chip, .pm-size-chip { display:flex; align-items:center; gap:6px; background:var(--surface2); border:1.5px solid var(--border); padding:6px 12px; border-radius:20px; font-size:12px; font-weight:600; cursor:pointer; transition:all 0.2s; color:var(--text-muted); }
-        .pm-color-chip.selected, .pm-size-chip.selected { background:var(--accent-soft); border-color:var(--accent); color:var(--accent); }
-        .pm-color-dot { width:12px; height:12px; border-radius:50%; border:1px solid rgba(0,0,0,0.1); }
+        .pm-tag-input-group { margin-bottom: 16px; }
+        .pm-tag-input-group > label { display:flex; align-items:center; gap:6px; font-size:12px; font-weight:700; color:var(--text-muted); margin-bottom:8px; }
+
+        .pm-typed-input-wrap { display:flex; gap:8px; }
+        .pm-typed-input {
+          flex:1; background:var(--surface2); border:1.5px solid var(--border);
+          border-radius:12px; padding:11px 14px; color:var(--text);
+          outline:none; font-family:inherit; font-size:14px;
+          transition:border-color 0.2s, box-shadow 0.2s;
+        }
+        .pm-typed-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+        .pm-typed-input::placeholder { color:var(--text-muted); opacity:0.5; }
+        .pm-typed-add-btn {
+          background:var(--accent); color:white; border:none;
+          padding:0 20px; border-radius:12px; font-weight:700; font-size:13px;
+          cursor:pointer; transition:0.2s; white-space:nowrap;
+        }
+        .pm-typed-add-btn:hover { opacity:0.85; }
+        .pm-typed-add-btn:disabled { opacity:0.3; cursor:not-allowed; }
+
+        .pm-tags-list { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+        .pm-color-tag, .pm-size-tag {
+          display:flex; align-items:center; gap:7px;
+          background:var(--surface2); border:1.5px solid var(--border);
+          padding:6px 10px 6px 10px; border-radius:20px;
+          font-size:13px; font-weight:600; color:var(--text);
+          animation: tagPop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes tagPop { from { opacity:0; transform:scale(0.8); } to { opacity:1; transform:scale(1); } }
+        .pm-color-dot { width:14px; height:14px; border-radius:50%; border:1.5px solid rgba(0,0,0,0.12); flex-shrink:0; }
+        .pm-tag-x {
+          display:flex; align-items:center; justify-content:center;
+          width:18px; height:18px; border-radius:50%;
+          background:rgba(239,68,68,0.1); color:#ef4444;
+          border:none; cursor:pointer; transition:0.2s; margin-left:2px;
+        }
+        .pm-tag-x:hover { background:rgba(239,68,68,0.25); transform:scale(1.15); }
         
         .pm-modal-footer { display:flex; justify-content:flex-end; gap:12px; margin-top:24px; padding-top:20px; border-top:1px solid var(--border); }
         .pm-cancel-btn { background:var(--surface2); border:none; padding:12px 24px; border-radius:12px; font-weight:700; cursor:pointer; color:var(--text-muted); }

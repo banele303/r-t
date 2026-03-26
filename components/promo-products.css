@@ -33,7 +33,7 @@
 .promo-card {
     background: #ffffff;
     border-radius: 28px;
-    padding: 24px;
+    padding: 2px 2px 0;
     position: relative;
     border: 1px solid rgba(0, 0, 0, 0.03);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
@@ -53,8 +53,8 @@
 
 .promo-card-badge {
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 12px;
+    left: 12px;
     background-color: var(--blue);
     color: white;
     padding: 6px 12px;
@@ -67,10 +67,13 @@
 
 .promo-card-image {
     width: 100%;
-    height: 160px;
+    height: 180px;
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 0;
     transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border-radius: 26px;
+    overflow: hidden;
+    background: #f5f5f7;
 }
 
 .promo-card:hover .promo-card-image {
@@ -78,12 +81,12 @@
 }
 
 .promo-card-image img {
-    object-fit: contain;
-    border-radius: 20px;
+    object-fit: cover;
+    border-radius: 26px;
 }
 
 .promo-card-content {
-    flex-grow: 1;
+    padding: 16px 16px 18px;
     display: flex;
     flex-direction: column;
 }

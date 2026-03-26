@@ -396,16 +396,20 @@
 
 .pcard-img-wrap {
     position: relative;
-    height: 200px;
+    aspect-ratio: 4 / 5;
     background: #f5f5f7;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 26px 26px 0 0;
     overflow: hidden;
 }
 
 .pcard-img {
-    object-fit: cover;
-    padding: 0;
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+    padding: 30px;
 }
 
 .pcard-body {

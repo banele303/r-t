@@ -19,7 +19,7 @@ export default function DualPromoGrid() {
               </h2>
             </div>
             <div className="premium-promo-actions">
-              <Link href="/iphone" className="promo-btn-primary">Shop iPhone</Link>
+              <Link href="/products?category=Phones" className="promo-btn-primary">Shop Phones</Link>
               <Link href="#" className="promo-link-secondary">Learn about benefits &gt;</Link>
             </div>
           </div>

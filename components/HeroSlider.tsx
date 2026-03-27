@@ -7,80 +7,47 @@ import { Laptop, Smartphone, Watch, Monitor, Tablet } from "lucide-react";
 const slides = [
   {
     id: 0,
-    backgroundText: "LUXURY",
-    themeClass: "luxury-slide",
-    title: "Mastery in Detail",
-    icon: <Watch size={24} />,
-    saveText: "Superior Craftsmanship",
-    desc: "Experience the pinnacle of design and engineering in every detail.",
-    image: "/iphone-hero-new.png",
-    terms: "Exclusive Limited Edition"
+    backgroundText: "IPHONE",
+    themeClass: "iphone-slide",
+    title: "iPhone 16 Pro Max",
+    icon: <Smartphone size={24} />,
+    saveText: "Titanium Powerhouse",
+    desc: "Smarter performance. Pro-grade cameras. Built for Apple Intelligence.",
+    image: "/iphone_16.png",
+    terms: "Starting from R1,299pm"
   },
   {
     id: 1,
     backgroundText: "MACBOOKS",
     themeClass: "macbook-slide",
-    title: "MacBook Air M3",
+    title: "MacBook Pro M3",
     icon: <Laptop size={24} />,
-    saveText: "Save up to R2,500",
-    desc: "Supercharged by M3. Thin. Light. Multi-talented.",
-    image: "/Hero-image.png",
-    terms: "Ends 31 March 2026"
+    saveText: "Pro Powerhouse",
+    desc: "The most advanced Mac laptop for demanding workflows. Thin. Light. Multi-talented.",
+    image: "/macbook_m3.png",
+    terms: "Supercharged by M3 Pro"
   },
   {
     id: 2,
     backgroundText: "GALAXY",
     themeClass: "samsung-slide",
-    title: "Galaxy Book4 Pro",
-    icon: <Laptop size={24} />,
+    title: "Galaxy S24 Ultra",
+    icon: <Smartphone size={24} />,
     saveText: "AI Powered Performance",
-    desc: "The most intelligent Galaxy Book ever. Experience the future of work.",
-    image: "/windows-img.png",
+    desc: "Zoom into the night with Nightography. Circle it. Find it. All with AI.",
+    image: "/s24_ultra.png",
     terms: "Free Galaxy Buds with every purchase"
   },
   {
     id: 3,
-    backgroundText: "IPHONE",
-    themeClass: "iphone-slide",
-    title: "iPhone 16 Pro",
-    icon: <Smartphone size={24} />,
-    saveText: "Titanium Powerhouse",
-    desc: "Smarter performance. Pro-grade cameras. Built for Apple Intelligence.",
-    image: "/iphone-hero-new.png",
-    terms: "Starting from R1,299pm"
-  },
-  {
-    id: 4,
-    backgroundText: "S24 ULTRA",
-    themeClass: "galaxy-slide",
-    title: "Galaxy S24 Ultra",
-    icon: <Smartphone size={24} />,
-    saveText: "Epic Galaxy AI Is Here",
-    desc: "Zoom into the night with Nightography. Circle it. Find it. All with AI.",
-    image: "/s24_ultra_heroo.png",
-    terms: "Trade-in your old phone and save"
-  },
-  {
-    id: 5,
     backgroundText: "DELL XPS",
     themeClass: "dell-slide",
-    title: "Dell XPS 13 Plus",
+    title: "Dell XPS 15",
     icon: <Laptop size={24} />,
     saveText: "Masterpiece Redesigned",
     desc: "Beauty meets speed. The ultimate window into your world.",
-    image: "/dell_xps_hero.png",
+    image: "/dell_xps.png",
     terms: "Next day on-site support included"
-  },
-  {
-    id: 6,
-    backgroundText: "WATCH",
-    themeClass: "watch-slide",
-    title: "Apple Watch Series 10",
-    icon: <Watch size={24} />,
-    saveText: "Bigger Display. Thinner Design.",
-    desc: "The thinnest Apple Watch ever. New water temperature and depth sensors.",
-    image: "/watch.png",
-    terms: "Available in Jet Black and Rose Gold"
   }
 ];
 

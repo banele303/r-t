@@ -45,6 +45,7 @@ export const seedAdmins = mutation({
   handler: async (ctx) => {
     const adminEmails = [
       "alexsouthflow2@gmail.com",
+      "randtstore67@gmail.com",
       // Add more admin emails here if needed
     ];
 

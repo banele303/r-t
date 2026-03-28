@@ -35,7 +35,7 @@ export default function RegisterPage() {
        <div className="auth-card">
           <div className="auth-header">
              <h2>Create an Account</h2>
-             <p>Join R & T Shop for seamless shopping and fast delivery.</p>
+             <p>Join R & T Store for seamless shopping and fast delivery.</p>
           </div>
 
           <form className="auth-form" onSubmit={handleSubmit}>

@@ -106,7 +106,7 @@ export default function Navbar() {
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search R & T Shop..."
+              placeholder="Search R & T Store..."
               style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: 'white', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '20px', padding: '6px 16px 6px 38px', fontSize: '13px', width: '180px', outline: 'none', transition: 'all 0.3s cubic-bezier(0.25,1,0.5,1)' }}
               onFocus={(e) => { e.target.style.backgroundColor = 'rgba(255,255,255,0.2)'; e.target.style.borderColor = 'rgba(255,255,255,0.4)'; e.target.style.width = '240px'; }}
               onBlur={(e) => { e.target.style.backgroundColor = 'rgba(255,255,255,0.1)'; e.target.style.borderColor = 'rgba(255,255,255,0.2)'; e.target.style.width = '180px'; setTimeout(() => setSearchTerm(""), 200); }}
@@ -314,7 +314,7 @@ export default function Navbar() {
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search R & T Shop..."
+              placeholder="Search R & T Store..."
               style={{ width: '100%', backgroundColor: 'rgba(255,255,255,0.08)', color: 'white', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '12px', padding: '10px 14px 10px 36px', fontSize: '14px', outline: 'none' }}
             />
           </div>
@@ -349,7 +349,7 @@ export default function Navbar() {
       </div>
 
       <div className="promo-bar">
-        Get the Fastest delivery for Free. <Link href="/">Shop online at R & T Shop!</Link>
+        Get the Fastest delivery for Free. <Link href="/">Shop online at R & T Store!</Link>
       </div>
     </>
   );

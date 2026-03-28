@@ -15,7 +15,7 @@ export default function DualPromoGrid() {
               <span className="promo-label">Limited Time Offer</span>
               <h2 className="premium-promo-title">
                 Get iPhone and <br />
-                <span className="accent-blue">so much more</span> at R & T Shop
+                <span className="accent-blue">so much more</span> at R & T Store
               </h2>
             </div>
             <div className="premium-promo-actions">

@@ -59,10 +59,10 @@ export default function FooterMenu() {
       </div>
       <div className="footer-bottom">
         <p className="footer-disclaimer">
-          More ways to shop: <a href="#">Find an R & T Shop</a> or <a href="#">other retailer</a> near you.
+          More ways to shop: <a href="#">Find an R & T Store</a> or <a href="#">other retailer</a> near you.
         </p>
         <div className="footer-legal">
-          <span>Copyright © 2026 R & T Shop Inc. All rights reserved.</span>
+          <span>Copyright © 2026 R & T Store Inc. All rights reserved.</span>
           <div className="footer-legal-links">
             <a href="#">Privacy Policy</a>
             <span className="divider">|</span>

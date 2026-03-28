@@ -32,7 +32,7 @@ export default function LoginPage() {
     <div className="auth-container">
        <div className="auth-card">
           <div className="auth-header">
-             <h2>Sign in to R & T Shop</h2>
+             <h2>Sign in to R & T Store</h2>
              <p>Manage your orders, favorites, and secure dashboard.</p>
           </div>
 

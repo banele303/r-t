@@ -22,8 +22,8 @@ const playfair = Playfair_Display({
 
 
 export const metadata: Metadata = {
-  title: "R & T Shop - Premium Tech Store",
-  description: "Get the Fastest delivery for Free. Shop online at R & T Shop!",
+  title: "R & T Store - Premium Tech Store",
+  description: "Get the Fastest delivery for Free. Shop online at R & T Store!",
 };
 
 export default function RootLayout({

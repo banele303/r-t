@@ -32,7 +32,7 @@ const navLinks = [
   { name: "Orders",          href: "/admin/orders",      icon: ClipboardList },
   { name: "Products",        href: "/admin",             icon: Package, exact: true },
   { name: "Categories",      href: "/admin/categories",  icon: Tags },
-  { name: "Customers",       href: "/admin/customers",   icon: Users },
+  { name: "Users",           href: "/admin/customers",   icon: Users },
   { name: "Settings",        href: "/admin/settings",    icon: Settings },
 ];
 
@@ -40,7 +40,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const router = useRouter();
   const { signOut } = useAuthActions();
+  
   const isAdmin = useQuery(api.admin.isAdmin);
+  const isSuper = useQuery(api.admin.isSuperAdmin);
   const currentUser = useQuery(api.users.current);
 
   const [dark, setDark] = useState(true);
@@ -90,7 +92,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const userEmail = currentUser?.email ?? "admin";
   const userInitial = userEmail.charAt(0).toUpperCase();
-
   const theme = dark ? "dark" : "light";
 
   return (
@@ -108,14 +109,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           {collapsed ? (
             <ShoppingBag size={22} className="brand-icon" />
           ) : (
-            <Image
-              src="/r&tlogo.png.webp"
-              alt="R & T Logo"
-              width={180}
-              height={56}
-              priority
-              style={{ objectFit: 'contain', maxWidth: '100%' }}
-            />
+            <div className="brand-container">
+                <Image
+                src="/r&tlogo.png.webp"
+                alt="R & T Logo"
+                width={180}
+                height={56}
+                priority
+                style={{ objectFit: 'contain', maxWidth: '100%' }}
+                />
+                {isSuper && <span className="super-badge-inline">ROOT</span>}
+            </div>
           )}
         </div>
 
@@ -154,10 +158,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
           {/* User info */}
           <div className="admin-sidebar-user">
-            <div className="admin-user-avatar">{userInitial}</div>
+            <div className={`admin-user-avatar ${isSuper ? 'super' : ''}`}>{userInitial}</div>
             {!collapsed && (
               <div className="admin-user-info">
-                <span className="admin-user-email" title={userEmail}>{userEmail}</span>
+                <span className="admin-user-email" title={userEmail}>
+                    {userEmail}
+                    {isSuper && <span className="super-star">★</span>}
+                </span>
+                <span className="admin-user-role">{isSuper ? 'Overall Admin' : 'Staff Admin'}</span>
                 <button className="admin-user-logout" onClick={handleLogout}>
                   <LogOut size={12} /> Sign Out
                 </button>
@@ -202,8 +210,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
           {/* User pill */}
           <div className="topbar-user">
-            <div className="admin-user-avatar sm">{userInitial}</div>
-            <span>{userEmail}</span>
+            <div className={`admin-user-avatar sm ${isSuper ? 'super' : ''}`}>{userInitial}</div>
+            <div className="topbar-user-info">
+                <span className="topbar-email">{userEmail}</span>
+                {isSuper && <span className="topbar-super">Root</span>}
+            </div>
           </div>
         </header>
 

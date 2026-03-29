@@ -8,6 +8,11 @@ export const current = query({
     if (!userId) {
       return null;
     }
-    return await ctx.db.get(userId);
+    const user = await ctx.db.get(userId);
+    if (user?.isBlocked) {
+      return null; // Treat blocked user as unauthenticated
+    }
+    return user;
   },
 });
+

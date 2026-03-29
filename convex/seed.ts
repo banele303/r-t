@@ -602,14 +602,36 @@ export const init = mutation({
     console.log(`✅ Seeded ${seedOrderTemplates.length} orders`);
 
     // ── 5. Seed admin allowlist ──────────────────────────────────────────────
-    const existingAdmin = await ctx.db.query("adminAllowlist").first();
-    if (!existingAdmin) {
-      await ctx.db.insert("adminAllowlist", {
-        email: "alexsouthflow2@gmail.com",
-        addedAt: new Date().toISOString(),
-      });
-      console.log("✅ Seeded admin allowlist");
+    const adminEmails = [
+      { email: "alexsouthflow2@gmail.com", role: "superadmin" },
+      { email: "randtstore67@gmail.com", role: "admin" }
+    ];
+
+    for (const admin of adminEmails) {
+      const existingEntry = await ctx.db
+        .query("adminAllowlist")
+        .withIndex("by_email", (q) => q.eq("email", admin.email))
+        .first();
+
+      if (!existingEntry) {
+        await ctx.db.insert("adminAllowlist", {
+          email: admin.email,
+          addedAt: new Date().toISOString(),
+        });
+        console.log(`✅ Seeded admin: ${admin.email}`);
+      }
+
+      const user = await ctx.db
+        .query("users")
+        .withIndex("email", (q) => q.eq("email", admin.email))
+        .first();
+
+      if (user) {
+        await ctx.db.patch(user._id, { role: admin.role });
+        console.log(`✅ Updated user role for: ${admin.email} to ${admin.role}`);
+      }
     }
+
 
     console.log("🎉 Database seeding complete!");
     return {

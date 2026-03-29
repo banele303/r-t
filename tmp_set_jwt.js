@@ -1,0 +1,2 @@
+const { execSync } = require('child_process'); 
+ execSync('npx convex env set JWT_PRIVATE_KEY "-----BEGIN PRIVATE KEY-----\nMC4CAQAwBQYDK2VwBCIEIA3hrBlf5s7ev3RwsIWIjPuP269UxRt5vyzWHKO7T6BP\n-----END PRIVATE KEY-----\n"', { stdio: 'inherit' });

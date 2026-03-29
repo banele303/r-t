@@ -187,7 +187,6 @@
     color: var(--text);
 }
 
-/* User card */
 .admin-sidebar-user {
     display: flex;
     align-items: center;
@@ -200,6 +199,7 @@
 }
 
 .admin-user-avatar {
+
     width: 34px;
     height: 34px;
     border-radius: 50%;
@@ -253,6 +253,65 @@
 .admin-user-logout:hover {
     opacity: 0.8;
 }
+
+.admin-user-avatar.super {
+
+    background: linear-gradient(135deg, #ff9d00, #ff5e00);
+    box-shadow: 0 0 15px rgba(255, 157, 0, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.super-star {
+    margin-left: 6px;
+    color: #ff9d00;
+    font-size: 14px;
+    text-shadow: 0 0 8px rgba(255, 157, 0, 0.5);
+}
+
+.admin-user-role {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+}
+
+.admin-user-avatar.super + .admin-user-info .admin-user-role {
+    color: #ff9d00;
+}
+
+.brand-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+}
+
+.super-badge-inline {
+    background: linear-gradient(135deg, #ff9d00, #ff5e00);
+    color: white;
+    font-size: 9px;
+    font-weight: 900;
+    padding: 2px 6px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 10px rgba(255, 157, 0, 0.3);
+}
+
+.topbar-user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    line-height: 1.2;
+}
+
+.topbar-super {
+    font-size: 9px;
+    font-weight: 800;
+    color: #ff9d00;
+    text-transform: uppercase;
+}
+
 
 /* Collapse button */
 .sidebar-collapse-btn {

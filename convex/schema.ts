@@ -15,7 +15,8 @@ export default defineSchema({
     // Custom fields for admin management
     isBlocked: v.optional(v.boolean()),
     role: v.optional(v.string()), // "user", "admin", "superadmin"
-  }).index("email", ["email"]),
+  }).index("email", ["email"])
+    .index("phone", ["phone"]),
   products: defineTable({
     name: v.string(),
     brand: v.string(),

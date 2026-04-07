@@ -23,8 +23,40 @@ import {
   Menu,
   ClipboardList,
   ShoppingBag,
+  AlertTriangle,
 } from "lucide-react";
 import "./admin.css";
+
+class AdminErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean, error: any }> {
+  constructor(props: any) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+  static getDerivedStateFromError(error: any) {
+    return { hasError: true, error };
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="admin-denied-screen">
+          <div className="admin-denied-icon">
+            <AlertTriangle size={40} color="#ffaa00" />
+          </div>
+          <h1>System Error</h1>
+          <p>There is a problem connecting to the admin backend.</p>
+          <p style={{fontSize: "12px", color: "#666", maxWidth: "400px", textAlign: "center"}}>
+            {String(this.state.error)}
+          </p>
+          <p style={{fontSize: "12px", color: "#666", maxWidth: "400px", textAlign: "center", marginTop: "1rem"}}>
+            This usually means your Convex dev server is out of sync. Please run <code>npx convex dev</code> in your terminal and ensure all changes are synced completely without errors.
+          </p>
+          <button className="admin-denied-link" onClick={() => window.location.href = '/'}>← Back to Store</button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 const navLinks = [
   { name: "Dashboard",       href: "/admin/dashboard",   icon: LayoutDashboard },
@@ -37,6 +69,14 @@ const navLinks = [
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <AdminErrorBoundary>
+      <AdminLayoutInner>{children}</AdminLayoutInner>
+    </AdminErrorBoundary>
+  );
+}
+
+function AdminLayoutInner({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const { signOut } = useAuthActions();

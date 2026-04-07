@@ -38,12 +38,11 @@ export const isSuperAdmin = query({
       const user = await ctx.db.get(userId);
       if (!user) return false;
 
-      const isSuper = (user.role === "superadmin") || (user.email === "alexsouthflow2@gmail.com");
-      console.log(`Debug isSuperAdmin: userId=${userId}, isSuper=${isSuper}`);
-      return isSuper === true; 
+      if (user.role === "superadmin") return true;
+      if (user.email === "alexsouthflow2@gmail.com") return true;
+      
+      return false;
     } catch (e) {
-      console.error("isSuperAdmin crashed:", e instanceof Error ? e.message : String(e));
-      // Return false instead of crashing to avoid "Server Error" on client
       return false; 
     }
   },

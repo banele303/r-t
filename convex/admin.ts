@@ -21,7 +21,7 @@ export const isAdmin = query({
 
       return entry !== null || user.role === "superadmin" || user.role === "admin";
     } catch (e) {
-      console.error("isAdmin crashed:", e);
+      console.error("isAdmin crashed:", e instanceof Error ? e.message : String(e));
       return false;
     }
   },
@@ -42,7 +42,7 @@ export const isSuperAdmin = query({
       console.log(`Debug isSuperAdmin: userId=${userId}, isSuper=${isSuper}`);
       return isSuper === true; 
     } catch (e) {
-      console.error("isSuperAdmin crashed:", e);
+      console.error("isSuperAdmin crashed:", e instanceof Error ? e.message : String(e));
       // Return false instead of crashing to avoid "Server Error" on client
       return false; 
     }

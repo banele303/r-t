@@ -7,18 +7,23 @@ import { auth } from "./auth";
 export const isAdmin = query({
   args: {},
   handler: async (ctx) => {
-    const userId = await auth.getUserId(ctx);
-    if (!userId) return false;
+    try {
+      const userId = await auth.getUserId(ctx);
+      if (!userId) return false;
 
-    const user = await ctx.db.get(userId);
-    if (!user?.email) return false;
+      const user = await ctx.db.get(userId);
+      if (!user || !user.email) return false;
 
-    const entry = await ctx.db
-      .query("adminAllowlist")
-      .withIndex("by_email", (q: any) => q.eq("email", user.email as string))
-      .first();
+      const entry = await ctx.db
+        .query("adminAllowlist")
+        .withIndex("by_email", (q: any) => q.eq("email", user.email))
+        .first();
 
-    return entry !== null || user.role === "superadmin";
+      return entry !== null || user.role === "superadmin" || user.role === "admin";
+    } catch (e) {
+      console.error("isAdmin crashed:", e);
+      return false;
+    }
   },
 });
 
@@ -26,13 +31,21 @@ export const isAdmin = query({
 export const isSuperAdmin = query({
   args: {},
   handler: async (ctx) => {
-    const userId = await auth.getUserId(ctx);
-    if (!userId) return false;
+    try {
+      const userId = await auth.getUserId(ctx);
+      if (!userId) return false;
 
-    const user = await ctx.db.get(userId);
-    if (!user) return false;
+      const user = await ctx.db.get(userId);
+      if (!user) return false;
 
-    return user.role === "superadmin" || user.email === "alexsouthflow2@gmail.com"; 
+      const isSuper = (user.role === "superadmin") || (user.email === "alexsouthflow2@gmail.com");
+      console.log(`Debug isSuperAdmin: userId=${userId}, isSuper=${isSuper}`);
+      return isSuper === true; 
+    } catch (e) {
+      console.error("isSuperAdmin crashed:", e);
+      // Return false instead of crashing to avoid "Server Error" on client
+      return false; 
+    }
   },
 });
 

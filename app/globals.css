@@ -1542,6 +1542,42 @@ button {
   gap: 24px;
 }
 
+/* Trending Footer */
+.trending-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.view-more-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--black);
+  color: white;
+  padding: 16px 36px;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.view-more-link:hover {
+  background-color: var(--blue);
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(0, 86, 179, 0.25);
+  color: white;
+}
+
+.view-more-link svg {
+  transition: transform 0.3s ease;
+}
+
+.view-more-link:hover svg {
+  transform: translateX(5px);
+}
+
 .modern-card {
   background: #ffffff;
   border-radius: 32px;

@@ -27,7 +27,7 @@
 .promo-products-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
+    gap: 24px;
 }
 
 .promo-card {
@@ -75,6 +75,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 32px 32px 0 0;
+    overflow: hidden;
 }
 
 .promo-card:hover .promo-card-image {
@@ -84,6 +86,7 @@
 .promo-card-image img {
     object-fit: contain;
     padding: 24px;
+    border-radius: 32px 32px 0 0;
 }
 
 .promo-card-content {
@@ -197,6 +200,8 @@
     .promo-card-image {
         height: 110px !important;
         margin-bottom: 12px !important;
+        border-radius: 20px 20px 0 0 !important;
+        overflow: hidden !important;
     }
 
     .promo-card-content h3 {

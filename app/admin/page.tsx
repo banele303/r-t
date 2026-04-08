@@ -335,9 +335,9 @@ export default function AdminProducts() {
               {paginatedProducts.map((p: any) => (
                 <tr key={p._id}>
                   <td>
-                    <div className="admin-tb-img">
+                    <div className="admin-tb-img" style={{ width: 40, height: 40, borderRadius: '50%', overflow: 'hidden', backgroundColor: 'var(--surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--border)' }}>
                       {p.imageUrl
-                        ? <Image src={p.imageUrl} alt={p.name} width={40} height={40} style={{ objectFit: "contain" }} />
+                        ? <Image src={p.imageUrl} alt={p.name} width={40} height={40} style={{ objectFit: "cover", width: '100%', height: '100%' }} />
                         : <Package size={20} style={{ opacity: 0.3 }} />}
                     </div>
                   </td>

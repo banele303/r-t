@@ -242,3 +242,27 @@
         left: 12px !important;
     }
 }
+
+.promo-view-all-bottom {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.promo-view-all-btn {
+    background-color: var(--blue);
+    color: white;
+    padding: 14px 40px;
+    border-radius: 20px;
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 15px rgba(0, 102, 204, 0.2);
+}
+
+.promo-view-all-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 102, 204, 0.3);
+    background-color: #0077ee;
+}

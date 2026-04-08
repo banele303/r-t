@@ -44,15 +44,16 @@ export default function PromoProducts() {
   
   // Use actual database promos if available and not empty, otherwise fallback for the aesthetic
   const displayItems = promos && promos.length > 0 ? promos : placeholderItems;
+  const slicedItems = displayItems.slice(0, 12);
 
   return (
     <section className="promo-products-section">
       <div className="promo-products-header">
         <h2>On Promo</h2>
-        <a href="#" className="view-all-promos">View All Offers &gt;</a>
+        <Link href="/products?isPromo=true" className="view-all-promos">View All Offers &gt;</Link>
       </div>
       <div className="promo-products-grid">
-        {displayItems.map((item: any) => (
+        {slicedItems.map((item: any) => (
           <Link key={item._id} href={`/product/${item._id}`} className="promo-card">
             {item.tag && <div className="promo-card-badge">{item.tag}</div>}
             <div className="promo-card-image">
@@ -86,6 +87,13 @@ export default function PromoProducts() {
           </Link>
         ))}
       </div>
+      {displayItems.length > 12 && (
+        <div className="promo-view-all-bottom">
+          <Link href="/products?isPromo=true" className="promo-view-all-btn">
+            View All Promos
+          </Link>
+        </div>
+      )}
     </section>
   );
 }

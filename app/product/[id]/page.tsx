@@ -65,16 +65,21 @@ export default function ProductPage() {
 
   const currentPrice = React.useMemo(() => {
     if (product && product.sizePrices && selectedSize) {
-      const variant = (product as any).sizePrices.find((sp: any) => sp.size === selectedSize);
-      if (variant) return variant.price;
+      const variant = (product as any).sizePrices.find((sp: any) => 
+        sp.size?.toString().trim().toLowerCase() === selectedSize?.toString().trim().toLowerCase()
+      );
+      if (variant && variant.price !== undefined) return variant.price;
     }
     return product?.price || 0;
   }, [product, selectedSize]);
 
   const currentOldPrice = React.useMemo(() => {
     if (product && product.sizePrices && selectedSize) {
-      const variant = (product as any).sizePrices.find((sp: any) => sp.size === selectedSize);
-      if (variant) return variant.oldPrice || (product as any).oldPrice;
+      const variant = (product as any).sizePrices.find((sp: any) => 
+        sp.size?.toString().trim().toLowerCase() === selectedSize?.toString().trim().toLowerCase()
+      );
+      if (variant && variant.oldPrice !== undefined) return variant.oldPrice;
+      if (variant) return product.oldPrice; // Same variant, try main old price
     }
     return product?.oldPrice;
   }, [product, selectedSize]);
@@ -391,13 +396,14 @@ export default function ProductPage() {
                   {product.sizes.map((size: string, idx: number) => (
                     <button
                       key={idx}
+                      className={`size-btn ${selectedSize?.toString().trim().toLowerCase() === size?.toString().trim().toLowerCase() ? "active" : ""}`}
                       onClick={() => setSelectedSize(size)}
                       style={{
                         padding: '12px 24px',
                         borderRadius: '12px',
-                        border: selectedSize === size ? '2px solid var(--blue)' : '1px solid #eee',
-                        background: selectedSize === size ? 'var(--light-grey)' : 'white',
-                        color: selectedSize === size ? 'var(--blue)' : '#444',
+                        border: selectedSize?.toString().trim().toLowerCase() === size?.toString().trim().toLowerCase() ? '2px solid var(--blue)' : '1px solid #eee',
+                        background: selectedSize?.toString().trim().toLowerCase() === size?.toString().trim().toLowerCase() ? 'var(--light-grey)' : 'white',
+                        color: selectedSize?.toString().trim().toLowerCase() === size?.toString().trim().toLowerCase() ? 'var(--blue)' : '#444',
                         fontWeight: 600,
                         fontSize: '14px',
                         cursor: 'pointer',

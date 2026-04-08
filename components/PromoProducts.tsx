@@ -56,8 +56,8 @@ export default function PromoProducts() {
         {slicedItems.map((item: any) => (
           <Link key={item._id} href={`/product/${item._id}`} className="promo-card">
             {item.tag && <div className="promo-card-badge">{item.tag}</div>}
-            <div className="promo-card-image">
-              <Image src={item.imageUrl || ""} alt={item.name} fill className="rounded-md" />
+            <div className="promo-card-image rounded-[2rem] overflow-hidden">
+              <Image src={item.imageUrl || ""} alt={item.name} fill className="rounded-[2rem]" />
             </div>
             <div className="promo-card-content">
               <h3>{item.name}</h3>

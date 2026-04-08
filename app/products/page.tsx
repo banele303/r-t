@@ -259,13 +259,13 @@ function ProductsContent() {
               {paginated.map((product: any) => (
                 <div key={product._id} className="pcard">
                   {product.tag && <span className="pcard-tag">{product.tag}</span>}
-                  <Link href={`/product/${product._id}`} className="pcard-img-wrap">
+                  <Link href={`/product/${product._id}`} className="pcard-img-wrap rounded-[2rem] overflow-hidden">
                     <Image
                       src={product.imageUrl || "/placeholder.png"}
                       alt={product.name}
                       fill
                       style={{ objectFit: "contain" }}
-                      className="pcard-img"
+                      className="pcard-img rounded-[2rem]"
                     />
                   </Link>
                   <div className="pcard-body">

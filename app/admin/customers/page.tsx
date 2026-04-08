@@ -276,7 +276,7 @@ export default function UsersManagementPage() {
           height: 50px;
           background: var(--accent);
           color: white;
-          border-radius: 14px;
+          border-radius: 8px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -299,7 +299,7 @@ export default function UsersManagementPage() {
         .stats-pill {
            background: var(--surface2);
            padding: 8px 16px;
-           border-radius: 20px;
+           border-radius: 8px;
            border: 1px solid var(--border);
            display: flex;
            gap: 8px;
@@ -312,7 +312,7 @@ export default function UsersManagementPage() {
         .users-container {
           background: var(--surface);
           border: 1px solid var(--border);
-          border-radius: 24px;
+          border-radius: 8px;
           box-shadow: 0 4px 30px rgba(0,0,0,0.1);
           backdrop-filter: blur(8px);
           overflow: hidden;
@@ -348,7 +348,7 @@ export default function UsersManagementPage() {
           padding: 12px 16px 12px 48px;
           background: var(--surface2);
           border: 1.5px solid var(--border);
-          border-radius: 14px;
+          border-radius: 8px;
           color: var(--text);
           font-size: 14px;
           outline: none;
@@ -367,7 +367,7 @@ export default function UsersManagementPage() {
             gap: 10px;
             background: var(--surface2);
             padding: 4px 12px;
-            border-radius: 12px;
+            border-radius: 8px;
             border: 1px solid var(--border);
         }
 
@@ -426,7 +426,7 @@ export default function UsersManagementPage() {
         .user-avatar {
           width: 44px;
           height: 44px;
-          border-radius: 12px;
+          border-radius: 8px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -475,7 +475,7 @@ export default function UsersManagementPage() {
           align-items: center;
           gap: 6px;
           padding: 6px 12px;
-          border-radius: 20px;
+          border-radius: 8px;
           font-size: 12px;
           font-weight: 600;
         }
@@ -500,7 +500,7 @@ export default function UsersManagementPage() {
         .action-btn {
           width: 38px;
           height: 38px;
-          border-radius: 10px;
+          border-radius: 8px;
           border: 1px solid var(--border);
           background: var(--surface2);
           color: var(--text-muted);

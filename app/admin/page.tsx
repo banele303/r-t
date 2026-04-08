@@ -335,7 +335,7 @@ export default function AdminProducts() {
               {paginatedProducts.map((p: any) => (
                 <tr key={p._id}>
                   <td>
-                    <div className="admin-tb-img" style={{ width: 40, height: 40, borderRadius: '50%', overflow: 'hidden', backgroundColor: 'var(--surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--border)' }}>
+                    <div className="admin-tb-img" style={{ width: 40, height: 40, borderRadius: '8px', overflow: 'hidden', backgroundColor: 'var(--surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--border)' }}>
                       {p.imageUrl
                         ? <Image src={p.imageUrl} alt={p.name} width={40} height={40} style={{ objectFit: "cover", width: '100%', height: '100%' }} />
                         : <Package size={20} style={{ opacity: 0.3 }} />}
@@ -458,7 +458,7 @@ export default function AdminProducts() {
               <form onSubmit={handleSubmit} className="pm-form">
                 <div className="pm-upload-zone" onClick={() => imageRef.current?.click()}>
                   {previewUrl ? (
-                    <Image src={previewUrl} alt="preview" width={120} height={120} style={{ objectFit: "contain", borderRadius: 12 }} />
+                    <Image src={previewUrl} alt="preview" width={120} height={120} style={{ objectFit: "contain", borderRadius: 8 }} />
                   ) : (
                     <>
                       <Upload size={28} style={{ opacity: 0.4 }} />
@@ -766,7 +766,7 @@ export default function AdminProducts() {
         .pm-modal-body { overflow-y:auto; padding:20px 30px 30px; }
         
         .pm-gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 12px; margin-bottom: 24px; }
-        .pm-gallery-item { position: relative; aspect-ratio: 1; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); background: var(--surface2); }
+        .pm-gallery-item { position: relative; aspect-ratio: 1; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); background: var(--surface2); }
         .pm-gallery-item.new { border-color: #3b82f6; }
         .pm-gallery-remove { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2; transition: 0.2s; }
         .pm-gallery-remove:hover { background: #ff4d4f; transform: scale(1.1); }
@@ -775,7 +775,7 @@ export default function AdminProducts() {
         .pm-close-btn { background:var(--surface2); border:none; padding:8px; border-radius:12px; color:var(--text-muted); cursor:pointer; }
         
         .pm-section-label { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--accent); border-bottom:1px solid var(--border); padding-bottom:6px; margin-top:20px; margin-bottom:12px; }
-        .pm-upload-zone { border:2px dashed var(--border); border-radius:16px; padding:30px; display:flex; flex-direction:column; align-items:center; gap:10px; cursor:pointer; transition:all 0.2s; }
+        .pm-upload-zone { border:2px dashed var(--border); border-radius: 8px; padding:30px; display:flex; flex-direction:column; align-items:center; gap:10px; cursor:pointer; transition:all 0.2s; }
         .pm-upload-zone:hover { border-color:var(--accent); background:var(--accent-soft); }
 
         .pm-row { display:flex; gap:16px; margin-bottom:16px; }
@@ -785,7 +785,7 @@ export default function AdminProducts() {
         .pm-field input, .pm-field select, .pm-field textarea { background:var(--surface2); border:1.5px solid var(--border); border-radius:12px; padding:12px; color:var(--text); outline:none; font-family:inherit; }
         .pm-field input:focus { border-color:var(--accent); }
 
-        .pm-sale-box { background:var(--surface2); padding:18px; border-radius:18px; border:1px solid var(--border); margin:12px 0; display:flex; flex-direction:column; gap:16px; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05); }
+        .pm-sale-box { background:var(--surface2); padding:18px; border-radius: 8px; border:1px solid var(--border); margin:12px 0; display:flex; flex-direction:column; gap:16px; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05); }
         .pm-toggle-label { display:flex; align-items:center; gap:12px; font-size:14px; font-weight:600; cursor:pointer; color: var(--text); user-select: none; }
         .pm-toggle-text { flex: 1; }
         .pm-toggle-switch { display: flex; align-items: center; }
@@ -799,7 +799,7 @@ export default function AdminProducts() {
         .pm-date-input { width: 100%; height: 46px; padding: 0 14px 0 44px !important; background: var(--surface) !important; border: 1.5px solid var(--border) !important; border-radius: 12px !important; color: var(--text); font-size: 14px; font-weight: 500; cursor: pointer; transition: 0.2s; }
         .pm-date-input:focus { border-color: var(--accent) !important; box-shadow: 0 0 0 3px var(--accent-soft) !important; }
 
-        .pm-toggles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; background: var(--surface2); padding: 18px; border-radius: 18px; border: 1px solid var(--border); }
+        .pm-toggles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; background: var(--surface2); padding: 18px; border-radius: 8px; border: 1px solid var(--border); }
 
         .pm-tag-input-group { margin-bottom: 16px; }
         .pm-tag-input-group > label { display:flex; align-items:center; gap:6px; font-size:12px; font-weight:700; color:var(--text-muted); margin-bottom:8px; }
@@ -843,7 +843,7 @@ export default function AdminProducts() {
         .pm-cancel-btn { background:var(--surface2); border:none; padding:12px 24px; border-radius:12px; font-weight:700; cursor:pointer; color:var(--text-muted); }
         .pm-submit-btn { background:linear-gradient(135deg, #1d4ed8, #3b82f6); color:white; border:none; padding:12px 30px; border-radius:12px; font-weight:700; cursor:pointer; }
 
-        .pm-variant-pricing { background:var(--surface2); padding:18px; border-radius:18px; border:1px solid var(--border); margin-top: 12px; }
+        .pm-variant-pricing { background:var(--surface2); padding:18px; border-radius: 8px; border:1px solid var(--border); margin-top: 12px; }
         .variant-price-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 8px 0; border-bottom: 1px solid var(--border); }
         .variant-price-row:last-child { border-bottom: none; }
         .variant-size-label { font-weight: 700; font-size: 13px; min-width: 60px; color: var(--text); }

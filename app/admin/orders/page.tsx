@@ -203,7 +203,7 @@ export default function AdminOrders() {
           align-items: center;
           background: var(--surface);
           padding: 20px;
-          border-radius: 18px;
+          border-radius: 8px;
           border: 1px solid var(--border);
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
         }
@@ -226,7 +226,7 @@ export default function AdminOrders() {
           padding: 12px 14px 12px 42px;
           background: var(--surface2);
           border: 1.5px solid var(--border);
-          border-radius: 12px;
+          border-radius: 8px;
           color: var(--text);
           font-size: 14px;
           outline: none;
@@ -253,7 +253,7 @@ export default function AdminOrders() {
           padding: 12px 16px;
           background: var(--surface2);
           border: 1.5px solid var(--border);
-          border-radius: 12px;
+          border-radius: 8px;
           color: var(--text);
           font-size: 14px;
           cursor: pointer;
@@ -292,7 +292,7 @@ export default function AdminOrders() {
           align-items: center;
           gap: 6px;
           padding: 6px 14px;
-          border-radius: 20px;
+          border-radius: 8px;
           font-size: 12px;
           font-weight: 700;
         }

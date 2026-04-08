@@ -69,6 +69,13 @@ export default function AdminProducts() {
   const [colorInput,    setColorInput]    = useState("");
   const [sizeInput,     setSizeInput]     = useState("");
   const [activeMenu,    setActiveMenu]    = useState<string | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<{ open: boolean, id: any, imageId: any }>({ open: false, id: null, imageId: null });
+  const [currentPage,   setCurrentPage]   = useState(1);
+  const ITEMS_PER_PAGE = 8;
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search]);
 
   const set = (k: string, v: any) => setFormData(p => ({ ...p, [k]: v }));
 
@@ -265,10 +272,15 @@ export default function AdminProducts() {
     setIsSubmitting(false);
   };
 
-  const handleDelete = async (id: any, imageId: any) => {
-    if (confirm("Delete this product?")) {
-      await deleteProduct({ id, imageId });
-      setActiveMenu(null);
+  const handleDelete = (id: any, imageId: any) => {
+    setDeleteConfirm({ open: true, id, imageId });
+    setActiveMenu(null);
+  };
+
+  const confirmDeleteAction = async () => {
+    if (deleteConfirm.id) {
+      await deleteProduct({ id: deleteConfirm.id, imageId: deleteConfirm.imageId });
+      setDeleteConfirm({ open: false, id: null, imageId: null });
     }
   };
 
@@ -276,6 +288,9 @@ export default function AdminProducts() {
     p.name.toLowerCase().includes(search.toLowerCase()) ||
     p.brand?.toLowerCase().includes(search.toLowerCase())
   );
+
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE) || 1;
+  const paginatedProducts = filtered.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   return (
     <div className="pm-page">
@@ -317,7 +332,7 @@ export default function AdminProducts() {
               </tr>
             </thead>
             <tbody>
-              {filtered.map((p: any) => (
+              {paginatedProducts.map((p: any) => (
                 <tr key={p._id}>
                   <td>
                     <div className="admin-tb-img">
@@ -382,6 +397,50 @@ export default function AdminProducts() {
             </tbody>
           </table>
         )}
+
+        {totalPages > 1 && (
+          <div className="pm-pagination">
+            <span className="pm-page-info">
+              Showing {((currentPage - 1) * ITEMS_PER_PAGE) + 1} to {Math.min(currentPage * ITEMS_PER_PAGE, filtered.length)} of {filtered.length} entries
+            </span>
+            <div className="pm-pagination-controls">
+              <button 
+                className="pm-page-btn" 
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+              >
+                Prev
+              </button>
+              <div className="pm-page-numbers">
+                {Array.from({ length: totalPages }).map((_, i) => {
+                  const pageNum = i + 1;
+                  if (pageNum === 1 || pageNum === totalPages || (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)) {
+                    return (
+                      <button 
+                        key={pageNum} 
+                        className={`pm-page-num ${currentPage === pageNum ? 'active' : ''}`}
+                        onClick={() => setCurrentPage(pageNum)}
+                      >
+                        {pageNum}
+                      </button>
+                    );
+                  }
+                  if (pageNum === currentPage - 2 || pageNum === currentPage + 2) {
+                    return <span key={pageNum} className="pm-page-dots">...</span>;
+                  }
+                  return null;
+                })}
+              </div>
+              <button 
+                className="pm-page-btn"
+                disabled={currentPage === totalPages} 
+                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {modalOpen && (
@@ -415,7 +474,24 @@ export default function AdminProducts() {
                     <input required value={formData.name} onChange={e => set("name", e.target.value)} placeholder="e.g. iPhone 16 Pro Max" />
                   </Field>
                   <Field label="Brand" required>
-                    <input required value={formData.brand} onChange={e => set("brand", e.target.value)} placeholder="e.g. Apple" />
+                    <select required value={formData.brand} onChange={e => set("brand", e.target.value)}>
+                      <option value="" disabled>Select a brand</option>
+                      <option value="Honor">Honor</option>
+                      <option value="Huawei">Huawei</option>
+                      <option value="Apple">Apple</option>
+                      <option value="Samsung">Samsung</option>
+                      <option value="Xiaomi">Xiaomi</option>
+                      <option value="Oppo">Oppo</option>
+                      <option value="Vivo">Vivo</option>
+                      <option value="Realme">Realme</option>
+                      <option value="Sony">Sony</option>
+                      <option value="Nokia">Nokia</option>
+                      <option value="Motorola">Motorola</option>
+                      <option value="Google">Google</option>
+                      <option value="OnePlus">OnePlus</option>
+                      <option value="Asus">Asus</option>
+                      <option value="Other">Other</option>
+                    </select>
                   </Field>
                 </div>
                 <div className="pm-row">
@@ -604,6 +680,22 @@ export default function AdminProducts() {
         </div>
       )}
 
+      {deleteConfirm.open && (
+        <div className="pm-backdrop" onClick={() => setDeleteConfirm({ open: false, id: null, imageId: null })}>
+          <div className="pm-delete-modal" onClick={e => e.stopPropagation()}>
+            <div className="delete-icon-wrap">
+              <Trash2 size={32} color="#ef4444" />
+            </div>
+            <h3>Delete Product?</h3>
+            <p>This action cannot be undone. Are you sure you want to permanently delete this product from your inventory?</p>
+            <div className="delete-actions">
+              <button className="cancel-delete" onClick={() => setDeleteConfirm({ open: false, id: null, imageId: null })}>Cancel</button>
+              <button className="confirm-delete" onClick={confirmDeleteAction}>Yes, delete it</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <style>{`
         .pm-page { display:flex; flex-direction:column; gap:24px; animation: fadeIn 0.3s ease; }
         .pm-header { display:flex; justify-content:space-between; align-items:center; }
@@ -760,6 +852,37 @@ export default function AdminProducts() {
 
         @keyframes slideDown { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:translateY(0); } }
         @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+        .pm-pagination { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); }
+        .pm-page-info { font-size: 13px; color: var(--text-muted); }
+        .pm-pagination-controls { display: flex; align-items: center; gap: 8px; }
+        .pm-page-btn { padding: 6px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface2); color: var(--text); font-weight: 600; font-size: 13px; cursor: pointer; transition: 0.2s; }
+        .pm-page-btn:hover:not(:disabled) { background: var(--border); }
+        .pm-page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .pm-page-numbers { display: flex; align-items: center; gap: 4px; }
+        .pm-page-num { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 8px; border: 1px solid transparent; background: transparent; color: var(--text); font-weight: 600; font-size: 13px; cursor: pointer; transition: 0.2s; }
+        .pm-page-num:hover:not(.active) { background: var(--surface2); border-color: var(--border); }
+        .pm-page-num.active { background: linear-gradient(135deg, #1d4ed8, #3b82f6); color: white; box-shadow: 0 4px 12px rgba(29, 78, 216, 0.3); }
+        .pm-page-dots { color: var(--text-muted); margin: 0 4px; }
+
+        .pm-delete-modal {
+          background: var(--surface); border-radius: 24px; padding: 32px;
+          display: flex; flex-direction: column; align-items: center; text-align: center;
+          max-width: 360px; width: 100%; box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+          animation: tagPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .delete-icon-wrap {
+          width: 64px; height: 64px; border-radius: 50%; background: rgba(239,68,68,0.1);
+          display: flex; align-items: center; justify-content: center; margin-bottom: 20px;
+        }
+        .pm-delete-modal h3 { font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 8px; margin-top: 0; }
+        .pm-delete-modal p { font-size: 14px; color: var(--text-muted); line-height: 1.5; margin-bottom: 30px; margin-top: 0; }
+        .delete-actions { display: flex; gap: 12px; width: 100%; }
+        .delete-actions button { flex: 1; padding: 14px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; transition: 0.2s; border: none; }
+        .cancel-delete { background: var(--surface2); color: var(--text); }
+        .cancel-delete:hover { background: var(--border); }
+        .confirm-delete { background: #ef4444; color: white; }
+        .confirm-delete:hover { background: #dc2626; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(239,68,68,0.3); }
       `}</style>
     </div>
   );

@@ -39,7 +39,7 @@ export const isSuperAdmin = query({
       if (!user) return false;
 
       if (user.role === "superadmin") return true;
-      if (user.email === "alexsouthflow2@gmail.com") return true;
+      if (user.email === "banelesouthflow@gmail.com") return true;
       
       return false;
     } catch (e) {
@@ -75,7 +75,7 @@ export async function requireSuperAdmin(ctx: MutationCtx | QueryCtx) {
   if (!user) throw new Error("Unauthorized: no user record.");
   if (user.isBlocked) throw new Error("Unauthorized: your account is blocked.");
 
-  const isSuper = user.role === "superadmin" || user.email === "alexsouthflow2@gmail.com";
+  const isSuper = user.role === "superadmin" || user.email === "banelesouthflow@gmail.com";
   if (!isSuper) throw new Error("Forbidden: you are not a super admin.");
   return user;
 }
@@ -107,7 +107,7 @@ export const listAllUsers = query({
     return users.map(user => ({
       ...user,
       isAdmin: adminEmails.has(user.email ?? "") || user.role === "superadmin" || user.role === "admin",
-      isSuperAdmin: user.role === "superadmin" || user.email === "alexsouthflow2@gmail.com"
+      isSuperAdmin: user.role === "superadmin" || user.email === "banelesouthflow@gmail.com"
     }));
   },
 });
@@ -177,10 +177,11 @@ export const updateUserRole = mutation({
 export const seedAdmins = mutation({
   args: {},
   handler: async (ctx) => {
-    const superAdminEmail = "alexsouthflow2@gmail.com";
+    const superAdminEmail = "banelesouthflow@gmail.com";
     const adminEmails = [
       superAdminEmail,
       "randtstore67@gmail.com",
+      "alexsouthflow@gmail.com",
     ];
 
     for (const email of adminEmails) {

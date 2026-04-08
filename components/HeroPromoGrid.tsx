@@ -10,8 +10,8 @@ export default function HeroPromoGrid() {
           <Link href="#">Learn more &gt;</Link>
           <Link href="#">Buy &gt;</Link>
         </div>
-        <div className="product-image-container">
-           <Image src="/promo_ipad.png" alt="iPad Pro" fill />
+        <div className="product-image-container rounded-[2rem] overflow-hidden">
+           <Image src="/promo_ipad.png" alt="iPad Pro" fill className="rounded-[2rem] object-contain p-4" />
         </div>
       </div>
       <div className="product-card dark-card">
@@ -20,8 +20,8 @@ export default function HeroPromoGrid() {
           <Link href="#">Learn more &gt;</Link>
           <Link href="#">Buy &gt;</Link>
         </div>
-        <div className="product-image-container">
-           <Image src="/promo_airpods.png" alt="AirPods Pro" fill />
+        <div className="product-image-container rounded-[2rem] overflow-hidden">
+           <Image src="/promo_airpods.png" alt="AirPods Pro" fill className="rounded-[2rem] object-contain p-4" />
         </div>
       </div>
       <div className="product-card">
@@ -30,8 +30,8 @@ export default function HeroPromoGrid() {
           <Link href="#">Learn more &gt;</Link>
           <Link href="#">Buy &gt;</Link>
         </div>
-        <div className="product-image-container">
-           <Image src="/promo_watch_ultra.png" alt="Watch Ultra" fill />
+        <div className="product-image-container rounded-[2rem] overflow-hidden">
+           <Image src="/promo_watch_ultra.png" alt="Watch Ultra" fill className="rounded-[2rem] object-contain p-4" />
         </div>
       </div>
       <div className="product-card dark-card">
@@ -40,8 +40,8 @@ export default function HeroPromoGrid() {
           <Link href="/mac">Learn more &gt;</Link>
           <Link href="/mac">Buy &gt;</Link>
         </div>
-        <div className="product-image-container">
-           <Image src="/macbook_hero.png" alt="MacBook Air" fill />
+        <div className="product-image-container rounded-[2rem] overflow-hidden">
+           <Image src="/macbook_hero.png" alt="MacBook Air" fill className="rounded-[2rem] object-contain p-4" />
         </div>
       </div>
     </section>

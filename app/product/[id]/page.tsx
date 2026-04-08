@@ -207,13 +207,12 @@ export default function ProductPage() {
         {/* Left Side: Product Image */}
         <div className="product-image-section">
           {product.tag && <div className="product-badge">{product.tag}</div>}
-          <div className="product-image-wrapper">
+          <div className="product-image-wrapper rounded-[2rem] overflow-hidden">
             <Image
               src={selectedImage || product.imageUrl || "/placeholder.png"}
               alt={product.name}
               fill
-              style={{ objectFit: "contain" }}
-              className="product-main-image"
+              className="product-main-image rounded-[2rem] object-contain p-8"
               priority
             />
           </div>
@@ -572,8 +571,8 @@ export default function ProductPage() {
         {relatedProducts && relatedProducts.length > 0 ? (
           relatedProducts.map((p: any) => (
             <Link key={p._id} href={`/product/${p._id}`} className="related-card">
-              <div className="related-card-image">
-                <Image src={p.imageUrl} alt={p.name} fill style={{ objectFit: 'contain' }} />
+              <div className="related-card-image rounded-[2rem] overflow-hidden">
+                <Image src={p.imageUrl} alt={p.name} fill className="rounded-[2rem] object-contain p-4" />
               </div>
               <div className="related-card-info">
                 <span className="related-card-brand">{p.brand}</span>

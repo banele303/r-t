@@ -244,12 +244,12 @@ export default function CartPage() {
         <div className="cart-items-list">
           {items.map((item, index) => (
             <div key={`${item._id}-${item.color}-${item.size}-${index}`} className="cart-item-card">
-              <div className="cart-item-image">
+              <div className="cart-item-image rounded-[2rem] overflow-hidden">
                 <Image
                   src={item.imageUrl || "/placeholder.png"}
                   alt={item.name}
                   fill
-                  style={{ objectFit: "contain" }}
+                  className="rounded-[2rem] object-contain p-4"
                 />
               </div>
 

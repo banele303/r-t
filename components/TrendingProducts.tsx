@@ -29,8 +29,8 @@ export default function TrendingProducts() {
         {displayItems.slice(0, 8).map((p: any) => (
           <Link key={p._id} href={`/product/${p._id}`} className="modern-card">
             {p.tag && <span className={`card-badge ${p.tag.toLowerCase()}`}>{p.tag}</span>}
-            <div className="card-image">
-              <Image src={p.imageUrl || ""} alt={p.name} fill />
+            <div className="card-image rounded-[2rem] overflow-hidden">
+              <Image src={p.imageUrl || ""} alt={p.name} fill className="rounded-[2rem] object-contain p-6" />
             </div>
             <div className="card-info">
               <span className="card-brand">{p.brand}</span>

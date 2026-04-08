@@ -264,8 +264,7 @@ function ProductsContent() {
                       src={product.imageUrl || "/placeholder.png"}
                       alt={product.name}
                       fill
-                      style={{ objectFit: "contain" }}
-                      className="pcard-img rounded-[2rem]"
+                      className="pcard-img rounded-[2rem] object-contain p-6"
                     />
                   </Link>
                   <div className="pcard-body">

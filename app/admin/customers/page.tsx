@@ -27,7 +27,8 @@ export default function UsersManagementPage() {
   const [filterRole, setFilterRole] = useState("all");
 
   const users = useQuery(api.admin.listAllUsers, { searchQuery: searchTerm });
-  const isSuper = useQuery(api.admin.isSuperAdmin);
+  const isAdmin = useQuery(api.admin.isAdmin);
+  const isSuper = false;
   
   const toggleBlock = useMutation(api.admin.toggleUserBlock);
   const updateRole = useMutation(api.admin.updateUserRole);

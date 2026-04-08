@@ -27,26 +27,6 @@ export const isAdmin = query({
   },
 });
 
-// ── SuperAdmin query: is the currently-logged-in user the Overall Admin? ──────
-export const isSuperAdmin = query({
-  args: {},
-  handler: async (ctx) => {
-    try {
-      const userId = await auth.getUserId(ctx);
-      if (!userId) return false;
-
-      const user = await ctx.db.get(userId);
-      if (!user) return false;
-
-      if (user.role === "superadmin") return true;
-      if (user.email === "banelesouthflow@gmail.com") return true;
-      
-      return false;
-    } catch (e) {
-      return false; 
-    }
-  },
-});
 
 // ── Reusable server-side guard for Admin ─────────────────────────────────────
 export async function requireAdmin(ctx: MutationCtx | QueryCtx) {

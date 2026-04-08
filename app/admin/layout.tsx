@@ -82,7 +82,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
   const { signOut } = useAuthActions();
   
   const isAdmin = useQuery(api.admin.isAdmin);
-  const isSuper = useQuery(api.admin.isSuperAdmin);
+  const isSuper = false;
   const currentUser = useQuery(api.users.current);
 
   const [dark, setDark] = useState(true);

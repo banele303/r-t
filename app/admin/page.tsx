@@ -691,46 +691,59 @@ export default function AdminProducts() {
                    {formData.colors.length > 0 && (
                      <div className="pm-tags-list">
                        {formData.colors.map(c => {
-                         const ciEntry = colorImages.find(ci => ci.color === c);
-                         return (
-                           <span key={c} className="pm-color-tag" style={{ alignItems: 'center', gap: '8px' }}>
-                             <span className="pm-color-dot" style={{ background: getColorHex(c) || 'linear-gradient(135deg, #ff0000, #00ff00, #0000ff)' }} />
-                             {c}
-                             {/* Color image upload */}
-                             <label
-                               title={ciEntry?.previewUrl ? `Change image for ${c}` : `Add image for ${c}`}
-                               style={{
-                                 width: '28px', height: '28px', borderRadius: '8px', overflow: 'hidden',
-                                 cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                                 border: ciEntry?.previewUrl ? '2px solid #3b82f6' : '2px dashed #aaa',
-                                 background: ciEntry?.previewUrl ? 'transparent' : 'rgba(59,130,246,0.06)',
-                                 flexShrink: 0, position: 'relative'
-                               }}
-                             >
-                               {ciEntry?.previewUrl ? (
-                                 // eslint-disable-next-line @next/next/no-img-element
-                                 <img src={ciEntry.previewUrl} alt={c} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '6px' }} />
-                               ) : (
-                                 <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2" width="14" height="14">
-                                   <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" />
-                                   <circle cx="12" cy="13" r="4" />
-                                 </svg>
-                               )}
-                               <input
-                                 type="file"
-                                 accept="image/*"
-                                 style={{ display: 'none' }}
-                                 ref={el => { colorImageInputRefs.current[c] = el; }}
-                                 onChange={e => {
-                                   const file = e.target.files?.[0];
-                                   if (file) handleColorImageChange(c, file);
-                                 }}
-                               />
-                             </label>
-                             <button type="button" onClick={() => removeColor(c)} className="pm-tag-x"><X size={12} /></button>
-                           </span>
-                         );
-                       })}
+                          const ciEntry = colorImages.find(ci => ci.color === c);
+                          const inputId = `color-img-${c.replace(/\s+/g, '-').toLowerCase()}`;
+                          return (
+                            <span key={c} className="pm-color-tag" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '8px 14px' }}>
+                              <span className="pm-color-dot" style={{ background: getColorHex(c) || 'linear-gradient(135deg, #eee, #ccc)', flexShrink: 0 }} />
+                              <span style={{ fontWeight: 600, fontSize: '13px' }}>{c}</span>
+                              
+                              <div 
+                                onClick={() => document.getElementById(inputId)?.click()}
+                                style={{
+                                  width: '36px', height: '36px', borderRadius: '10px', 
+                                  cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                  border: ciEntry?.previewUrl ? '2px solid #3b82f6' : '1px dashed #cbd5e1',
+                                  background: ciEntry?.previewUrl ? '#fff' : '#f8fafc',
+                                  transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)', 
+                                  position: 'relative', overflow: 'hidden', flexShrink: 0,
+                                  boxShadow: ciEntry?.previewUrl ? '0 4px 12px rgba(59,130,246,0.15)' : 'none'
+                                }}
+                                onMouseEnter={e => {
+                                  e.currentTarget.style.transform = 'scale(1.05)';
+                                  e.currentTarget.style.borderColor = '#3b82f6';
+                                }}
+                                onMouseLeave={e => {
+                                  e.currentTarget.style.transform = 'scale(1)';
+                                  e.currentTarget.style.borderColor = ciEntry?.previewUrl ? '#3b82f6' : '#cbd5e1';
+                                }}
+                              >
+                                {ciEntry?.previewUrl ? (
+                                  <img src={ciEntry.previewUrl} alt={c} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '2px' }} />
+                                ) : (
+                                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                    <Plus size={12} style={{ color: '#3b82f6', marginBottom: '-2px' }} />
+                                    <Palette size={10} style={{ color: '#3b82f6', opacity: 0.6 }} />
+                                  </div>
+                                )}
+                                <input
+                                  id={inputId}
+                                  type="file"
+                                  accept="image/*"
+                                  style={{ display: 'none' }}
+                                  onChange={e => {
+                                    const file = e.target.files?.[0];
+                                    if (file) {
+                                      handleColorImageChange(c, file);
+                                      e.target.value = ''; // Reset to allow re-selection
+                                    }
+                                  }}
+                                />
+                              </div>
+                              <button type="button" onClick={() => removeColor(c)} className="pm-tag-x"><X size={12} /></button>
+                            </span>
+                          );
+                        })}
                      </div>
                    )}
                    {formData.colors.length > 0 && (

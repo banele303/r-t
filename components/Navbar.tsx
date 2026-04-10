@@ -165,7 +165,37 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Auth/Cart (omitted for brevity but kept functional) */}
+          {/* Auth */}
+          {isAuthenticated ? (
+            <div style={{ position: 'relative' }} onMouseEnter={() => setUserDropdownOpen(true)} onMouseLeave={() => setUserDropdownOpen(false)}>
+              <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'linear-gradient(135deg,var(--blue),#0073e6)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', fontWeight: 700, cursor: 'pointer' }}>
+                {userInitial || 'U'}
+              </div>
+              {userDropdownOpen && (
+                <div style={{ position: 'absolute', top: '100%', right: 0, paddingTop: '10px', zIndex: 300, minWidth: '220px' }}>
+                  <div style={{ backgroundColor: '#111827', borderRadius: '16px', padding: '8px', boxShadow: '0 16px 40px rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                    <div style={{ padding: '12px 12px 10px', borderBottom: '1px solid rgba(255,255,255,0.07)', marginBottom: '6px' }}>
+                      <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'linear-gradient(135deg,var(--blue),#0073e6)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', fontWeight: 700, marginBottom: '10px' }}>{userInitial || 'U'}</div>
+                      <div style={{ fontSize: '12px', color: '#a1a1a6', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{userEmail}</div>
+                    </div>
+                    <Link href="/settings" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 12px', borderRadius: '10px', color: '#e5e7eb', fontSize: '14px', fontWeight: 500, textDecoration: 'none' }} onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.06)'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                      Settings
+                    </Link>
+                    <button onClick={handleLogout} style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%', padding: '10px 12px', borderRadius: '10px', color: '#ff6b6b', fontSize: '14px', fontWeight: 500, textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer' }} onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,107,107,0.08)'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                      Sign Out
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link href="/login" aria-label="Sign In">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="22" height="22" style={{ cursor: 'pointer' }}>
+                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" />
+              </svg>
+            </Link>
+          )}
+
           <Link href="/cart" style={{ position: 'relative' }}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="22" height="22">
               <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
@@ -174,6 +204,13 @@ export default function Navbar() {
             </svg>
             {totalItems > 0 && <span style={{ position: 'absolute', top: '-8px', right: '-8px', background: 'var(--blue)', color: 'white', fontSize: '10px', width: '16px', height: '16px', borderRadius: '50%', textAlign: 'center' }}>{totalItems}</span>}
           </Link>
+        </div>
+
+        {/* Mobile menu toggle */}
+        <div className="mobile-nav-right">
+          <button className="hamburger-btn" onClick={() => setMenuOpen(o => !o)}>
+            {menuOpen ? "✕" : "☰"}
+          </button>
         </div>
 
         {/* ══════════════════════════════════════
@@ -217,6 +254,7 @@ export default function Navbar() {
                   <Link
                     key={sub._id}
                     href={`/products?category=${encodeURIComponent(activeMegaMenu)}&subCategory=${encodeURIComponent(sub.name)}`}
+                    className="mega-sub-link"
                     onClick={() => setActiveMegaMenu(null)}
                     style={{
                       display: 'flex',
@@ -228,18 +266,6 @@ export default function Navbar() {
                       border: '1px solid transparent',
                       transition: '0.25s',
                       textDecoration: 'none'
-                    }}
-                    onMouseEnter={e => {
-                      (e.currentTarget as HTMLDivElement).style.background = '#ffffff';
-                      (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(0,0,0,0.06)';
-                      (e.currentTarget as HTMLDivElement).style.boxShadow = '0 12px 24px rgba(0,0,0,0.05)';
-                      (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-4px)';
-                    }}
-                    onMouseLeave={e => {
-                      (e.currentTarget as HTMLDivElement).style.background = '#f8fafc';
-                      (e.currentTarget as HTMLDivElement).style.borderColor = 'transparent';
-                      (e.currentTarget as HTMLDivElement).style.boxShadow = 'none';
-                      (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)';
                     }}
                   >
                     {sub.imageUrl ? (
@@ -263,6 +289,39 @@ export default function Navbar() {
         })()}
       </nav>
 
+      {/* Mobile Backdrop */}
+      {menuOpen && <div className="mobile-backdrop" onClick={() => setMenuOpen(false)} />}
+
+      {/* Mobile Drawer */}
+      <div className={`mobile-drawer ${menuOpen ? 'open' : ''}`}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+          {catList.map((cat: string) => {
+            const subs = (subcategoryTree ?? {})[cat] ?? [];
+            const isExpanded = mobileExpandedCat === cat;
+            return (
+              <div key={cat} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Link href={`/products?category=${encodeURIComponent(cat)}`} onClick={() => setMenuOpen(false)} style={{ display: 'block', padding: '16px 0', color: 'white', fontWeight: 600 }}>{cat}</Link>
+                  {subs.length > 0 && (
+                    <button onClick={() => setMobileExpandedCat(isExpanded ? null : cat)} style={{ color: '#a1a1a6', padding: '10px' }}>
+                      {isExpanded ? "−" : "+"}
+                    </button>
+                  )}
+                </div>
+                {isExpanded && (
+                  <div style={{ padding: '0 0 16px 16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {subs.map((sub: any) => (
+                      <Link key={sub._id} href={`/products?category=${encodeURIComponent(cat)}&subCategory=${encodeURIComponent(sub.name)}`} onClick={() => setMenuOpen(false)} style={{ color: '#a1a1a6', fontSize: '14px' }}>{sub.name}</Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+          <Link href="/products?isPromo=true" onClick={() => setMenuOpen(false)} style={{ padding: '16px 0', color: '#ff6b00', fontWeight: 700 }}>🔥 On Promo</Link>
+        </div>
+      </div>
+
       <div className="promo-bar">
         Get the Fastest delivery for Free. <Link href="/">Shop online at R & T Store!</Link>
       </div>
@@ -273,6 +332,15 @@ export default function Navbar() {
           to   { opacity: 1; transform: translate(-50%, 0); }
         }
         .nav-links li:hover a { color: var(--blue) !important; opacity: 1; }
+        .mega-sub-link:hover {
+          background: #ffffff !important;
+          border-color: rgba(0,0,0,0.06) !important;
+          box-shadow: 0 12px 24px rgba(0,0,0,0.05) !important;
+          transform: translateY(-4px);
+        }
+        .mega-sub-link:hover .sub-img {
+          transform: scale(1.05);
+        }
       `}</style>
     </>
   );

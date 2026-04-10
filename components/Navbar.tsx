@@ -228,28 +228,25 @@ export default function Navbar() {
                 top: '100%',
                 left: '50%',
                 transform: 'translateX(-50%)',
-                width: '900px',
+                width: '760px',
                 maxWidth: '95vw',
                 zIndex: 400,
                 background: '#ffffff',
-                borderRadius: '0 0 24px 24px',
+                borderRadius: '0 0 16px 16px',
                 border: '1px solid rgba(0,0,0,0.08)',
-                boxShadow: '0 30px 60px rgba(0,0,0,0.12)',
-                padding: '40px',
+                boxShadow: '0 20px 50px rgba(0,0,0,0.1)',
+                padding: '24px',
                 animation: 'megaIn 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
               }}
             >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '32px' }}>
-                <div>
-                  <h3 style={{ color: '#000', fontSize: '24px', fontWeight: 800, margin: 0 }}>{activeMegaMenu}</h3>
-                  <div style={{ width: '40px', height: '4px', background: 'var(--blue)', marginTop: '8px', borderRadius: '2px' }}></div>
-                </div>
-                <Link href={`/products?category=${encodeURIComponent(activeMegaMenu)}`} style={{ color: 'var(--blue)', fontSize: '14px', fontWeight: 600 }}>
-                  Browse All {activeMegaMenu} →
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                <h3 style={{ color: '#000', fontSize: '16px', fontWeight: 800, margin: 0 }}>{activeMegaMenu} Categories</h3>
+                <Link href={`/products?category=${encodeURIComponent(activeMegaMenu)}`} style={{ color: 'var(--blue)', fontSize: '13px', fontWeight: 600, textDecoration: 'none' }}>
+                  View All →
                 </Link>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
                 {subs.map((sub: any) => (
                   <Link
                     key={sub._id}
@@ -258,28 +255,34 @@ export default function Navbar() {
                     onClick={() => setActiveMegaMenu(null)}
                     style={{
                       display: 'flex',
-                      flexDirection: 'column',
-                      gap: '16px',
-                      padding: '24px',
-                      borderRadius: '20px',
+                      alignItems: 'center',
+                      gap: '14px',
+                      padding: '12px 16px',
+                      borderRadius: '12px',
                       background: '#f8fafc',
                       border: '1px solid transparent',
-                      transition: '0.25s',
+                      transition: '0.2s cubic-bezier(0.4, 0, 0.2, 1)',
                       textDecoration: 'none'
                     }}
                   >
-                    {sub.imageUrl ? (
-                      <div style={{ width: '100%', height: '140px', position: 'relative', overflow: 'hidden', borderRadius: '12px' }}>
-                        <img src={sub.imageUrl} alt={sub.name} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: '0.5s' }} className="sub-img" />
+                    <div style={{
+                      width: '24px',
+                      height: '24px',
+                      flexShrink: 0,
+                      background: '#fff',
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+                      border: '1px solid rgba(0,0,0,0.04)',
+                    }}>
+                      <span style={{ fontSize: '12px' }}>{sub.icon || '📱'}</span>
+                    </div>
+                    <div style={{ overflow: 'hidden' }}>
+                      <div style={{ color: '#000', fontWeight: 600, fontSize: '13px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {sub.name}
                       </div>
-                    ) : (
-                      <div style={{ height: '140px', background: '#e2e8f0', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <span style={{ fontSize: '24px' }}>{sub.icon}</span>
-                      </div>
-                    )}
-                    <div>
-                      <div style={{ color: '#000', fontWeight: 700, fontSize: '16px', marginBottom: '4px' }}>{sub.name}</div>
-                      <div style={{ color: '#64748b', fontSize: '13px', lineHeight: '1.4' }}>{sub.description}</div>
                     </div>
                   </Link>
                 ))}
@@ -339,7 +342,7 @@ export default function Navbar() {
           transform: translateY(-4px);
         }
         .mega-sub-link:hover .sub-img {
-          transform: scale(1.05);
+          opacity: 0.8;
         }
       `}</style>
     </>

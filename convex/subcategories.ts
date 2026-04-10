@@ -71,28 +71,28 @@ export const remove = mutation({
   },
 });
 
-/** Seed all subcategories — idempotent: clears and restarts to match user preference */
+/** Seed all subcategories — Clean/Minimalist version (No photographic images) */
 export const seedAll = mutation({
   args: {},
   handler: async (ctx) => {
     const existing = await ctx.db.query("subcategories").collect();
-    // We clear to ensure we only have the "cool" image-based ones the user wants
     for (const sub of existing) {
       await ctx.db.delete(sub._id);
     }
 
-    const data: { name: string; parentCategory: string; description: string; imageUrl: string }[] = [
+    const data: { name: string; parentCategory: string; icon: string; description: string }[] = [
       // ── Apple ──────────────────────────────────────────────
-      { parentCategory: "Apple", name: "iPhone",        description: "Explore the latest iPhone 15 & 14 models", imageUrl: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&q=80&w=400" },
-      { parentCategory: "Apple", name: "MacBook",       description: "Powerful laptops with Apple Silicon", imageUrl: "https://images.unsplash.com/photo-1517336714460-4c504265538e?auto=format&fit=crop&q=80&w=400" },
-      { parentCategory: "Apple", name: "iPad",          description: "Versatile tablets for work and play", imageUrl: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=400" },
-      { parentCategory: "Apple", name: "Apple Watch",   description: "The ultimate device for a healthy life", imageUrl: "https://images.unsplash.com/photo-1434493907317-a46b53b81832?auto=format&fit=crop&q=80&w=400" },
-      { parentCategory: "Apple", name: "AirPods",       description: "Immersive sound and seamless connection", imageUrl: "https://images.unsplash.com/photo-1588423770670-4592871b9cf2?auto=format&fit=crop&q=80&w=400" },
+      { parentCategory: "Apple", name: "iPhone",        icon: "📱", description: "Smartphones" },
+      { parentCategory: "Apple", name: "Mac",           icon: "💻", description: "Laptops" },
+      { parentCategory: "Apple", name: "iPad",          icon: "📲", description: "Tablets" },
+      { parentCategory: "Apple", name: "Watch",         icon: "⌚", description: "Wearables" },
+      { parentCategory: "Apple", name: "AirPods",       icon: "🎧", description: "Audio" },
       
       // ── Samsung ─────────────────────────────────────────────
-      { parentCategory: "Samsung", name: "Galaxy S",     description: "Experience incredible camera power", imageUrl: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&q=80&w=400" },
-      { parentCategory: "Samsung", name: "Galaxy Fold",  description: "Unfold your world with massive screens", imageUrl: "https://images.unsplash.com/photo-1678263539744-90be5624773c?auto=format&fit=crop&q=80&w=400" },
-      { parentCategory: "Samsung", name: "Galaxy Tab",   description: "Tablets designed for productivity", imageUrl: "https://images.unsplash.com/photo-1589739900243-4b123b729472?auto=format&fit=crop&q=80&w=400" },
+      { parentCategory: "Samsung", name: "Galaxy S",     icon: "📱", description: "Flagships" },
+      { parentCategory: "Samsung", name: "Galaxy Fold",  icon: "📂", description: "Foldables" },
+      { parentCategory: "Samsung", name: "Galaxy Tab",   icon: "📲", description: "Tablets" },
+      { parentCategory: "Samsung", name: "Galaxy Buds",  icon: "🎧", description: "Audio" },
     ];
 
     let count = 0;

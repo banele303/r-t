@@ -41,6 +41,22 @@ export default function ProductPage() {
     }
   }, [product, selectedColor, selectedSize]);
 
+  // Swap main image when color changes
+  React.useEffect(() => {
+    if (!product || !selectedColor) return;
+    const colorImageUrls = (product as any).colorImageUrls as { color: string; imageUrl: string; imageId: string }[] | undefined;
+    if (colorImageUrls && colorImageUrls.length > 0) {
+      const match = colorImageUrls.find(
+        (ci) => ci.color.toLowerCase().trim() === selectedColor.toLowerCase().trim()
+      );
+      if (match?.imageUrl) {
+        setSelectedImage(match.imageUrl);
+        return;
+      }
+    }
+    // No color image found — keep current image (don't reset to default)
+  }, [selectedColor, product]);
+
   React.useEffect(() => {
     if (!product || !product.isOnSale || !product.saleEndsAt) return;
     
@@ -356,7 +372,9 @@ export default function ProductPage() {
           )}
 
           <div className="product-options">
-            {product.colors && product.colors.length > 0 && (
+            {product.colors && product.colors.length > 0 && (() => {
+              const colorImageUrls = (product as any).colorImageUrls as { color: string; imageUrl: string }[] | undefined;
+              return (
               <div className="option-group" style={{ marginBottom: '24px' }}>
                 <span className="option-label" style={{ display: 'block', fontSize: '14px', fontWeight: 600, color: '#111', marginBottom: '12px' }}>
                   Select Color: <span style={{ fontWeight: 400, color: '#666' }}>{selectedColor}</span>
@@ -364,28 +382,45 @@ export default function ProductPage() {
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
                   {product.colors.map((color: string, idx: number) => {
                     const isActive = selectedColor === color;
+                    const linkedImage = colorImageUrls?.find(ci => ci.color.toLowerCase().trim() === color.toLowerCase().trim());
                     return (
-                      <div 
+                      <div
                         key={idx}
-                        onClick={() => setSelectedColor(color)}
-                        title={color}
-                        style={{ 
-                          width: '42px',
-                          height: '42px',
-                          borderRadius: '10px',
-                          backgroundColor: color, // Direct background color
-                          cursor: 'pointer',
-                          transition: 'all 0.2s',
-                          border: isActive ? '3px solid var(--blue)' : '1px solid rgba(0,0,0,0.1)',
-                          boxShadow: isActive ? '0 0 0 2px white, 0 4px 12px rgba(0,0,0,0.1)' : 'none',
-                          transform: isActive ? 'scale(1.1)' : 'scale(1)'
-                        }}
-                      />
+                        style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}
+                      >
+                        <div 
+                          onClick={() => setSelectedColor(color)}
+                          title={color}
+                          style={{ 
+                            width: '42px',
+                            height: '42px',
+                            borderRadius: '10px',
+                            backgroundColor: color,
+                            cursor: 'pointer',
+                            transition: 'all 0.2s',
+                            border: isActive ? '3px solid var(--blue)' : '1px solid rgba(0,0,0,0.1)',
+                            boxShadow: isActive ? '0 0 0 2px white, 0 4px 12px rgba(0,0,0,0.1)' : 'none',
+                            transform: isActive ? 'scale(1.1)' : 'scale(1)',
+                            position: 'relative'
+                          }}
+                        >
+                          {/* Blue dot indicator: this color has a linked image */}
+                          {linkedImage && (
+                            <span style={{
+                              position: 'absolute', top: '-4px', right: '-4px',
+                              width: '10px', height: '10px', borderRadius: '50%',
+                              background: '#3b82f6', border: '2px solid white',
+                              zIndex: 2
+                            }} title="Has color image" />
+                          )}
+                        </div>
+                      </div>
                     )
                   })}
                 </div>
               </div>
-            )}
+              );
+            })()}
 
             {product.sizes && product.sizes.length > 0 && (
               <div className="option-group">

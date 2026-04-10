@@ -11,6 +11,17 @@ async function resolveImageUrl(ctx: any, imageId: string | undefined | null) {
   }
 }
 
+async function resolveColorImageUrls(ctx: any, colorImages: { color: string; imageId: string }[] | undefined) {
+  if (!colorImages || colorImages.length === 0) return [];
+  return await Promise.all(
+    colorImages.map(async (ci) => ({
+      color: ci.color,
+      imageUrl: await resolveImageUrl(ctx, ci.imageId),
+      imageId: ci.imageId,
+    }))
+  );
+}
+
 export const get = query({
   args: {},
   handler: async (ctx) => {
@@ -25,6 +36,7 @@ export const get = query({
           additionalImageUrls: product.additionalImageIds 
             ? await Promise.all(product.additionalImageIds.map(id => resolveImageUrl(ctx, id))) 
             : [],
+          colorImageUrls: await resolveColorImageUrls(ctx, product.colorImages),
         };
       })
     );
@@ -44,6 +56,7 @@ export const getById = query({
       additionalImageUrls: product.additionalImageIds 
         ? await Promise.all(product.additionalImageIds.map(id => resolveImageUrl(ctx, id))) 
         : [],
+      colorImageUrls: await resolveColorImageUrls(ctx, product.colorImages),
     };
   },
 });
@@ -57,6 +70,7 @@ export const add = mutation({
     imageId: v.string(),
     additionalImageIds: v.optional(v.array(v.string())),
     category: v.string(),
+    subCategory: v.optional(v.string()),
     tag: v.optional(v.string()),
     description: v.optional(v.string()),
     isPromo: v.optional(v.boolean()),
@@ -65,6 +79,10 @@ export const add = mutation({
     isOnSale: v.optional(v.boolean()),
     saleEndsAt: v.optional(v.string()),
     colors: v.optional(v.array(v.string())),
+    colorImages: v.optional(v.array(v.object({
+      color: v.string(),
+      imageId: v.string(),
+    }))),
     sizes: v.optional(v.array(v.string())),
     sizePrices: v.optional(v.array(v.object({
       size: v.string(),
@@ -87,6 +105,7 @@ export const update = mutation({
     imageId: v.optional(v.string()),
     additionalImageIds: v.optional(v.array(v.string())),
     category: v.optional(v.string()),
+    subCategory: v.optional(v.string()),
     tag: v.optional(v.string()),
     description: v.optional(v.string()),
     isPromo: v.optional(v.boolean()),
@@ -95,6 +114,10 @@ export const update = mutation({
     isOnSale: v.optional(v.boolean()),
     saleEndsAt: v.optional(v.string()),
     colors: v.optional(v.array(v.string())),
+    colorImages: v.optional(v.array(v.object({
+      color: v.string(),
+      imageId: v.string(),
+    }))),
     sizes: v.optional(v.array(v.string())),
     sizePrices: v.optional(v.array(v.object({
       size: v.string(),
@@ -218,6 +241,7 @@ export const getRelated = query({
 export const getFiltered = query({
   args: {
     category: v.optional(v.string()),
+    subCategory: v.optional(v.string()),
     brand: v.optional(v.string()),
     minPrice: v.optional(v.number()),
     maxPrice: v.optional(v.number()),
@@ -239,6 +263,9 @@ export const getFiltered = query({
     }
     if (args.category && args.category !== "All") {
       products = products.filter((p) => p.category === args.category);
+    }
+    if (args.subCategory && args.subCategory !== "All") {
+      products = products.filter((p) => (p as any).subCategory === args.subCategory);
     }
     if (args.brand && args.brand !== "All") {
       products = products.filter((p) => p.brand === args.brand);
@@ -264,6 +291,8 @@ export const getFiltered = query({
     );
   },
 });
+
+
 
 export const getMeta = query({
   args: {},

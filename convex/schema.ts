@@ -25,6 +25,7 @@ export default defineSchema({
     imageId: v.string(),
     additionalImageIds: v.optional(v.array(v.string())),
     category: v.string(),
+    subCategory: v.optional(v.string()),
     tag: v.optional(v.string()),
     description: v.optional(v.string()),
     isPromo: v.optional(v.boolean()),
@@ -34,6 +35,10 @@ export default defineSchema({
     isOnSale: v.optional(v.boolean()),
     saleEndsAt: v.optional(v.string()),   // ISO date string
     colors: v.optional(v.array(v.string())),
+    colorImages: v.optional(v.array(v.object({
+      color: v.string(),
+      imageId: v.string(),
+    }))),
     sizes: v.optional(v.array(v.string())),
     sizePrices: v.optional(v.array(v.object({
       size: v.string(),
@@ -46,6 +51,12 @@ export default defineSchema({
     description: v.optional(v.string()),
     imageId: v.optional(v.string()),
   }),
+  subcategories: defineTable({
+    name: v.string(),
+    parentCategory: v.string(), // e.g. "Apple", "Samsung"
+    description: v.optional(v.string()),
+    icon: v.optional(v.string()),  // emoji icon
+  }).index("by_parent", ["parentCategory"]),
   reviews: defineTable({
     productId: v.id("products"),
     userName: v.string(),

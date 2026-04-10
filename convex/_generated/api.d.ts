@@ -19,8 +19,8 @@ import type * as payfastItn from "../payfastItn.js";
 import type * as products from "../products.js";
 import type * as reviews from "../reviews.js";
 import type * as seed from "../seed.js";
-import type * as seedHonor from "../seedHonor.js";
 import type * as storage from "../storage.js";
+import type * as subcategories from "../subcategories.js";
 import type * as users from "../users.js";
 
 import type {
@@ -41,8 +41,8 @@ declare const fullApi: ApiFromModules<{
   products: typeof products;
   reviews: typeof reviews;
   seed: typeof seed;
-  seedHonor: typeof seedHonor;
   storage: typeof storage;
+  subcategories: typeof subcategories;
   users: typeof users;
 }>;
 

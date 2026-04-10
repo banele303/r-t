@@ -34,7 +34,7 @@ const getColorHex = (name: string): string | null => COLOR_MAP[name.toLowerCase(
 
 const emptyForm = {
   name: "", brand: "", price: "", oldPrice: "",
-  category: "", tag: "", description: "",
+  category: "", subCategory: "", tag: "", description: "",
   stock: "",
   isPromo: false, isTrending: false,
   isOnSale: false, saleEndsAt: "",
@@ -43,16 +43,35 @@ const emptyForm = {
   sizePrices: [] as { size: string, price: string, oldPrice: string }[],
 };
 
+// Per-color image data types
+type ColorImageEntry = {
+  color: string;
+  imageId: string;   // existing storage ID (when editing)
+  previewUrl: string; // object URL or existing URL
+  newFile?: File;     // newly selected file
+};
+
 export default function AdminProducts() {
-  const products      = useQuery(api.products?.get);
-  const dbCategories  = useQuery(api.categories?.get);
-  const addProduct    = useMutation(api.products?.add);
-  const updateProduct = useMutation(api.products?.update);
-  const deleteProduct = useMutation(api.products?.remove);
-  const genUploadUrl  = useMutation(api.storage?.generateUploadUrl);
+  const products         = useQuery(api.products?.get);
+  const dbCategories     = useQuery(api.categories?.get);
+  const dbSubcategories  = useQuery(api.subcategories?.get);
+  const seedSubcats      = useMutation(api.subcategories?.seedAll);
+  const addProduct       = useMutation(api.products?.add);
+  const updateProduct    = useMutation(api.products?.update);
+  const deleteProduct    = useMutation(api.products?.remove);
+  const genUploadUrl     = useMutation(api.storage?.generateUploadUrl);
 
   // Dynamic categories from the database
   const categoryNames = (dbCategories ?? []).map((c: any) => c.name);
+  const allSubcategories = dbSubcategories ?? [];
+
+  // Auto-seed subcategories once on mount if none exist
+  useEffect(() => {
+    if (dbSubcategories !== undefined && dbSubcategories.length === 0) {
+      seedSubcats({}).catch(console.error);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dbSubcategories]);
 
   const imageRef = useRef<HTMLInputElement>(null);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -72,6 +91,10 @@ export default function AdminProducts() {
   const [deleteConfirm, setDeleteConfirm] = useState<{ open: boolean, id: any, imageId: any }>({ open: false, id: null, imageId: null });
   const [currentPage,   setCurrentPage]   = useState(1);
   const ITEMS_PER_PAGE = 8;
+
+  // Per-color image state
+  const [colorImages, setColorImages] = useState<ColorImageEntry[]>([]);
+  const colorImageInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
   useEffect(() => {
     setCurrentPage(1);
@@ -93,6 +116,7 @@ export default function AdminProducts() {
       price: product.price.toString(),
       oldPrice: product.oldPrice?.toString() ?? "",
       category: product.category,
+      subCategory: product.subCategory ?? "",
       tag: product.tag ?? "",
       description: product.description ?? "",
       stock: product.stock?.toString() ?? "",
@@ -113,6 +137,13 @@ export default function AdminProducts() {
     setExistingExtraIds(product.additionalImageIds ?? []);
     setExtraPreviewUrls([]);
     setSelectedExtraImages([]);
+    // Restore existing color images
+    const existingColorImages: ColorImageEntry[] = (product.colorImageUrls ?? []).map((ci: any) => ({
+      color: ci.color,
+      imageId: ci.imageId,
+      previewUrl: ci.imageUrl,
+    }));
+    setColorImages(existingColorImages);
     setModalOpen(true);
     setActiveMenu(null);
   };
@@ -129,6 +160,7 @@ export default function AdminProducts() {
     setEditingId(null);
     setColorInput("");
     setSizeInput("");
+    setColorImages([]);
     if (imageRef.current) imageRef.current.value = "";
   };
 
@@ -159,10 +191,28 @@ export default function AdminProducts() {
     const trimmed = val.trim();
     if (trimmed && !formData.colors.includes(trimmed)) {
       set("colors", [...formData.colors, trimmed]);
+      // Add a placeholder slot for this color's image if not present
+      setColorImages(prev => {
+        if (prev.some(ci => ci.color === trimmed)) return prev;
+        return [...prev, { color: trimmed, imageId: "", previewUrl: "" }];
+      });
     }
     setColorInput("");
   };
-  const removeColor = (c: string) => set("colors", formData.colors.filter(x => x !== c));
+  const removeColor = (c: string) => {
+    set("colors", formData.colors.filter(x => x !== c));
+    setColorImages(prev => prev.filter(ci => ci.color !== c));
+  };
+
+  const handleColorImageChange = (color: string, file: File) => {
+    const url = URL.createObjectURL(file);
+    setColorImages(prev =>
+      prev.map(ci => ci.color === color
+        ? { ...ci, previewUrl: url, newFile: file }
+        : ci
+      )
+    );
+  };
 
   const addSize = (val: string) => {
     const trimmed = val.trim();
@@ -223,13 +273,25 @@ export default function AdminProducts() {
         extraStorageIds.push(json.storageId);
       }
 
-      // Combine existing and new extra images
-      // We need to keep the storage IDs for existing ones if they haven't changed
-      // But we have URLs in existingExtraUrls... we need storage IDs.
-      // Let's assume the products query also returns the original additionalImageIds.
-
-
       const finalExtraImages = [...existingExtraIds, ...extraStorageIds];
+
+      // Upload per-color images
+      const uploadedColorImages: { color: string; imageId: string }[] = [];
+      for (const ci of colorImages) {
+        if (ci.newFile && genUploadUrl) {
+          const postUrl = await genUploadUrl();
+          const res = await fetch(postUrl, {
+            method: "POST",
+            headers: { "Content-Type": ci.newFile.type },
+            body: ci.newFile,
+          });
+          const json = await res.json();
+          uploadedColorImages.push({ color: ci.color, imageId: json.storageId });
+        } else if (ci.imageId) {
+          // Keep existing
+          uploadedColorImages.push({ color: ci.color, imageId: ci.imageId });
+        }
+      }
 
       const payload = {
         name: formData.name,
@@ -237,6 +299,7 @@ export default function AdminProducts() {
         price: Number(formData.price),
         oldPrice: formData.oldPrice ? Number(formData.oldPrice) : undefined,
         category: formData.category,
+        subCategory: formData.subCategory || undefined,
         tag: formData.tag || undefined,
         description: formData.description || undefined,
         stock: formData.stock ? Number(formData.stock) : undefined,
@@ -245,6 +308,7 @@ export default function AdminProducts() {
         isOnSale: formData.isOnSale,
         saleEndsAt: formData.isOnSale && formData.saleEndsAt ? formData.saleEndsAt : undefined,
         colors: formData.colors.length ? formData.colors : undefined,
+        colorImages: uploadedColorImages.length ? uploadedColorImages : undefined,
         sizes: formData.sizes.length  ? formData.sizes  : undefined,
         sizePrices: formData.sizePrices.length ? formData.sizePrices.map(sp => ({
           size: sp.size,
@@ -258,7 +322,7 @@ export default function AdminProducts() {
         await updateProduct({ 
           id: editingId as any, 
           ...payload,
-          imageId: storageId || undefined // Only update image if new one uploaded
+          imageId: storageId || undefined
         });
       } else {
         if (!storageId) throw new Error("Image required for new product");
@@ -494,13 +558,51 @@ export default function AdminProducts() {
                     </select>
                   </Field>
                 </div>
+                {/* Sub-Category selector — auto-fills parent category */}
                 <div className="pm-row">
-                  <Field label="Category">
-                    <select value={formData.category} onChange={e => set("category", e.target.value)}>
-                      <option value="" disabled>Select a category</option>
-                      {categoryNames.map((c: string) => <option key={c} value={c}>{c}</option>)}
+                  <Field label="Sub-Category" required>
+                    <select
+                      required
+                      value={formData.subCategory}
+                      onChange={e => {
+                        const selectedSub = e.target.value;
+                        const match = allSubcategories.find((s: any) => s.name === selectedSub);
+                        set("subCategory", selectedSub);
+                        if (match) set("category", match.parentCategory);
+                      }}
+                    >
+                      <option value="" disabled>Select a sub-category</option>
+                      {categoryNames.map((cat: string) => {
+                        const subs = allSubcategories.filter((s: any) => s.parentCategory === cat);
+                        if (!subs.length) return null;
+                        return (
+                          <optgroup key={cat} label={`── ${cat} ──`}>
+                            {subs.map((s: any) => (
+                              <option key={s._id} value={s.name}>{s.icon ? `${s.icon} ` : ''}{s.name}</option>
+                            ))}
+                          </optgroup>
+                        );
+                      })}
                     </select>
                   </Field>
+                  <Field label="Brand (Category)">
+                    <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
+                      {formData.category ? (
+                        <span style={{
+                          display: 'inline-flex', alignItems: 'center', gap: '8px',
+                          background: 'linear-gradient(135deg,#1d4ed8,#3b82f6)',
+                          color: 'white', padding: '10px 16px', borderRadius: '12px',
+                          fontSize: '13px', fontWeight: 700
+                        }}>
+                          ✓ {formData.category}
+                        </span>
+                      ) : (
+                        <span style={{ color: 'var(--text-muted)', fontSize: '13px' }}>Auto-filled from sub-category</span>
+                      )}
+                    </div>
+                  </Field>
+                </div>
+                <div className="pm-row">
                   <Field label="Display Tag">
                     <input value={formData.tag} onChange={e => set("tag", e.target.value)} placeholder="e.g. Best Seller" />
                   </Field>
@@ -588,14 +690,54 @@ export default function AdminProducts() {
                    </div>
                    {formData.colors.length > 0 && (
                      <div className="pm-tags-list">
-                       {formData.colors.map(c => (
-                         <span key={c} className="pm-color-tag">
-                           <span className="pm-color-dot" style={{ background: getColorHex(c) || 'linear-gradient(135deg, #ff0000, #00ff00, #0000ff)' }} />
-                           {c}
-                           <button type="button" onClick={() => removeColor(c)} className="pm-tag-x"><X size={12} /></button>
-                         </span>
-                       ))}
+                       {formData.colors.map(c => {
+                         const ciEntry = colorImages.find(ci => ci.color === c);
+                         return (
+                           <span key={c} className="pm-color-tag" style={{ alignItems: 'center', gap: '8px' }}>
+                             <span className="pm-color-dot" style={{ background: getColorHex(c) || 'linear-gradient(135deg, #ff0000, #00ff00, #0000ff)' }} />
+                             {c}
+                             {/* Color image upload */}
+                             <label
+                               title={ciEntry?.previewUrl ? `Change image for ${c}` : `Add image for ${c}`}
+                               style={{
+                                 width: '28px', height: '28px', borderRadius: '8px', overflow: 'hidden',
+                                 cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                                 border: ciEntry?.previewUrl ? '2px solid #3b82f6' : '2px dashed #aaa',
+                                 background: ciEntry?.previewUrl ? 'transparent' : 'rgba(59,130,246,0.06)',
+                                 flexShrink: 0, position: 'relative'
+                               }}
+                             >
+                               {ciEntry?.previewUrl ? (
+                                 // eslint-disable-next-line @next/next/no-img-element
+                                 <img src={ciEntry.previewUrl} alt={c} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '6px' }} />
+                               ) : (
+                                 <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2" width="14" height="14">
+                                   <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" />
+                                   <circle cx="12" cy="13" r="4" />
+                                 </svg>
+                               )}
+                               <input
+                                 type="file"
+                                 accept="image/*"
+                                 style={{ display: 'none' }}
+                                 ref={el => { colorImageInputRefs.current[c] = el; }}
+                                 onChange={e => {
+                                   const file = e.target.files?.[0];
+                                   if (file) handleColorImageChange(c, file);
+                                 }}
+                               />
+                             </label>
+                             <button type="button" onClick={() => removeColor(c)} className="pm-tag-x"><X size={12} /></button>
+                           </span>
+                         );
+                       })}
                      </div>
+                   )}
+                   {formData.colors.length > 0 && (
+                     <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="12" height="12"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                       Click the camera icon on each color to assign a product image for that color variant.
+                     </p>
                    )}
                 </div>
 

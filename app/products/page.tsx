@@ -20,6 +20,7 @@ function ProductsContent() {
   // ── Filter state (driven from URL query params)
   const [searchTerm, setSearchTerm] = useState(searchParams.get("q") || "");
   const [category, setCategory] = useState(searchParams.get("category") || "All");
+  const [subCategory, setSubCategory] = useState(searchParams.get("subCategory") || "All");
   const [brand, setBrand] = useState("All");
   const [sortBy, setSortBy] = useState("newest");
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 999999]);
@@ -31,9 +32,11 @@ function ProductsContent() {
   useEffect(() => {
     const q = searchParams.get("q") || "";
     const cat = searchParams.get("category") || "All";
+    const subCat = searchParams.get("subCategory") || "All";
     const promo = searchParams.get("isPromo") === "true";
     setSearchTerm(q);
     setCategory(cat);
+    setSubCategory(subCat);
     setPromoOnly(promo);
     setPage(1);
   }, [searchParams]);
@@ -42,6 +45,7 @@ function ProductsContent() {
   const meta = useQuery(api.products.getMeta);
   const allProducts = useQuery(api.products.getFiltered, {
     category: category === "All" ? undefined : category,
+    subCategory: subCategory === "All" ? undefined : subCategory,
     brand: brand === "All" ? undefined : brand,
     searchTerm: searchTerm || undefined,
     minPrice: priceRange[0] > 0 ? priceRange[0] : undefined,
@@ -69,7 +73,7 @@ function ProductsContent() {
   };
 
   const hasActiveFilters =
-    searchTerm || category !== "All" || brand !== "All" ||
+    searchTerm || category !== "All" || subCategory !== "All" || brand !== "All" ||
     priceRange[0] > 0 || priceRange[1] < 999999 || promoOnly;
 
   return (
@@ -222,6 +226,7 @@ function ProductsContent() {
           {hasActiveFilters && (
             <div className="active-filters">
               {category !== "All" && <span className="active-filter-pill">{category} <button onClick={() => { setCategory("All"); setPage(1); }}>✕</button></span>}
+              {subCategory !== "All" && <span className="active-filter-pill">{subCategory} <button onClick={() => { setSubCategory("All"); setPage(1); }}>✕</button></span>}
               {brand !== "All" && <span className="active-filter-pill">{brand} <button onClick={() => { setBrand("All"); setPage(1); }}>✕</button></span>}
               {promoOnly && <span className="active-filter-pill">On Promo <button onClick={() => { setPromoOnly(false); setPage(1); }}>✕</button></span>}
               {searchTerm && <span className="active-filter-pill">"{searchTerm}" <button onClick={() => { setSearchTerm(""); setPage(1); }}>✕</button></span>}

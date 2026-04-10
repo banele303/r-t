@@ -56,6 +56,7 @@ export default defineSchema({
     parentCategory: v.string(), // e.g. "Apple", "Samsung"
     description: v.optional(v.string()),
     icon: v.optional(v.string()),  // emoji icon
+    imageUrl: v.optional(v.string()), // Added for premium product images
   }).index("by_parent", ["parentCategory"]),
   reviews: defineTable({
     productId: v.id("products"),

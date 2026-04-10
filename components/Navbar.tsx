@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { useConvexAuth, useQuery } from "convex/react";
+import { useConvexAuth, useQuery, useMutation } from "convex/react";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { api } from "../convex/_generated/api";
 import { useCart } from "./CartContext";
@@ -46,12 +46,27 @@ export default function Navbar() {
   };
 
   const closeMega = () => {
-    megaMenuTimer.current = setTimeout(() => setActiveMegaMenu(null), 120);
+    megaMenuTimer.current = setTimeout(() => setActiveMegaMenu(null), 300); // More forgiving delay
   };
 
   const keepMega = () => {
     if (megaMenuTimer.current) clearTimeout(megaMenuTimer.current);
   };
+
+  const runSeedSubcats = useMutation(api.subcategories.seedAll);
+  const runSeedCats = useMutation(api.categories.seedAll);
+
+  useEffect(() => {
+    if (categories && categories.length === 0) {
+      runSeedCats({}).catch(console.error);
+    }
+  }, [categories, runSeedCats]);
+
+  useEffect(() => {
+    if (subcategoryTree && Object.keys(subcategoryTree).length === 0) {
+      runSeedSubcats({}).catch(console.error);
+    }
+  }, [subcategoryTree, runSeedSubcats]);
 
   useEffect(() => () => { if (megaMenuTimer.current) clearTimeout(megaMenuTimer.current); }, []);
 
@@ -228,7 +243,6 @@ export default function Navbar() {
             )}
           </button>
         </div>
-      </nav>
 
       {/* ══════════════════════════════════════
           MEGA-MENU (Desktop)
@@ -241,8 +255,8 @@ export default function Navbar() {
             onMouseEnter={keepMega}
             onMouseLeave={closeMega}
             style={{
-              position: 'fixed',
-              top: '88px', // below nav
+              position: 'absolute',
+              top: '100%', // Exactly at the bottom border
               left: 0,
               right: 0,
               zIndex: 190,
@@ -328,6 +342,7 @@ export default function Navbar() {
           </div>
         );
       })()}
+      </nav>
 
       {/* Mobile Drawer Backdrop */}
       {menuOpen && <div className="mobile-backdrop" onClick={() => setMenuOpen(false)} />}

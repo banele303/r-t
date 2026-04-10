@@ -38,3 +38,19 @@ export const remove = mutation({
     await ctx.db.delete(args.id);
   },
 });
+export const seedAll = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const existing = await ctx.db.query("categories").collect();
+    if (existing.length > 0) return { skipped: true };
+    const brands = [
+      "Apple", "Samsung", "Huawei", "Honor", "Xiaomi", 
+      "Oppo", "Vivo", "Realme", "Sony", "Nokia", 
+      "Motorola", "Google", "OnePlus", "Asus"
+    ];
+    for (const brand of brands) {
+      await ctx.db.insert("categories", { name: brand });
+    }
+    return { seeded: true, count: brands.length };
+  },
+});

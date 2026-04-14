@@ -657,11 +657,15 @@ button {
 }
 
 .iphone-slide {
-  background: linear-gradient(135deg, #fdfbfb, #ebedee);
+  background: #ffffff;
 }
 
 .watch-slide {
-  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  background: #ffffff;
+}
+
+.luxury-slide {
+  background: #ffffff;
 }
 
 @keyframes slideInLeft {

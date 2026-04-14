@@ -75,8 +75,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 32px;
-    overflow: hidden;
+    border-radius: 24px !important;
+    overflow: hidden !important;
+    isolation: isolate;
+    transform: translateZ(0);
 }
 
 .promo-card:hover .promo-card-image {

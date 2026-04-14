@@ -424,16 +424,19 @@ button {
   justify-content: center;
   animation: slideInRight 1s cubic-bezier(0.2, 0.8, 0.2, 1);
   margin-right: -2%;
-  border-radius: 50px; /* Strong rounding on container */
-  overflow: hidden; /* Force clipping */
+  border-radius: 32px !important; /* Force rounding */
+  overflow: hidden !important; 
+  isolation: isolate; /* Prevent filter/blend interference with clipping */
+  transform: translateZ(0); /* Hardware acceleration for stable clipping */
 }
 
 .hero-image-container img {
   object-fit: contain !important;
   animation: float 6s ease-in-out infinite;
-  border-radius: 50px; /* Strong rounding on image */
+  border-radius: 32px !important;
   mix-blend-mode: multiply;
-  filter: drop-shadow(0 20px 60px rgba(0,0,0,0.1));
+  filter: drop-shadow(0 20px 60px rgba(0,0,0,0.05));
+  transform: translateZ(0);
 }
 
 @keyframes float {
@@ -1635,12 +1638,14 @@ button {
   position: relative;
   margin-bottom: 0;
   transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-  border-radius: 32px; /* Full rounding */
-  overflow: hidden;
+  border-radius: 24px !important; /* Full rounding */
+  overflow: hidden !important;
   background: #ffffff; 
   display: flex;
   align-items: center;
   justify-content: center;
+  isolation: isolate;
+  transform: translateZ(0);
 }
 
 .card-image img {

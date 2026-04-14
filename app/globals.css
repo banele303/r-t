@@ -1635,22 +1635,19 @@ button {
   position: relative;
   margin-bottom: 0;
   transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-  border-radius: 32px 32px 0 0;
+  border-radius: 32px; /* Full rounding */
   overflow: hidden;
-  background: #ffffff; /* Uniform white background */
+  background: #ffffff; 
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.modern-card:hover .card-image {
-  transform: scale(1.04);
-}
-
 .card-image img {
-  object-fit: contain;
-  border-radius: 32px; /* All around rounded like the card */
+  object-fit: contain !important;
+  border-radius: 32px; 
   padding: 24px;
+  mix-blend-mode: multiply; /* Blend with card background */
 }
 
 .card-info {
@@ -1907,6 +1904,7 @@ button {
   .card-image {
     height: 110px !important;
     margin-bottom: 12px !important;
+    border-radius: 24px !important;
   }
 
   .card-info h3 {

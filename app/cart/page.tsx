@@ -76,6 +76,7 @@ export default function CartPage() {
         itemName: `R&T Order #${orderId.toString().slice(-6)}`,
         customerEmail: currentUser.email || "",
         customerName: currentUser.name || "Customer",
+        siteUrl: process.env.NEXT_PUBLIC_SITE_URL || window.location.origin,
       });
 
       const form = document.createElement('form');

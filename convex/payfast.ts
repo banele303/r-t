@@ -17,10 +17,6 @@ const PAYFAST_BASE_URL = process.env.PAYFAST_BASE_URL?.trim() || (IS_LIVE
   : "https://sandbox.payfast.co.za/eng/process");
 
 
-
-const NEXT_PUBLIC_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL?.trim() || "";
-
-
 // This helper will generate the required signature for PayFast
 function generateSignature(data: any, passphrase?: string) {
   let queryString = "";
@@ -50,19 +46,25 @@ export const getPaymentData = action({
     itemName: v.string(),
     customerEmail: v.string(),
     customerName: v.string(),
+    siteUrl: v.string(),
   },
   handler: async (ctx, args) => {
+    // Use the siteUrl passed from the frontend (where NEXT_PUBLIC_SITE_URL is available at build time)
+    // Fall back to env var if available, then to empty string
+    const siteUrl = args.siteUrl || process.env.NEXT_PUBLIC_SITE_URL?.trim() || "";
+    
     console.log(`[PayFast] Request for Order: ${args.orderId}`);
     console.log(`[PayFast] Mode: ${PAYFAST_MODE} (IS_LIVE: ${IS_LIVE})`);
     console.log(`[PayFast] Target URL: ${PAYFAST_BASE_URL}`);
+    console.log(`[PayFast] Site URL for redirects: ${siteUrl}`);
 
     // Construct data with trimmed values
 
     const data: any = {
       merchant_id: PAYFAST_MERCHANT_ID,
       merchant_key: PAYFAST_MERCHANT_KEY,
-      return_url: `${NEXT_PUBLIC_SITE_URL}/checkout/success?orderId=${args.orderId}`,
-      cancel_url: `${NEXT_PUBLIC_SITE_URL}/checkout/cancel?orderId=${args.orderId}`,
+      return_url: `${siteUrl}/checkout/success?orderId=${args.orderId}`,
+      cancel_url: `${siteUrl}/checkout/cancel?orderId=${args.orderId}`,
       notify_url: `${process.env.NEXT_PUBLIC_CONVEX_SITE_URL}/payfast-itn`,
       email_address: args.customerEmail.trim(),
       m_payment_id: args.orderId,

@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useCart } from "@/components/CartContext";
@@ -12,6 +12,7 @@ import "../product.css";
 
 export default function ProductPage() {
   const params = useParams();
+  const router = useRouter();
   const productId = params.id as any;
   const product = useQuery(api.products.getById, { id: productId });
   const relatedProducts = useQuery(api.products.getRelated, product ? { category: product.category, currentProductId: product._id } : "skip" as any);
@@ -485,7 +486,13 @@ export default function ProductPage() {
               </svg>
               Add {quantity > 1 ? `${quantity} ` : ''}to Cart
             </button>
-            <button className="btn-buy-now">Buy Now</button>
+            <button className="btn-buy-now" onClick={() => {
+              for (let i = 0; i < quantity; i++) {
+                addToCart({ ...product, price: currentPrice }, selectedColor || undefined, selectedSize || undefined);
+              }
+              toast.success(`${quantity}× ${product.name} added — redirecting to checkout!`);
+              router.push('/cart');
+            }}>Buy Now</button>
           </div>
 
           <div className="product-description" style={{ marginTop: '32px', paddingTop: '32px', borderTop: '1px solid #eee' }}>

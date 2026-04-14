@@ -13,7 +13,7 @@ const slides = [
     icon: <Smartphone size={24} />,
     saveText: "Titanium. Powerhouse.",
     desc: "Experience the pinnacle of mobile technology with Apple Intelligence and pro-grade cameras.",
-    image: "/floating_iphone_hero_1776198971040.png",
+    image: "/floating_iphone_hero.png",
     terms: "Exclusive Launch Offer"
   },
   {
@@ -24,7 +24,7 @@ const slides = [
     icon: <Watch size={24} />,
     saveText: "Superior Craftsmanship",
     desc: "Every detail engineered for perfection. The most advanced iPhone lineup yet.",
-    image: "/floating_iphone_hero_1776198971040.png",
+    image: "/floating_iphone_hero.png",
     terms: "Starting from R1,299pm"
   },
   {
@@ -35,7 +35,7 @@ const slides = [
     icon: <Smartphone size={24} />,
     saveText: "Smarter Performance",
     desc: "Supercharged by the A18 Pro chip. Built for the future of Apple Intelligence.",
-    image: "/floating_iphone_hero_1776198971040.png",
+    image: "/floating_iphone_hero.png",
     terms: "Available in all Titanium finishes"
   },
   {

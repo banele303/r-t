@@ -199,10 +199,14 @@
     }
 
     .promo-card-image {
-        height: 110px !important;
+        height: 180px !important; /* Increased from 110px */
         margin-bottom: 12px !important;
-        border-radius: 20px !important; /* Full rounding on mobile too */
+        border-radius: 20px !important; 
         overflow: hidden !important;
+    }
+
+    .promo-card-image img {
+        padding: 10px !important; /* Reduced padding */
     }
 
     .promo-card-content h3 {

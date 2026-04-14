@@ -30,7 +30,7 @@ export default function TrendingProducts() {
           <Link key={p._id} href={`/product/${p._id}`} className="modern-card">
             {p.tag && <span className={`card-badge ${p.tag.toLowerCase()}`}>{p.tag}</span>}
             <div className="card-image rounded-md overflow-hidden">
-              <Image src={p.imageUrl || ""} alt={p.name} fill className="rounded-md object-contain p-6" />
+              <Image src={p.imageUrl || ""} alt={p.name} fill className="rounded-md object-contain" />
             </div>
             <div className="card-info">
               <span className="card-brand">{p.brand}</span>

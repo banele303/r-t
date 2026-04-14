@@ -57,7 +57,7 @@ export default function PromoProducts() {
           <Link key={item._id} href={`/product/${item._id}`} className="promo-card">
             {item.tag && <div className="promo-card-badge">{item.tag}</div>}
             <div className="promo-card-image rounded-md overflow-hidden">
-              <Image src={item.imageUrl || ""} alt={item.name} fill className="rounded-md object-contain p-6" />
+              <Image src={item.imageUrl || ""} alt={item.name} fill className="rounded-md object-contain" />
             </div>
             <div className="promo-card-content">
               <h3>{item.name}</h3>

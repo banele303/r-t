@@ -1902,9 +1902,13 @@ button {
   }
 
   .card-image {
-    height: 110px !important;
+    height: 180px !important; /* Increased from 110px */
     margin-bottom: 12px !important;
     border-radius: 24px !important;
+  }
+
+  .card-image img {
+    padding: 10px !important; /* Reduced padding to make image larger */
   }
 
   .card-info h3 {

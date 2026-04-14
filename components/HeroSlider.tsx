@@ -95,13 +95,13 @@ export default function HeroSlider() {
               <div className="hero-terms">{slide.terms}</div>
             </div>
 
-            <div className="hero-image-container">
+            <div className="hero-image-container rounded-md overflow-hidden">
               <Image 
                 src={slide.image} 
                 alt={slide.title} 
                 fill 
                 priority 
-                className="hero-main-img"
+                className="hero-main-img rounded-md"
               />
             </div>
           </section>

@@ -1866,13 +1866,13 @@ button {
     height: 350px !important;
     min-height: 300px !important;
     margin-right: 0 !important;
-    margin-top: 10px;
+    margin-top: -2rem !important; /* Pushed up by 2rem */
     order: 2; /* Image after text */
   }
 
   .hero-image-container img {
     object-position: center center !important;
-    transform: scale(1.15);
+    transform: scale(1.10); /* Reduced from 1.15 (approx 5% smaller) */
     filter: drop-shadow(0 20px 40px rgba(0,0,0,0.15));
   }
 

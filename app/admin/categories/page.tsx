@@ -3,13 +3,14 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Tag, Trash2, Edit3, Plus, X, AlertTriangle } from "lucide-react";
+import { Tag, Trash2, Edit3, Plus, X, AlertTriangle, GripVertical } from "lucide-react";
 
 export default function AdminCategories() {
   const categories = useQuery(api.categories?.get);
   const addCategory = useMutation(api.categories?.add);
   const updateCategory = useMutation(api.categories?.update);
   const deleteCategory = useMutation(api.categories?.remove);
+  const updateOrder = useMutation(api.categories?.updateOrder);
 
   const [formData, setFormData] = useState({ name: "", description: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -75,6 +76,52 @@ export default function AdminCategories() {
     setDeleteTarget(null);
   };
 
+  // ── Drag and Drop Logic ──
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+
+  const onDragStart = (index: number) => {
+    setDraggedIndex(index);
+  };
+
+  const onDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    if (draggedIndex === null || draggedIndex === index) return;
+    
+    const newItems = [...(categories || [])];
+    const draggedItem = newItems[draggedIndex];
+    newItems.splice(draggedIndex, 1);
+    newItems.splice(index, 0, draggedItem);
+    
+    setDraggedIndex(index);
+    // Note: This is local state update if we had local state, but categories is from useQuery.
+    // To make it feel smooth, we might need a local copy, but for now we'll update DB on drop.
+  };
+
+  const onDragEnd = async () => {
+    setDraggedIndex(null);
+  };
+
+  const handleDrop = async (index: number) => {
+    if (draggedIndex === null || draggedIndex === index || !categories || !updateOrder) return;
+    
+    const newItems = [...categories];
+    const draggedItem = newItems[draggedIndex];
+    newItems.splice(draggedIndex, 1);
+    newItems.splice(index, 0, draggedItem);
+    
+    const orders = newItems.map((item, idx) => ({
+      id: item._id,
+      order: idx,
+    }));
+    
+    try {
+      await updateOrder({ orders });
+    } catch (err) {
+      console.error("Failed to update order:", err);
+    }
+    setDraggedIndex(null);
+  };
+
   return (
     <div className="cat-page">
       <div className="cat-header">
@@ -128,8 +175,16 @@ export default function AdminCategories() {
             </div>
           ) : (
             <div className="cat-list">
-              {categories.map((c: any) => (
-                <div key={c._id} className={`cat-item ${editingId === c._id ? "editing" : ""}`}>
+              {categories.map((c: any, index: number) => (
+                <div 
+                  key={c._id} 
+                  className={`cat-item ${editingId === c._id ? "editing" : ""} ${draggedIndex === index ? "dragging" : ""}`}
+                  draggable={editingId !== c._id}
+                  onDragStart={() => onDragStart(index)}
+                  onDragOver={(e) => onDragOver(e, index)}
+                  onDrop={() => handleDrop(index)}
+                  onDragEnd={onDragEnd}
+                >
                   {editingId === c._id ? (
                     /* ── Edit Mode ── */
                     <div className="cat-edit-form">
@@ -160,6 +215,9 @@ export default function AdminCategories() {
                   ) : (
                     /* ── Display Mode ── */
                     <>
+                      <div className="cat-drag-handle">
+                        <GripVertical size={16} />
+                      </div>
                       <div className="cat-item-icon">
                         <Tag size={16} />
                       </div>
@@ -277,6 +335,19 @@ export default function AdminCategories() {
         }
         .cat-item:hover { background:var(--accent-soft); border-color:rgba(59,130,246,0.15); }
         .cat-item.editing { background:var(--accent-soft); border-color:var(--accent); padding:16px; }
+        .cat-item.dragging { opacity: 0.5; background: var(--accent-soft); border-style: dashed; border-color: var(--accent); }
+
+        .cat-drag-handle {
+          cursor: grab;
+          color: var(--text-muted);
+          display: flex;
+          align-items: center;
+          padding: 4px;
+          border-radius: 6px;
+          transition: background 0.2s;
+        }
+        .cat-drag-handle:hover { background: rgba(0,0,0,0.05); color: var(--text); }
+        .cat-drag-handle:active { cursor: grabbing; }
 
         .cat-item-icon {
           width:36px; height:36px; border-radius:10px;

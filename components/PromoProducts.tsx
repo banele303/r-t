@@ -42,6 +42,32 @@ export default function PromoProducts() {
   const promos = useQuery(api.products?.getPromos);
   const { addToCart } = useCart();
   
+  if (promos === undefined) {
+    return (
+      <section className="promo-products-section">
+        <div className="promo-products-header">
+          <h2>On Promo</h2>
+          <div className="view-all-promos">View All Offers &gt;</div>
+        </div>
+        <div className="promo-products-grid">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="promo-skeleton-card">
+              <div className="skeleton-image skeleton-pulse"></div>
+              <div className="skeleton-content">
+                <div className="skeleton-title skeleton-pulse"></div>
+                <div className="skeleton-price skeleton-pulse"></div>
+                <div className="skeleton-actions">
+                  <div className="skeleton-button skeleton-pulse"></div>
+                  <div className="skeleton-icon skeleton-pulse"></div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    );
+  }
+
   // Use actual database promos if available and not empty, otherwise fallback for the aesthetic
   const displayItems = promos && promos.length > 0 ? promos : placeholderItems;
   const slicedItems = displayItems.slice(0, 12);

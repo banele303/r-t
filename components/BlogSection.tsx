@@ -10,8 +10,8 @@ const blogPosts = [
     excerpt: "We compare cameras, performance, battery life and more to help you pick the perfect flagship phone for 2026.",
     date: "March 20, 2026",
     readTime: "5 min read",
-    image: "/iphone-hero-new.png",
-    gradient: "linear-gradient(135deg, #1a1a2e, #16213e)",
+    image: "/iphone_promo_list.png",
+    gradient: "linear-gradient(135deg, #f5f5f7, #e8e8ed)",
   },
   {
     id: 2,
@@ -20,18 +20,18 @@ const blogPosts = [
     excerpt: "From Air to Pro, M3 to M4 — here's everything you need to know before buying your next Mac.",
     date: "March 18, 2026",
     readTime: "4 min read",
-    image: "/Hero-image.png",
-    gradient: "linear-gradient(135deg, #0f0c29, #302b63)",
+    image: "/macbook_hero.png",
+    gradient: "linear-gradient(135deg, #f5f5f7, #e8e8ed)",
   },
   {
     id: 3,
     category: "News",
-    title: "PlayStation 5 Pro: Everything We Know So Far",
-    excerpt: "Sony's next powerhouse console is on the horizon. Here's what to expect and when you can pre-order.",
+    title: "Apple Watch Series 10: The Ultimate Review",
+    excerpt: "The thinnest Apple Watch ever is here. We take a deep dive into the new features and design.",
     date: "March 15, 2026",
     readTime: "3 min read",
-    image: "/cat_tv.png",
-    gradient: "linear-gradient(135deg, #0c0c1d, #1a1a3e)",
+    image: "/watch_hero.png",
+    gradient: "linear-gradient(135deg, #f5f5f7, #e8e8ed)",
   },
 ];
 
@@ -47,9 +47,11 @@ export default function BlogSection() {
       <div className="blog-grid">
         {blogPosts.map((post) => (
           <article key={post.id} className="blog-card">
-            <div className="blog-card-image" style={{ background: post.gradient }}>
-              <Image src={post.image} alt={post.title} fill style={{ objectFit: 'contain', padding: '8px' }} />
-              <span className="blog-category-badge">{post.category}</span>
+            <div className="blog-card-image-wrapper">
+              <div className="blog-card-image" style={{ background: post.gradient }}>
+                <Image src={post.image} alt={post.title} fill style={{ objectFit: 'cover' }} />
+                <span className="blog-category-badge">{post.category}</span>
+              </div>
             </div>
             <div className="blog-card-body">
               <div className="blog-card-meta">
@@ -95,13 +97,12 @@ export default function BlogSection() {
         }
 
         .blog-title {
-          font-family: var(--font-playfair), serif;
+          font-family: var(--font-inter), sans-serif;
           font-size: 44px;
-          font-weight: 500;
+          font-weight: 700;
           color: #111;
-          letter-spacing: -1px;
+          letter-spacing: -1.5px;
           margin-bottom: 12px;
-          font-style: italic;
         }
 
         .blog-subtitle {
@@ -144,10 +145,15 @@ export default function BlogSection() {
           transform: scale(1.05);
         }
 
+        .blog-card-image-wrapper {
+          padding: 12px 12px 0 12px;
+        }
+
         .blog-card-image {
           position: relative;
-          height: 220px;
+          height: 240px;
           overflow: hidden;
+          border-radius: 16px;
         }
 
         .blog-card-image img {

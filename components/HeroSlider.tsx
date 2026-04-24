@@ -13,40 +13,29 @@ const slides = [
     icon: <Smartphone size={24} />,
     saveText: "Titanium. Powerhouse.",
     desc: "Experience the pinnacle of mobile technology with Apple Intelligence and pro-grade cameras.",
-    image: "/floating_iphone_hero.png",
+    image: "/new-slide.png",
     terms: "Exclusive Launch Offer"
   },
   {
     id: 1,
-    backgroundText: "FLOATING",
-    themeClass: "iphone-slide",
-    title: "Mastery in Motion",
-    icon: <Watch size={24} />,
-    saveText: "Superior Craftsmanship",
-    desc: "Every detail engineered for perfection. The most advanced iPhone lineup yet.",
-    image: "/floating_iphone_hero.png",
-    terms: "Starting from R1,299pm"
+    backgroundText: "MACBOOK",
+    themeClass: "macbook-slide",
+    title: "MacBook Pro",
+    icon: <Laptop size={24} />,
+    saveText: "Mind-blowing. Head-turning.",
+    desc: "Now with the M3 family of chips, the most advanced chips ever built for a personal computer.",
+    image: "/new-slider2.png",
+    terms: "Starting from R2,499pm"
   },
   {
     id: 2,
-    backgroundText: "IPHONE",
-    themeClass: "iphone-slide",
-    title: "Your New Superpower",
-    icon: <Smartphone size={24} />,
-    saveText: "Smarter Performance",
-    desc: "Supercharged by the A18 Pro chip. Built for the future of Apple Intelligence.",
-    image: "/floating_iphone_hero.png",
-    terms: "Available in all Titanium finishes"
-  },
-  {
-    id: 3,
     backgroundText: "WATCH",
     themeClass: "watch-slide",
     title: "Apple Watch Series 10",
     icon: <Watch size={24} />,
-    saveText: "Bigger Display. Thinner Design.",
-    desc: "The thinnest Apple Watch ever. New water temperature and depth sensors.",
-    image: "/watch.png",
+    saveText: "Thinner. Faster. Smarter.",
+    desc: "The thinnest Apple Watch ever. With the largest, most advanced display yet.",
+    image: "/new-slider3.png",
     terms: "Available in Jet Black and Rose Gold"
   }
 ];

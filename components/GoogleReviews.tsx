@@ -281,7 +281,6 @@ export default function GoogleReviews() {
           line-height: 1.6;
           color: #4b5563;
           margin-bottom: 20px;
-          font-style: italic;
           flex-grow: 1;
         }
 

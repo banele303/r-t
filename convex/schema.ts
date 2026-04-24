@@ -50,6 +50,7 @@ export default defineSchema({
     name: v.string(),
     description: v.optional(v.string()),
     imageId: v.optional(v.string()),
+    order: v.optional(v.number()),
   }),
   subcategories: defineTable({
     name: v.string(),
